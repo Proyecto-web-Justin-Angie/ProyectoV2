@@ -563,19 +563,20 @@ body.sin-scroll {
 }
 /* Zonas Mapa */
 .zelenograd {
-  top: 29%;
-  left: 55%;
+  top: 17%;
+  left: 45%;
   width: 32%;
   height: 18%;
   border-radius: 28px;
 }
 .templo-tiempo {
-  top: 7%;
+  top: 42%;
   left: 50%;
   width: 9%;
   height: 10%;
   border-radius: 50%;
 }
+
 .fuego-dragon {
   top: 58%;
   left: 60%;
@@ -583,44 +584,47 @@ body.sin-scroll {
   height: 20%;
   border-radius: 30px;
 }
+
 .torre-babel {
   top: 31%;
-  left: 10%;
+  left: 14%;
   width: 28%;
   height: 30%;
   border-radius: 30px;
 }
+
 .tierras-congeladas {
   top: 6%;
-  left: 10%;
+  left: 24%;
   width: 28%;
   height: 14%;
   border-radius: 26px;
 }
+
 .stormgarde {
   top: 21%;
-  left: 15%;
+  left: 25%;
   width: 13%;
   height: 10%;
   border-radius: 18px;
 }
 .allashar {
   top: 20%;
-  left: 31%;
+  left: 37%;
   width: 11%;
   height: 10%;
   border-radius: 18px;
 }
 .hemin {
   top: 60%;
-  left: 27%;
+  left: 33%;
   width: 10%;
   height: 9%;
   border-radius: 18px;
 }
 .hastahar {
   top: 61%;
-  left: 7%;
+  left: 19%;
   width: 13%;
   height: 9%;
   border-radius: 18px;
