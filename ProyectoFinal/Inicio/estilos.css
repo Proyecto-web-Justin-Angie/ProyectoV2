@@ -326,7 +326,7 @@ body.sin-scroll {
   border-radius: 10px;
 }
 
-/* Zonas Oficina */
+/* ===== ZONAS OFICINA - DESKTOP ===== */
 .librero {
   top: 5%;
   left: 33%;
@@ -358,6 +358,209 @@ body.sin-scroll {
   height: 12%;
 }
 
+/* ===== MEDIA QUERY: TABLETS (768px - 1024px) ===== */
+@media (max-width: 1024px) {
+  .librero {
+    top: 8%;
+    left: 32%;
+    width: 18%;
+    height: 60%;
+  }
+  .mapa {
+    top: 68%;
+    left: 24%;
+    width: 40%;
+    height: 23%;
+  }
+  .pizarra {
+    top: 4%;
+    left: 54%;
+    width: 25%;
+    height: 35%;
+  }
+  .tocador {
+    top: 32%;
+    left: 68%;
+    width: 11%;
+    height: 28%;
+  }
+  .gabeta {
+    top: 48%;
+    left: 49%;
+    width: 7%;
+    height: 14%;
+  }
+}
+
+/* ===== MEDIA QUERY: TABLETS MEDIANOS (768px - 900px) ===== */
+@media (max-width: 900px) {
+  .librero {
+    top: 10%;
+    left: 30%;
+    width: 20%;
+    height: 55%;
+  }
+  .mapa {
+    top: 70%;
+    left: 22%;
+    width: 42%;
+    height: 20%;
+  }
+  .pizarra {
+    top: 5%;
+    left: 52%;
+    width: 28%;
+    height: 32%;
+  }
+  .tocador {
+    top: 34%;
+    left: 66%;
+    width: 13%;
+    height: 26%;
+  }
+  .gabeta {
+    top: 46%;
+    left: 48%;
+    width: 8%;
+    height: 16%;
+  }
+}
+
+/* ===== MEDIA QUERY: TABLETS PEQUEÑOS Y HORIZONTALES (768px) ===== */
+@media (max-width: 768px) {
+  .librero {
+    top: 12%;
+    left: 28%;
+    width: 22%;
+    height: 50%;
+  }
+  .mapa {
+    top: 72%;
+    left: 20%;
+    width: 45%;
+    height: 18%;
+  }
+  .pizarra {
+    top: 6%;
+    left: 50%;
+    width: 30%;
+    height: 30%;
+  }
+  .tocador {
+    top: 36%;
+    left: 64%;
+    width: 15%;
+    height: 24%;
+  }
+  .gabeta {
+    top: 44%;
+    left: 47%;
+    width: 9%;
+    height: 18%;
+  }
+}
+
+/* ===== MEDIA QUERY: TELÉFONOS HORIZONTALES (667px - 812px) ===== */
+@media (max-width: 812px) and (orientation: landscape) {
+  .librero {
+    top: 15%;
+    left: 25%;
+    width: 25%;
+    height: 45%;
+  }
+  .mapa {
+    top: 75%;
+    left: 18%;
+    width: 50%;
+    height: 16%;
+  }
+  .pizarra {
+    top: 8%;
+    left: 48%;
+    width: 32%;
+    height: 28%;
+  }
+  .tocador {
+    top: 38%;
+    left: 62%;
+    width: 18%;
+    height: 22%;
+  }
+  .gabeta {
+    top: 42%;
+    left: 46%;
+    width: 10%;
+    height: 20%;
+  }
+}
+
+/* ===== MEDIA QUERY: TELÉFONOS VERTICALES PEQUEÑOS (max-width: 480px) ===== */
+@media (max-width: 480px) {
+  .librero {
+    top: 8%;
+    left: 28%;
+    width: 28%;
+    height: 35%;
+  }
+  .mapa {
+    top: 65%;
+    left: 16%;
+    width: 48%;
+    height: 20%;
+  }
+  .pizarra {
+    top: 3%;
+    left: 50%;
+    width: 32%;
+    height: 25%;
+  }
+  .tocador {
+    top: 35%;
+    left: 60%;
+    width: 18%;
+    height: 20%;
+  }
+  .gabeta {
+    top: 40%;
+    left: 45%;
+    width: 10%;
+    height: 16%;
+  }
+}
+
+/* ===== MEDIA QUERY: TELÉFONOS MUY PEQUEÑOS (max-width: 390px) ===== */
+@media (max-width: 390px) {
+  .librero {
+    top: 6%;
+    left: 26%;
+    width: 30%;
+    height: 32%;
+  }
+  .mapa {
+    top: 68%;
+    left: 14%;
+    width: 50%;
+    height: 18%;
+  }
+  .pizarra {
+    top: 2%;
+    left: 48%;
+    width: 34%;
+    height: 23%;
+  }
+  .tocador {
+    top: 36%;
+    left: 58%;
+    width: 20%;
+    height: 18%;
+  }
+  .gabeta {
+    top: 38%;
+    left: 44%;
+    width: 11%;
+    height: 15%;
+  }
+}
 /* Zonas Mapa */
 .zelenograd {
   top: 29%;
