@@ -56,12 +56,15 @@
                     <h2 class="text-center">Informe de Escena del Crimen</h2>
                     <p class="text-center text-muted">Documento oficial de registro pericial</p>
 
-                    <form id="formulario" class="row g-3" novalidate>
+                    <form id="formulario" name="informe" method="POST" netlify netlify-honeypot="bot-field" action="/ProyectoFinal/Inicio/index.html" class="row g-3" novalidate>
+                      <!-- Honeypot field for spam prevention -->
+                      <input type="hidden" name="bot-field" />
+
                       <fieldset class="col-12">
                         <legend>1. Identificación del caso</legend>
-                        <input type="text" id="nombre" class="form-control mb-2" placeholder="Nombre del investigador *" />
-                        <input type="text" id="expediente" class="form-control mb-2" placeholder="Número de expediente (Ej: EXP-123) *" />
-                        <input type="text" id="ubicacion" class="form-control" placeholder="Ubicación de la escena *" />
+                        <input type="text" id="nombre" name="nombre" class="form-control mb-2" placeholder="Nombre del investigador *" />
+                        <input type="text" id="expediente" name="expediente" class="form-control mb-2" placeholder="Número de expediente (Ej: EXP-123) *" />
+                        <input type="text" id="ubicacion" name="ubicacion" class="form-control" placeholder="Ubicación de la escena *" />
                       </fieldset>
 
                       <fieldset class="col-12">
@@ -69,11 +72,11 @@
                         <div class="row">
                           <div class="col-md-6">
                             <label class="form-label">Fecha *</label>
-                            <input type="date" id="fecha" class="form-control" />
+                            <input type="date" id="fecha" name="fecha" class="form-control" />
                           </div>
                           <div class="col-md-6">
                             <label class="form-label">Hora *</label>
-                            <input type="time" id="hora" class="form-control" />
+                            <input type="time" id="hora" name="hora" class="form-control" />
                           </div>
                         </div>
                       </fieldset>
@@ -90,7 +93,7 @@
                             <label class="form-check-label" for="est2">Alterada</label>
                           </div>
                         </div>
-                        <textarea id="comentario" class="form-control" placeholder="Descripción detallada de hallazgos *"></textarea>
+                        <textarea id="comentario" name="comentario" class="form-control" placeholder="Descripción detallada de hallazgos *"></textarea>
                       </fieldset>
 
                       <fieldset class="col-12">
@@ -147,7 +150,7 @@
       }
 
       document.getElementById("formulario").addEventListener("submit", function (e) {
-        e.preventDefault();
+        // Validación sin preventDefault - permite que Netlify procese el formulario
         
         // Limpiar errores previos
         document.querySelectorAll(".error").forEach(el => el.classList.remove("error"));
@@ -164,30 +167,49 @@
         };
 
         // VALIDACIONES
-        if (!validar("nombre", document.getElementById("nombre").value.trim().length < 3, "Nombre del investigador inválido.")) return;
-        if (!validar("expediente", !/^EXP-\d+/.test(document.getElementById("expediente").value), "El expediente debe seguir el formato EXP-seguido de números.")) return;
-        if (!validar("ubicacion", document.getElementById("ubicacion").value.trim() === "", "Debe indicar la ubicación de la escena.")) return;
-        if (!validar("fecha", document.getElementById("fecha").value === "", "La fecha del peritaje es obligatoria.")) return;
-        if (!validar("hora", document.getElementById("hora").value === "", "La hora del peritaje es obligatoria.")) return;
+        if (!validar("nombre", document.getElementById("nombre").value.trim().length < 3, "Nombre del investigador inválido.")) {
+          e.preventDefault();
+          return;
+        }
+        if (!validar("expediente", !/^EXP-\d+/.test(document.getElementById("expediente").value), "El expediente debe seguir el formato EXP-seguido de números.")) {
+          e.preventDefault();
+          return;
+        }
+        if (!validar("ubicacion", document.getElementById("ubicacion").value.trim() === "", "Debe indicar la ubicación de la escena.")) {
+          e.preventDefault();
+          return;
+        }
+        if (!validar("fecha", document.getElementById("fecha").value === "", "La fecha del peritaje es obligatoria.")) {
+          e.preventDefault();
+          return;
+        }
+        if (!validar("hora", document.getElementById("hora").value === "", "La hora del peritaje es obligatoria.")) {
+          e.preventDefault();
+          return;
+        }
         
         // Validar Radio
         if (!document.querySelector('input[name="estado"]:checked')) {
           alert("ALERTA: Debe marcar el estado de preservación de la escena.");
+          e.preventDefault();
           return;
         }
 
-        if (!validar("comentario", document.getElementById("comentario").value.trim().length < 15, "La descripción es demasiado breve para un informe oficial.")) return;
+        if (!validar("comentario", document.getElementById("comentario").value.trim().length < 15, "La descripción es demasiado breve para un informe oficial.")) {
+          e.preventDefault();
+          return;
+        }
 
         // Validar Progreso (Mecánica de juego)
         if (pistas < totalPistasRequeridas) {
           alert(`ERROR: No puede cerrar el caso. Faltan ${totalPistasRequeridas - pistas} evidencias por procesar.`);
+          e.preventDefault();
           return;
         }
 
-        // ÉXITO
-        let toast = new bootstrap.Toast(document.getElementById("toastExito"));
-        toast.show();
-        console.log("Informe validado y enviado.");
+        // ÉXITO - Permitir que Netlify procese el formulario
+        alert("¡Informe validado! Enviando datos...");
+        // No usamos preventDefault, Netlify enviará el formulario automáticamente
       });
     </script>
   </body>
