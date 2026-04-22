@@ -8,7 +8,18 @@
     <link rel="stylesheet" href="estilos.css" />
 
     <style>
-      .lado-texto {
+      /* =========================
+         OVERLAY (AISLADO)
+         TODO VA BAJO .overlay-ayuda
+         ========================= */
+
+      .overlay-ayuda .contenido-evidencia {
+        display: flex;
+        gap: 20px;
+        max-height: 85vh;
+      }
+
+      .overlay-ayuda .lado-texto {
         display: flex;
         flex-direction: column;
         max-height: 80vh;
@@ -16,7 +27,7 @@
         overflow: hidden;
       }
 
-      #textoDetective {
+      .overlay-ayuda #textoDetective {
         white-space: normal;
         line-height: 1.7;
         color: #f0ead6;
@@ -26,21 +37,21 @@
         scrollbar-color: var(--pergamino) transparent;
       }
 
-      #textoDetective::-webkit-scrollbar {
+      .overlay-ayuda #textoDetective::-webkit-scrollbar {
         width: 6px;
       }
 
-      #textoDetective::-webkit-scrollbar-thumb {
+      .overlay-ayuda #textoDetective::-webkit-scrollbar-thumb {
         background-color: var(--pergamino, #e8d9b8);
         border-radius: 10px;
       }
 
-      .lado-texto h2 {
+      .overlay-ayuda .lado-texto h2 {
         color: var(--pergamino, #e8d9b8);
         margin-bottom: 15px;
       }
 
-      .botones-overlay {
+      .overlay-ayuda .botones-overlay {
         display: flex;
         flex-direction: column;
         gap: 12px;
@@ -48,13 +59,7 @@
         align-items: center;
       }
 
-      .contenido-evidencia {
-        display: flex;
-        gap: 20px;
-        max-height: 85vh;
-      }
-
-      .btn-esquina {
+      .overlay-ayuda .btn-esquina {
         position: relative;
         padding: 12px 25px;
         min-width: 140px;
@@ -73,7 +78,7 @@
         transition: 0.3s;
       }
 
-      .btn-esquina:hover {
+      .overlay-ayuda .btn-esquina:hover {
         border: 3px solid var(--boton-borde-hover);
         box-shadow:
           0 0 8px var(--brillo-calido-fuerte),
@@ -81,15 +86,15 @@
           3px 3px 0 var(--boton-sombra);
       }
 
-      .tablero-escena {
+      .overlay-ayuda .tablero-escena {
         position: relative;
       }
 
-      .sin-scroll {
+      .overlay-ayuda .sin-scroll {
         overflow: hidden;
       }
 
-      #imagenOverlay {
+      .overlay-ayuda #imagenOverlay {
         width: 100%;
         max-width: 720px;
         max-height: 650px;
@@ -98,7 +103,7 @@
         border: 2px solid var(--pergamino);
       }
 
-      #textoAsistente {
+      .overlay-ayuda #textoAsistente {
         color: var(--pergamino);
         font-style: italic;
         line-height: 1.6;
@@ -111,8 +116,9 @@
 
     <main class="escena-principal">
       <section class="contenedor-juego">
+
         <header class="barra-superior visible-ui">
-          <button class="btn btn-outline-light btn-sm" onclick="window.location.href = 'index.html'">
+          <button class="btn btn-outline-light btn-sm" onclick="window.location.href='index.html'">
             Volver atrás
           </button>
 
@@ -125,17 +131,16 @@
         </header>
 
         <section class="visor-central">
-          <section class="tablero-escena" aria-label="Tablero de investigación">
-            <!-- Wrapper relativo a la imagen real para que las zonas siempre se anclen correctamente -->
-            <div class="tablero-wrapper">
-              <img src="Multimedia/EscenarioTablero.png" class="tablero-img" alt="Tablero de investigación" draggable="false" />
+          <section class="tablero-escena">
 
-              <div class="zona-mapa" style="top: 12%; left: 7%;  width: 11%; height: 20%;" data-id="sospechoso_a"></div>
-              <div class="zona-mapa" style="top: 22%; left: 22%; width: 10%; height: 20%;" data-id="victima"></div>
-              <div class="zona-mapa" style="top: 42%; left: 29%; width: 11%; height: 22%;" data-id="testigo"></div>
-              <div class="zona-mapa" style="top: 18%; left: 54%; width: 11%; height: 22%;" data-id="comisario"></div>
-              <div class="zona-mapa" style="top: 55%; left: 37%; width: 10%; height: 22%;" data-id="prensa"></div>
-            </div>
+            <div class="mapa-imagen"></div>
+
+            <div class="zona-mapa" style="top:15%;left:11%;width:10%;height:17%" data-id="dragon"></div>
+            <div class="zona-mapa" style="top:25%;left:24%;width:9%;height:16%" data-id="gusano_arena"></div>
+            <div class="zona-mapa" style="top:47%;left:30%;width:10%;height:17%" data-id="cervudo"></div>
+            <div class="zona-mapa" style="top:32%;left:58%;width:10%;height:18%" data-id="humanoide_hongos"></div>
+            <div class="zona-mapa" style="top:52%;left:83%;width:11%;height:26%" data-id="ciervo_runico"></div>
+
           </section>
         </section>
 
@@ -144,18 +149,23 @@
             <p id="mensajeJuego">Inspecciona los documentos del tablero.</p>
           </div>
         </footer>
+
       </section>
     </main>
 
+    <!-- =========================
+         OVERLAY AISLADO
+         ========================= -->
     <div id="ayuda" class="overlay-ayuda">
       <div class="contenedor-tutorial">
+
         <section class="pagina pagina-evidencia">
           <section class="panel-central sin-papiro">
 
             <div class="contenido-evidencia">
 
               <div class="lado-imagen">
-                <img id="imagenOverlay" class="img-fluid" />
+                <img id="imagenOverlay" />
 
                 <div class="perfil-cita">
                   <blockquote id="textoAsistente"></blockquote>
@@ -178,6 +188,7 @@
 
           </section>
         </section>
+
       </div>
     </div>
 
@@ -205,26 +216,11 @@
       };
 
       const comentarios = {
-        dragon: [
-          "Eso no es fauna local, es una unidad de combate natural.",
-          "Algo lo está dirigiendo o ya aprendió a cazar."
-        ],
-        gusano_arena: [
-          "El suelo ya no es confiable.",
-          "No es uno… es una red viva."
-        ],
-        cervudo: [
-          "El entorno cambia cuando aparece.",
-          "La percepción falla cerca de él."
-        ],
-        humanoide_hongos: [
-          "No es transformación, es sustitución.",
-          "Ya no es humano en sentido funcional."
-        ],
-        ciervo_runico: [
-          "No es criatura.",
-          "Es un evento con forma."
-        ]
+        dragon: ["Eso no es fauna local.", "Está siendo dirigido."],
+        gusano_arena: ["El suelo ya no es seguro.", "Es una red viva."],
+        cervudo: ["El entorno cambia.", "La percepción falla."],
+        humanoide_hongos: ["No es humano.", "Es sustitución."],
+        ciervo_runico: ["No es criatura.", "Es evento."]
       };
 
       const imagenes = {
@@ -236,9 +232,9 @@
       };
 
       document.querySelectorAll(".zona-mapa").forEach(zona => {
-        const id = zona.dataset.id;
-
         zona.addEventListener("click", () => {
+          const id = zona.dataset.id;
+
           tituloDetalle.textContent = titulos[id];
           textoDetective.innerHTML = (narraciones[id] || "").replace(/\/n\//g, "<br><br>");
           textoAsistente.innerHTML = (comentarios[id] || []).map(c => "• " + c).join("<br>");
@@ -254,5 +250,6 @@
         document.body.classList.remove("sin-scroll");
       });
     </script>
+
   </body>
 </html>
