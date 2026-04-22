@@ -9,14 +9,15 @@
     <style>
       .overlay-tocador {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.8);
+        inset: 0;
+
+        background: var(--overlay-oscuro);
+        backdrop-filter: blur(6px);
+
         display: none;
         justify-content: center;
         align-items: center;
+
         z-index: 9999;
       }
 
@@ -24,47 +25,95 @@
         display: flex;
       }
 
-      .contenedor-tocador {
-        background: #1a1a1a;
-        padding: 30px;
-        border-radius: 15px;
-        width: 500px;
-        max-height: 80vh;
+      /* CONTENEDOR PRINCIPAL */
+      .contenedor-tocadiscos {
+        width: clamp(340px, 45vw, 560px);
+        max-height: 82vh;
+
+        padding: 26px;
+
+        background:
+          linear-gradient(
+            var(--brillo-transparente),
+            var(--pergamino-claro-transparente)
+          ),
+          url("Multimedia/FondoInferior.jpg") center/cover;
+
+        border: 2px solid var(--borde);
+        border-radius: 16px;
+
+        box-shadow:
+          inset 0 0 14px var(--sombra-panel-interna),
+          0 14px 32px rgba(0, 0, 0, 0.4);
+
         overflow-y: auto;
         text-align: center;
+
+        color: var(--tinta);
       }
 
-      .titulo-tocador {
-        margin-bottom: 20px;
-        color: #f5e6c8;
+      /* TITULO */
+      .titulo-tocadiscos {
+        margin-bottom: 18px;
+        font-size: 22px;
+        font-weight: bold;
+        letter-spacing: 1px;
+
+        color: var(--texto-acento);
+
+        border-bottom: 2px solid var(--panel-borde-general);
+        padding-bottom: 8px;
       }
 
+      /* LISTA */
       .lista-audios {
         display: flex;
         flex-direction: column;
         gap: 10px;
-        margin-bottom: 20px;
+        margin-bottom: 18px;
       }
 
+      /* ITEMS */
       .audio-item {
-        padding: 10px;
-        background: #2a2a2a;
-        border-radius: 8px;
+        padding: 10px 12px;
+
+        background: var(--panel-papel-suave);
+        border: 1px solid var(--panel-borde-general);
+
+        border-radius: 10px;
+
         cursor: pointer;
-        color: #ddd;
-        transition: 0.2s;
+        transition: 0.25s ease;
+
+        color: var(--texto-secundario);
+        text-decoration: none;
+        display: block;
       }
 
       .audio-item:hover {
-        background: #444;
+        background: var(--panel-papel);
+        border-color: var(--pergamino-claro);
+        transform: scale(1.02);
       }
 
+      /* REPRODUCTOR */
       .reproductor {
-        margin-bottom: 20px;
+        margin-top: 10px;
+        margin-bottom: 16px;
       }
 
       audio {
         width: 100%;
+      }
+
+      /* SCROLL */
+      .contenedor-tocadiscos::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .contenedor-tocadiscos::-webkit-scrollbar-thumb {
+        background: var(--pergamino);
+        border-radius: 10px;
       }
     </style>
   </head>
@@ -601,8 +650,8 @@
     </div>
 
     <div id="overlayTocador" class="overlay-tocador">
-      <div class="contenedor-tocador">
-        <h2 class="titulo-tocador">Tocador</h2>
+      <div class="contenedor-tocadiscos">
+        <h2 class="titulo-tocador">Tocadiscos</h2>
 
         <!-- LISTA DE AUDIOS -->
         <div id="listaAudios" class="lista-audios"></div>
@@ -834,30 +883,93 @@ Todo lo que queda... está en esta oficina.`;
         }
       });
 
+      /* TOCADISCOS */
       const audios = [
         {
-          titulo: "Zelenograd — Susurros del bosque",
-          archivo: "Audio/zelenograd.mp3",
+          titulo: "Mizlecca - Hagali",
+          archivo: "Multimedia/Mizlecca.mp4",
         },
+
         {
-          titulo: "Templo del Tiempo — Ecos dorados",
-          archivo: "Audio/templo.mp3",
+          titulo: "Yuvi's Longing",
+          archivo: "Multimedia/Yuvi's Longing.mp4",
         },
+
         {
-          titulo: "Fuego del Dragón — Cumbres vivas",
-          archivo: "Audio/fuego.mp3",
+          titulo: "Eldharia ～Inori Saku Mori～",
+          archivo: "Multimedia/Inori Saku Mori.mp4",
         },
+
         {
-          titulo: "Torre de Babel — Ascenso",
-          archivo: "Audio/babel.mp3",
+          titulo: "14th melody (D.Gray-man)",
+          archivo: "Multimedia/14th melody.mpeg",
         },
       ];
 
-      // Elementos
       const overlayTocador = document.getElementById("overlayTocador");
       const listaAudios = document.getElementById("listaAudios");
       const audioPlayer = document.getElementById("audioPlayer");
       const tituloAudio = document.getElementById("tituloAudio");
+      const btnCerrarTocador = document.getElementById("cerrarTocador");
+      const zonaTocador = document.querySelector(".zona.tocador");
+
+      /* Abrir */
+      if (zonaTocador && overlayTocador) {
+        zonaTocador.addEventListener("click", () => {
+          overlayTocador.classList.add("activo");
+          document.body.classList.add("sin-scroll");
+        });
+      }
+
+      /* Cerrar */
+      if (btnCerrarTocador && overlayTocador) {
+        btnCerrarTocador.addEventListener("click", () => {
+          overlayTocador.classList.remove("activo");
+          document.body.classList.remove("sin-scroll");
+          if (audioPlayer) {
+            audioPlayer.pause();
+          }
+        });
+      }
+
+      /* Lista dinámica */
+      function cargarAudios() {
+        if (!listaAudios) return;
+        listaAudios.innerHTML = "";
+        audios.forEach((audio) => {
+          const item = document.createElement("div");
+          item.classList.add("audio-item");
+          item.textContent = audio.titulo;
+          item.addEventListener("click", () => {
+            if (audioPlayer) {
+              audioPlayer.src = audio.archivo;
+              audioPlayer.play();
+            }
+            if (tituloAudio) {
+              tituloAudio.textContent = audio.titulo;
+            }
+          });
+          listaAudios.appendChild(item);
+        });
+      }
+
+      /* ESC cierra tocador */
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          if (overlayTocador && overlayTocador.classList.contains("activo")) {
+            overlayTocador.classList.remove("activo");
+
+            document.body.classList.remove("sin-scroll");
+
+            if (audioPlayer) {
+              audioPlayer.pause();
+            }
+          }
+        }
+      });
+
+      /* Inicializar tocador */
+      cargarAudios();
 
       // Abrir overlay
       document.querySelector(".zona.tocador").addEventListener("click", () => {
