@@ -5,6 +5,412 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Oficina del detective</title>
     <link rel="stylesheet" href="estilos.css" />
+    <style>
+      .overlay-tocador {
+        position: fixed;
+        inset: 0;
+        background: var(--overlay-oscuro);
+        backdrop-filter: blur(6px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+
+      .overlay-tocador.activo {
+        display: flex;
+      }
+
+      .contenedor-tocadiscos {
+        width: clamp(340px, 45vw, 560px);
+        max-height: 82vh;
+        padding: 26px;
+        background:
+          linear-gradient(
+            var(--brillo-transparente),
+            var(--pergamino-claro-transparente)
+          ),
+          url("Multimedia/FondoInferior.jpg") center/cover;
+        border: 2px solid var(--borde);
+        border-radius: 16px;
+        box-shadow:
+          inset 0 0 14px var(--sombra-panel-interna),
+          0 14px 32px rgba(0, 0, 0, 0.4);
+        overflow-y: auto;
+        text-align: center;
+        color: var(--tinta);
+      }
+
+      .titulo-tocadiscos {
+        margin-bottom: 18px;
+        font-size: 22px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        color: var(--texto-acento);
+        border-bottom: 2px solid var(--panel-borde-general);
+        padding-bottom: 8px;
+      }
+
+      .lista-audios {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+
+      .audio-item {
+        padding: 10px 12px;
+        background: var(--panel-papel-suave);
+        border: 1px solid var(--panel-borde-general);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.25s ease;
+        color: var(--texto-secundario);
+        text-decoration: none;
+        display: block;
+      }
+
+      .audio-item:hover {
+        background: var(--panel-papel);
+        border-color: var(--pergamino-claro);
+        transform: scale(1.02);
+      }
+
+      .reproductor {
+        margin-top: 10px;
+        margin-bottom: 16px;
+      }
+
+      audio {
+        width: 100%;
+      }
+
+      .contenedor-tocadiscos::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .contenedor-tocadiscos::-webkit-scrollbar-thumb {
+        background: var(--pergamino);
+        border-radius: 10px;
+      }
+
+      /* =========================
+   OVERLAY TUTORIAL
+========================= */
+      .overlay-ayuda {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.88);
+        backdrop-filter: blur(5px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        padding: 12px;
+      }
+
+      .overlay-ayuda.activo {
+        display: flex;
+      }
+
+      .contenedor-tutorial {
+        width: calc(100vw - 24px);
+        height: calc(100vh - 24px);
+        max-width: none;
+        max-height: none;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      #paginas.paginas {
+        flex: 1;
+        display: flex;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.35s ease;
+      }
+
+      .pagina {
+        min-width: 100%;
+        height: 100%;
+        display: flex;
+      }
+
+      .pagina .panel-central {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: stretch;
+        gap: 18px;
+        box-sizing: border-box;
+        overflow: hidden;
+      }
+
+      .pagina .lateral {
+        flex: 0 0 15%;
+        min-width: 120px;
+        max-width: 240px;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 12px;
+        align-self: stretch;
+      }
+
+      .pagina .lateral.izquierdo,
+      .pagina .lateral.derecho {
+        min-height: 100%;
+      }
+
+      .pagina .contenido {
+        flex: 1;
+        min-width: 0;
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-right: 8px;
+        box-sizing: border-box;
+      }
+
+      .pagina .contenido::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .pagina .contenido::-webkit-scrollbar-thumb {
+        background: rgba(232, 217, 184, 0.7);
+        border-radius: 10px;
+      }
+
+      .contenedor-video {
+        display: flex;
+        gap: 20px;
+        align-items: stretch;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+      }
+
+      .video-box,
+      .texto-box {
+        flex: 1 1 320px;
+        min-width: 0;
+      }
+
+      .video-box iframe {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        border: none;
+        border-radius: 10px;
+        display: block;
+      }
+
+      .tabla-info,
+      .panel-grid,
+      .caso-bloque,
+      .caso-lado-info,
+      .perfil-horizontal,
+      .grid-recomendaciones,
+      .lista-juegos-similares {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+
+      .tabla-info {
+        overflow-x: auto;
+      }
+
+      .tabla-info table,
+      .panel-tabla,
+      .panel-grid table,
+      .contenido table {
+        width: 100%;
+        max-width: 100%;
+        table-layout: fixed;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+      }
+
+      .panel-tabla td,
+      .panel-tabla th,
+      .tabla-info td,
+      .tabla-info th {
+        vertical-align: top;
+        padding: 10px 12px;
+      }
+
+      .panel-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .panel-grid-investigador .panel-columna,
+      .panel-grid .panel-columna {
+        min-width: 0;
+      }
+
+      .panel-columna-completa {
+        grid-column: 1 / -1;
+      }
+
+      .panel-label {
+        width: 34%;
+        font-weight: bold;
+      }
+
+      .perfil-horizontal {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+      }
+
+      .frame {
+        flex: 0 0 260px;
+        max-width: 260px;
+      }
+
+      .frame-bg img,
+      .perfil-imagen {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .perfil-texto {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .lista-juegos-similares {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .juego-similar {
+        display: flex;
+        gap: 18px;
+        align-items: flex-start;
+        width: 100%;
+      }
+
+      .juego-similar-img {
+        width: 190px;
+        max-width: 190px;
+        height: auto;
+        border-radius: 10px;
+        display: block;
+        flex-shrink: 0;
+      }
+
+      .juego-similar-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .juego-similar-info h3 {
+        margin-top: 0;
+        margin-bottom: 8px;
+      }
+
+      .juego-similar-info a {
+        color: var(--pergamino-claro);
+        text-decoration: underline;
+      }
+
+      .juego-similar-info p {
+        margin: 0;
+        line-height: 1.6;
+      }
+
+      .barra-inferior {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        flex-shrink: 0;
+      }
+
+      .controles-tutorial {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+      }
+
+      .botones-panel {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .sin-scroll {
+        overflow: hidden;
+      }
+
+      @media (max-width: 1100px) {
+        .pagina .panel-central {
+          gap: 12px;
+        }
+
+        .pagina .lateral {
+          flex: 0 0 12%;
+          min-width: 80px;
+        }
+
+        .panel-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 800px) {
+        .overlay-ayuda {
+          padding: 8px;
+        }
+
+        .contenedor-tutorial {
+          width: calc(100vw - 16px);
+          height: calc(100vh - 16px);
+        }
+
+        .pagina .panel-central {
+          flex-direction: column;
+        }
+
+        .pagina .lateral {
+          width: 100%;
+          max-width: none;
+          min-width: 0;
+          flex: 0 0 120px;
+          min-height: 120px;
+          height: 120px;
+        }
+
+        .panel-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .perfil-horizontal,
+        .juego-similar {
+          flex-direction: column;
+        }
+
+        .frame {
+          max-width: 220px;
+        }
+
+        .juego-similar-img {
+          width: 100%;
+          max-width: 260px;
+        }
+      }
+    </style>
   </head>
 
   <body>
@@ -168,9 +574,10 @@
                     <h2>Explicación</h2>
                     <p>
                       Un Point & Click es un tipo de juego de aventura donde el
-                      jugador explora escenarios e interactúa con objetos mediante
-                      clics. La progresión depende de observar el entorno,
-                      descubrir pistas y resolver situaciones usando la lógica.
+                      jugador explora escenarios e interactúa con objetos
+                      mediante clics. La progresión depende de observar el
+                      entorno, descubrir pistas y resolver situaciones usando la
+                      lógica.
                     </p>
                   </div>
                 </div>
@@ -202,15 +609,15 @@
                     <tr>
                       <td class="panel-label">Observación</td>
                       <td>
-                        Es necesario prestar atención a pistas visuales, textos y
-                        cambios en el escenario.
+                        Es necesario prestar atención a pistas visuales, textos
+                        y cambios en el escenario.
                       </td>
                     </tr>
                     <tr>
                       <td class="panel-label">Progresión</td>
                       <td>
-                        Avanzas desbloqueando nuevas zonas, información o eventos
-                        al investigar correctamente.
+                        Avanzas desbloqueando nuevas zonas, información o
+                        eventos al investigar correctamente.
                       </td>
                     </tr>
                   </table>
@@ -299,7 +706,9 @@
                       </div>
 
                       <div class="panel-columna panel-columna-completa">
-                        <h3 class="panel-titulo">Notas personales del detective</h3>
+                        <h3 class="panel-titulo">
+                          Notas personales del detective
+                        </h3>
                         <table class="panel-tabla">
                           <tr>
                             <td class="panel-label">Impresión general</td>
@@ -363,8 +772,8 @@
 
                     <div class="perfil-cita">
                       <blockquote>
-                        "Si encuentras este archivo, significa que alguien intentó
-                        ocultar la verdad."
+                        "Si encuentras este archivo, significa que alguien
+                        intentó ocultar la verdad."
                       </blockquote>
                     </div>
                   </div>
@@ -460,9 +869,7 @@
                       </tr>
                       <tr>
                         <td class="panel-label">Detalle relevante</td>
-                        <td>
-                          Referencias repetidas a información “borrada”.
-                        </td>
+                        <td>Referencias repetidas a información “borrada”.</td>
                       </tr>
                       <tr>
                         <td class="panel-label">Prioridad</td>
@@ -530,8 +937,8 @@
                       </h3>
                       <p>
                         Mezcla narrativa, exploración y rompecabezas en un mundo
-                        inspirado en el cine noir y la cultura del Día de Muertos.
-                        Es famoso por su estilo visual y su historia.
+                        inspirado en el cine noir y la cultura del Día de
+                        Muertos. Es famoso por su estilo visual y su historia.
                       </p>
                     </div>
                   </article>
@@ -554,9 +961,10 @@
                         </a>
                       </h3>
                       <p>
-                        Un juego de aventura y puzzles centrado en la observación
-                        del entorno, la resolución lógica y una narrativa visual
-                        muy fuerte sin depender demasiado del diálogo.
+                        Un juego de aventura y puzzles centrado en la
+                        observación del entorno, la resolución lógica y una
+                        narrativa visual muy fuerte sin depender demasiado del
+                        diálogo.
                       </p>
                     </div>
                   </article>
@@ -576,7 +984,9 @@
           </div>
 
           <div class="botones-panel">
-            <button type="button" id="btnCerrarAyuda">Volver a la oficina</button>
+            <button type="button" id="btnCerrarAyuda">
+              Volver a la oficina
+            </button>
           </div>
         </div>
       </div>
@@ -596,12 +1006,6 @@
         <button id="cerrarTocador" class="btn-esquina">Cerrar</button>
       </div>
     </div>
-
-    <footer
-      id="barraInferior"
-      class="barra-inferior-juego visible-ui"
-      aria-hidden="false"
-    >
 
     <script>
       let textoCompleto = `Usted ha sido asignado a investigar la muerte de un historiador acusado de delirios.<br><br>
@@ -751,11 +1155,13 @@ Todo lo que queda... está en esta oficina.`;
         zonas.forEach((zona) => {
           zona.addEventListener("mouseenter", () => {
             mensajeJuego.textContent =
-              zona.dataset.mensaje || "Explora la oficina para encontrar pistas.";
+              zona.dataset.mensaje ||
+              "Explora la oficina para encontrar pistas.";
           });
 
           zona.addEventListener("mouseleave", () => {
-            mensajeJuego.textContent = "Explora la oficina para encontrar pistas.";
+            mensajeJuego.textContent =
+              "Explora la oficina para encontrar pistas.";
           });
         });
       }
