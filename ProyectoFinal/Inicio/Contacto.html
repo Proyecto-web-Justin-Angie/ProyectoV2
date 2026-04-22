@@ -203,72 +203,111 @@
         document.getElementById("valorUrgencia").textContent = this.value;
       });
 
-      // Función principal de validación
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
+     form.addEventListener("submit", function (e) {
+  // Limpiar errores previos
+  document.querySelectorAll(".error").forEach((el) => el.classList.remove("error"));
 
-        // Limpiar errores previos
-        document.querySelectorAll(".error").forEach((el) => el.classList.remove("error"));
+  const lanzarError = (idCampo, mensaje) => {
+    const campo = document.getElementById(idCampo);
+    campo.classList.add("error");
+    campo.focus();
+    alert("ERROR EN CAMPO: " + mensaje);
+    return false;
+  };
 
-        const lanzarError = (idCampo, mensaje) => {
-          const campo = document.getElementById(idCampo);
-          campo.classList.add("error");
-          campo.focus();
-          alert("ERROR EN CAMPO: " + mensaje);
-          return false;
-        };
+  // 1. Validar Nombre
+  let nombre = document.getElementById("nombre");
+  if (nombre.value.trim().length < 3) {
+    lanzarError("nombre", "El nombre debe tener al menos 3 caracteres.");
+    e.preventDefault();
+    return;
+  }
 
-        // 1. Validar Nombre
-        let nombre = document.getElementById("nombre");
-        if (nombre.value.trim().length < 3) return lanzarError("nombre", "El nombre debe tener al menos 3 caracteres.");
+  // 2. Validar Email
+  let email = document.getElementById("email");
+  let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email.value)) {
+    lanzarError("email", "Por favor, ingrese un correo electrónico válido.");
+    e.preventDefault();
+    return;
+  }
 
-        // 2. Validar Email (Expresión regular robusta)
-        let email = document.getElementById("email");
-        let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email.value)) return lanzarError("email", "Por favor, ingrese un correo electrónico válido.");
+  // 3. Validar Teléfono (8 dígitos)
+  let tel = document.getElementById("telefono");
+  if (!/^[0-9]{8}$/.test(tel.value.replace(/\s/g, ""))) {
+    lanzarError("telefono", "El teléfono debe contener exactamente 8 números.");
+    e.preventDefault();
+    return;
+  }
 
-        // 3. Validar Teléfono (8 dígitos)
-        let tel = document.getElementById("telefono");
-        if (!/^[0-9]{8}$/.test(tel.value.replace(/\s/g, ""))) return lanzarError("telefono", "El teléfono debe contener exactamente 8 números.");
+  // 4. Validar Edad
+  let edad = document.getElementById("edad");
+  if (edad.value === "" || edad.value < 1 || edad.value > 120) {
+    lanzarError("edad", "Ingrese una edad válida entre 1 y 120 años.");
+    e.preventDefault();
+    return;
+  }
 
-        // 4. Validar Edad (Número positivo)
-        let edad = document.getElementById("edad");
-        if (edad.value === "" || edad.value < 1 || edad.value > 120) return lanzarError("edad", "Ingrese una edad válida entre 1 y 120 años.");
+  // 5. Validar País
+  let pais = document.getElementById("pais");
+  if (pais.value === "") {
+    lanzarError("pais", "Debe seleccionar un país.");
+    e.preventDefault();
+    return;
+  }
+  if (pais.value === "otro" && document.getElementById("otroPais").value.trim() === "") {
+    lanzarError("otroPais", "Por favor especifique su país.");
+    e.preventDefault();
+    return;
+  }
 
-        // 5. Validar País
-        let pais = document.getElementById("pais");
-        if (pais.value === "") return lanzarError("pais", "Debe seleccionar un país.");
-        if (pais.value === "otro" && document.getElementById("otroPais").value.trim() === "") return lanzarError("otroPais", "Por favor especifique su país.");
+  // 6. Validar Motivo
+  let motivo = document.getElementById("motivo");
+  if (motivo.value === "") {
+    lanzarError("motivo", "Seleccione un motivo de contacto.");
+    e.preventDefault();
+    return;
+  }
+  if (motivo.value === "otro" && document.getElementById("otroMotivo").value.trim() === "") {
+    lanzarError("otroMotivo", "Especifique el motivo.");
+    e.preventDefault();
+    return;
+  }
 
-        // 6. Validar Motivo
-        let motivo = document.getElementById("motivo");
-        if (motivo.value === "") return lanzarError("motivo", "Seleccione un motivo de contacto.");
-        if (motivo.value === "otro" && document.getElementById("otroMotivo").value.trim() === "") return lanzarError("otroMotivo", "Especifique el motivo.");
+  // 7. Validar Mensaje
+  let msg = document.getElementById("mensaje");
+  if (msg.value.trim().length < 10) {
+    lanzarError("mensaje", "El mensaje es muy corto (mínimo 10 caracteres).");
+    e.preventDefault();
+    return;
+  }
 
-        // 7. Validar Mensaje
-        let msg = document.getElementById("mensaje");
-        if (msg.value.trim().length < 10) return lanzarError("mensaje", "El mensaje es muy corto (mínimo 10 caracteres).");
+  // 8. Validar Radio (Respuesta)
+  if (!document.querySelector('input[name="resp"]:checked')) {
+    alert("Por favor, seleccione si desea recibir una respuesta.");
+    e.preventDefault();
+    return;
+  }
 
-        // 8. Validar Radio (Respuesta)
-        if (!document.querySelector('input[name="resp"]:checked')) {
-            alert("Por favor, seleccione si desea recibir una respuesta.");
-            return false;
-        }
+  // 9. Validar Fecha
+  let fecha = document.getElementById("fecha");
+  if (fecha.value === "") {
+    lanzarError("fecha", "Seleccione la fecha del reporte.");
+    e.preventDefault();
+    return;
+  }
 
-        // 9. Validar Fecha
-        let fecha = document.getElementById("fecha");
-        if (fecha.value === "") return lanzarError("fecha", "Seleccione la fecha del reporte.");
+  // 10. Validar Términos
+  if (!document.getElementById("terminos").checked) {
+    alert("Debe aceptar los términos para continuar.");
+    e.preventDefault();
+    return;
+  }
 
-        // 10. Validar Términos
-        if (!document.getElementById("terminos").checked) {
-            alert("Debe aceptar los términos para continuar.");
-            return false;
-        }
-
-        // Si todo está bien
-        alert("¡Validación exitosa! El formulario se enviará ahora.");
-        form.submit();
-      });
+  // Si todo está bien, permitir que Netlify envíe el formulario
+  alert("¡Validación exitosa! El formulario se enviará ahora.");
+  // NO ponemos e.preventDefault() aquí - Netlify enviará automáticamente
+});
     </script>
   </body>
 </html>
