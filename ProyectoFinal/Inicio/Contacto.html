@@ -61,8 +61,10 @@
                 </section>
 
                 <section class="bloque-wiki">
-                  <form id="formulario" name="contacto" method="POST" netlify action="/index.html" novalidate>
-                    
+                  <form id="formulario" name="contacto" method="POST" netlify netlify-honeypot="bot-field" action="/ProyectoFinal/Inicio/index.html" novalidate>
+
+                    <!-- Honeypot field for spam prevention -->
+                      <input type="hidden" name="bot-field" />
                     <h5>Datos personales</h5>
                     <div class="row g-3">
                       <div class="col-md-6">
