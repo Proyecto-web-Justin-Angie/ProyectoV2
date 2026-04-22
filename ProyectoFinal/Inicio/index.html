@@ -5,121 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Oficina del detective</title>
     <link rel="stylesheet" href="estilos.css" />
-
-    <style>
-      .overlay-tocador {
-        position: fixed;
-        inset: 0;
-
-        background: var(--overlay-oscuro);
-        backdrop-filter: blur(6px);
-
-        display: none;
-        justify-content: center;
-        align-items: center;
-
-        z-index: 9999;
-      }
-
-      .overlay-tocador.activo {
-        display: flex;
-      }
-
-      /* CONTENEDOR PRINCIPAL */
-      .contenedor-tocadiscos {
-        width: clamp(340px, 45vw, 560px);
-        max-height: 82vh;
-
-        padding: 26px;
-
-        background:
-          linear-gradient(
-            var(--brillo-transparente),
-            var(--pergamino-claro-transparente)
-          ),
-          url("Multimedia/FondoInferior.jpg") center/cover;
-
-        border: 2px solid var(--borde);
-        border-radius: 16px;
-
-        box-shadow:
-          inset 0 0 14px var(--sombra-panel-interna),
-          0 14px 32px rgba(0, 0, 0, 0.4);
-
-        overflow-y: auto;
-        text-align: center;
-
-        color: var(--tinta);
-      }
-
-      /* TITULO */
-      .titulo-tocadiscos {
-        margin-bottom: 18px;
-        font-size: 22px;
-        font-weight: bold;
-        letter-spacing: 1px;
-
-        color: var(--texto-acento);
-
-        border-bottom: 2px solid var(--panel-borde-general);
-        padding-bottom: 8px;
-      }
-
-      /* LISTA */
-      .lista-audios {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-bottom: 18px;
-      }
-
-      /* ITEMS */
-      .audio-item {
-        padding: 10px 12px;
-
-        background: var(--panel-papel-suave);
-        border: 1px solid var(--panel-borde-general);
-
-        border-radius: 10px;
-
-        cursor: pointer;
-        transition: 0.25s ease;
-
-        color: var(--texto-secundario);
-        text-decoration: none;
-        display: block;
-      }
-
-      .audio-item:hover {
-        background: var(--panel-papel);
-        border-color: var(--pergamino-claro);
-        transform: scale(1.02);
-      }
-
-      /* REPRODUCTOR */
-      .reproductor {
-        margin-top: 10px;
-        margin-bottom: 16px;
-      }
-
-      audio {
-        width: 100%;
-      }
-
-      /* SCROLL */
-      .contenedor-tocadiscos::-webkit-scrollbar {
-        width: 6px;
-      }
-
-      .contenedor-tocadiscos::-webkit-scrollbar-thumb {
-        background: var(--pergamino);
-        border-radius: 10px;
-      }
-    </style>
   </head>
 
   <body>
     <div class="fondo-global-juego"></div>
+
     <div id="overlay" aria-hidden="false">
       <div id="pergamino" class="modal">
         <div id="contenido-pergamino">
@@ -134,14 +24,11 @@
 
     <main class="escena-principal">
       <section class="contenedor-juego">
-        <header class="barra-superior visible-ui">
+        <header id="barraSuperior" class="barra-superior visible-ui">
           <button
             type="button"
             class="btn-esquina"
-            onclick="
-              sessionStorage.setItem('desdeEscena', 'true');
-              window.location.href = 'index.html';
-            "
+            onclick="abrirTutorialDesdeJuego()"
           >
             Volver atrás
           </button>
@@ -196,11 +83,13 @@
             aria-label="Oficina interactiva del detective"
           >
             <div class="oficina-imagen"></div>
+
             <!-- Librero -->
             <a
               class="zona librero"
               href="Estanteria.html"
               aria-label="Ir al librero"
+              data-mensaje="Librero: revisa libros, archivos y referencias ocultas."
             ></a>
 
             <!-- Tocador -->
@@ -208,16 +97,23 @@
               class="zona tocador"
               data-overlay="tocador"
               aria-label="Abrir tocador"
+              data-mensaje="Tocador: inspecciona el tocadiscos y reproduce pistas."
             ></a>
 
             <!-- Mapa -->
-            <a class="zona mapa" href="mapa.html" aria-label="Ir al mapa"></a>
+            <a
+              class="zona mapa"
+              href="mapa.html"
+              aria-label="Ir al mapa"
+              data-mensaje="Mapa: examina regiones, rutas y ubicaciones importantes."
+            ></a>
 
             <!-- Pizarra -->
             <a
               class="zona pizarra"
               href="Tablero.html"
               aria-label="Ir a la pizarra"
+              data-mensaje="Pizarra: conecta pistas, ideas y teorías del caso."
             ></a>
           </section>
         </section>
@@ -243,14 +139,15 @@
     >
       <div class="contenedor-tutorial">
         <div id="paginas" class="paginas">
+          <!-- PÁGINA 1 -->
           <section class="pagina">
             <section class="panel-central">
               <div class="lateral izquierdo"></div>
 
               <div class="contenido">
                 <h1 id="titulo-tutorial">¿Qué es un Point & Click?</h1>
+
                 <div class="contenedor-video">
-                  <!-- VIDEO -->
                   <div class="video-box">
                     <iframe
                       src="https://www.youtube.com/embed/GwQn8p8dSKA"
@@ -264,70 +161,58 @@
                         picture-in-picture;
                       "
                       allowfullscreen
-                    >
-                    </iframe>
+                    ></iframe>
                   </div>
 
                   <div class="texto-box">
                     <h2>Explicación</h2>
                     <p>
                       Un Point & Click es un tipo de juego de aventura donde el
-                      jugador explora escenarios interactuando con objetos
-                      mediante clics. La progresión depende de observar,
-                      investigar y resolver interacciones dentro del entorno.
+                      jugador explora escenarios e interactúa con objetos mediante
+                      clics. La progresión depende de observar el entorno,
+                      descubrir pistas y resolver situaciones usando la lógica.
                     </p>
                   </div>
                 </div>
-                <div class="tabla-info">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Aspecto</th>
-                        <th>Descripción</th>
-                      </tr>
-                    </thead>
 
-                    <tbody>
-                      <tr>
-                        <td>Exploración</td>
-                        <td>
-                          El jugador recorre escenarios estáticos o
-                          semi-interactivos.
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>Interacción</td>
-                        <td>
-                          Se interactúa con objetos haciendo clic en puntos
-                          específicos del entorno.
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>Puzzles</td>
-                        <td>
-                          La progresión se basa en resolver acertijos lógicos o
-                          narrativos.
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>Observación</td>
-                        <td>
-                          Es clave prestar atención a detalles visuales y pistas
-                          ocultas.
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>Progresión</td>
-                        <td>
-                          Avanzas desbloqueando áreas o información mediante
-                          objetos clave.
-                        </td>
-                      </tr>
-                    </tbody>
+                <div class="panel-columna panel-columna-completa">
+                  <h3 class="panel-titulo">Características principales</h3>
+                  <table class="panel-tabla">
+                    <tr>
+                      <td class="panel-label">Exploración</td>
+                      <td>
+                        El jugador recorre escenarios estáticos o
+                        semi-interactivos buscando detalles importantes.
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="panel-label">Interacción</td>
+                      <td>
+                        Se hace clic sobre objetos, puertas, documentos o zonas
+                        específicas del entorno.
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="panel-label">Puzzles</td>
+                      <td>
+                        La progresión depende de resolver acertijos lógicos,
+                        visuales o narrativos.
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="panel-label">Observación</td>
+                      <td>
+                        Es necesario prestar atención a pistas visuales, textos y
+                        cambios en el escenario.
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="panel-label">Progresión</td>
+                      <td>
+                        Avanzas desbloqueando nuevas zonas, información o eventos
+                        al investigar correctamente.
+                      </td>
+                    </tr>
                   </table>
                 </div>
               </div>
@@ -336,6 +221,7 @@
             </section>
           </section>
 
+          <!-- PÁGINA 2 -->
           <section class="pagina">
             <section class="panel-central">
               <div class="lateral izquierdo"></div>
@@ -413,9 +299,7 @@
                       </div>
 
                       <div class="panel-columna panel-columna-completa">
-                        <h3 class="panel-titulo">
-                          Notas personales del detective
-                        </h3>
+                        <h3 class="panel-titulo">Notas personales del detective</h3>
                         <table class="panel-tabla">
                           <tr>
                             <td class="panel-label">Impresión general</td>
@@ -428,7 +312,7 @@
                             <td class="panel-label">Sensación</td>
                             <td>
                               El investigador parecía trabajar bajo presión
-                              externa o amenaza indirecta.
+                              externa o bajo una amenaza indirecta.
                             </td>
                           </tr>
                           <tr>
@@ -453,6 +337,7 @@
             </section>
           </section>
 
+          <!-- PÁGINA 3 -->
           <section class="pagina">
             <section class="panel-central">
               <div class="lateral izquierdo"></div>
@@ -478,14 +363,14 @@
 
                     <div class="perfil-cita">
                       <blockquote>
-                        "Si encuentras este archivo, significa que alguien
-                        intentó ocultar la verdad."
+                        "Si encuentras este archivo, significa que alguien intentó
+                        ocultar la verdad."
                       </blockquote>
                     </div>
                   </div>
                 </section>
 
-                <div class="panel-grid">
+                <div class="panel-grid panel-grid-investigador">
                   <div class="panel-columna">
                     <h3 class="panel-titulo">Datos de la investigación</h3>
                     <table class="panel-tabla">
@@ -575,7 +460,9 @@
                       </tr>
                       <tr>
                         <td class="panel-label">Detalle relevante</td>
-                        <td>Referencias repetidas a información "borrada".</td>
+                        <td>
+                          Referencias repetidas a información “borrada”.
+                        </td>
                       </tr>
                       <tr>
                         <td class="panel-label">Prioridad</td>
@@ -590,6 +477,7 @@
             </section>
           </section>
 
+          <!-- PÁGINA 4 -->
           <section class="pagina">
             <section class="panel-central">
               <div class="lateral izquierdo"></div>
@@ -597,33 +485,81 @@
               <div class="contenido">
                 <h1>Juegos similares</h1>
 
-                <div class="grid-recomendaciones">
-                  <div class="reco">
+                <div class="lista-juegos-similares">
+                  <article class="juego-similar">
                     <img
                       src="img/juego1.png"
-                      alt="Monkey Island"
+                      alt="The Secret of Monkey Island"
                       loading="lazy"
+                      class="juego-similar-img"
                     />
-                    <p>Monkey Island</p>
-                  </div>
+                    <div class="juego-similar-info">
+                      <h3>
+                        <a
+                          href="https://es.wikipedia.org/wiki/The_Secret_of_Monkey_Island"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          The Secret of Monkey Island
+                        </a>
+                      </h3>
+                      <p>
+                        Un clásico del género point & click con humor,
+                        exploración, objetos y acertijos. Es una de las mayores
+                        referencias históricas para juegos de aventura gráfica.
+                      </p>
+                    </div>
+                  </article>
 
-                  <div class="reco">
+                  <article class="juego-similar">
                     <img
                       src="img/juego2.png"
                       alt="Grim Fandango"
                       loading="lazy"
+                      class="juego-similar-img"
                     />
-                    <p>Grim Fandango</p>
-                  </div>
+                    <div class="juego-similar-info">
+                      <h3>
+                        <a
+                          href="https://es.wikipedia.org/wiki/Grim_Fandango"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Grim Fandango
+                        </a>
+                      </h3>
+                      <p>
+                        Mezcla narrativa, exploración y rompecabezas en un mundo
+                        inspirado en el cine noir y la cultura del Día de Muertos.
+                        Es famoso por su estilo visual y su historia.
+                      </p>
+                    </div>
+                  </article>
 
-                  <div class="reco">
+                  <article class="juego-similar">
                     <img
                       src="img/juego3.png"
                       alt="Machinarium"
                       loading="lazy"
+                      class="juego-similar-img"
                     />
-                    <p>Machinarium</p>
-                  </div>
+                    <div class="juego-similar-info">
+                      <h3>
+                        <a
+                          href="https://es.wikipedia.org/wiki/Machinarium"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Machinarium
+                        </a>
+                      </h3>
+                      <p>
+                        Un juego de aventura y puzzles centrado en la observación
+                        del entorno, la resolución lógica y una narrativa visual
+                        muy fuerte sin depender demasiado del diálogo.
+                      </p>
+                    </div>
+                  </article>
                 </div>
               </div>
 
@@ -632,9 +568,6 @@
           </section>
         </div>
 
-        <!-- ===================================================================================== -->
-        <!-- CONTROLES DEL TUTORIAL -->
-        <!-- ===================================================================================== -->
         <div class="barra-inferior">
           <div class="controles-tutorial">
             <button type="button" id="btnAnterior">◀</button>
@@ -643,7 +576,7 @@
           </div>
 
           <div class="botones-panel">
-            <button type="button" id="btnCerrarAyuda">Volver al Inicio</button>
+            <button type="button" id="btnCerrarAyuda">Volver a la oficina</button>
           </div>
         </div>
       </div>
@@ -653,10 +586,8 @@
       <div class="contenedor-tocadiscos">
         <h2 class="titulo-tocador">Tocadiscos</h2>
 
-        <!-- LISTA DE AUDIOS -->
         <div id="listaAudios" class="lista-audios"></div>
 
-        <!-- REPRODUCTOR -->
         <div class="reproductor">
           <p id="tituloAudio">Selecciona una pista</p>
           <audio id="audioPlayer" controls></audio>
@@ -665,6 +596,12 @@
         <button id="cerrarTocador" class="btn-esquina">Cerrar</button>
       </div>
     </div>
+
+    <footer
+      id="barraInferior"
+      class="barra-inferior-juego visible-ui"
+      aria-hidden="false"
+    >
 
     <script>
       let textoCompleto = `Usted ha sido asignado a investigar la muerte de un historiador acusado de delirios.<br><br>
@@ -694,6 +631,7 @@ Todo lo que queda... está en esta oficina.`;
       let barraInferior = document.getElementById("barraInferior");
       let oficinaInteractiva = document.getElementById("oficinaInteractiva");
       let mensajeJuego = document.getElementById("mensajeJuego");
+      let zonas = document.querySelectorAll(".oficina .zona");
 
       let totalPaginas = document.querySelectorAll(".pagina").length;
 
@@ -807,6 +745,21 @@ Todo lo que queda... está en esta oficina.`;
         }
       }
 
+      function activarMensajesZonas() {
+        if (!zonas || !mensajeJuego) return;
+
+        zonas.forEach((zona) => {
+          zona.addEventListener("mouseenter", () => {
+            mensajeJuego.textContent =
+              zona.dataset.mensaje || "Explora la oficina para encontrar pistas.";
+          });
+
+          zona.addEventListener("mouseleave", () => {
+            mensajeJuego.textContent = "Explora la oficina para encontrar pistas.";
+          });
+        });
+      }
+
       function entrar() {
         if (!overlay) return;
         overlay.style.opacity = "0";
@@ -817,6 +770,7 @@ Todo lo que queda... está en esta oficina.`;
 
           activarOficina();
           mostrarUIJuego();
+          activarMensajesZonas();
 
           if (mensajeJuego) {
             mensajeJuego.innerText =
@@ -835,14 +789,27 @@ Todo lo que queda... está en esta oficina.`;
         actualizarIndicador();
       }
 
+      function abrirTutorialDesdeJuego() {
+        if (!ayuda) return;
+
+        ayuda.classList.add("activo");
+        document.body.classList.add("sin-scroll");
+        actualizarIndicador();
+      }
+
       function cerrarAyuda() {
         if (!overlay || !ayuda) return;
 
         ayuda.classList.remove("activo");
         document.body.classList.remove("sin-scroll");
 
-        overlay.style.display = "flex";
-        overlay.style.opacity = "1";
+        if (
+          overlay.style.display !== "none" &&
+          overlay.getAttribute("aria-hidden") !== "true"
+        ) {
+          overlay.style.display = "flex";
+          overlay.style.opacity = "1";
+        }
       }
 
       function cambiarPagina(direccion) {
@@ -864,7 +831,6 @@ Todo lo que queda... está en esta oficina.`;
         }
       }
 
-      /* EVENTOS */
       btnEntrar?.addEventListener("click", entrar);
       btnTutorial?.addEventListener("click", abrirTutorial);
       btnAnterior?.addEventListener("click", () => cambiarPagina(-1));
@@ -883,23 +849,19 @@ Todo lo que queda... está en esta oficina.`;
         }
       });
 
-      /* TOCADISCOS */
       const audios = [
         {
           titulo: "Mizlecca - Hagali",
           archivo: "Multimedia/Mizlecca.mp4",
         },
-
         {
           titulo: "Yuvi's Longing",
           archivo: "Multimedia/Yuvi's Longing.mp4",
         },
-
         {
           titulo: "Eldharia ～Inori Saku Mori～",
           archivo: "Multimedia/Inori Saku Mori.mp4",
         },
-
         {
           titulo: "14th melody (D.Gray-man)",
           archivo: "Multimedia/14th melody.mpeg",
@@ -913,82 +875,11 @@ Todo lo que queda... está en esta oficina.`;
       const btnCerrarTocador = document.getElementById("cerrarTocador");
       const zonaTocador = document.querySelector(".zona.tocador");
 
-      /* Abrir */
-      if (zonaTocador && overlayTocador) {
-        zonaTocador.addEventListener("click", () => {
-          overlayTocador.classList.add("activo");
-          document.body.classList.add("sin-scroll");
-        });
-      }
-
-      /* Cerrar */
-      if (btnCerrarTocador && overlayTocador) {
-        btnCerrarTocador.addEventListener("click", () => {
-          overlayTocador.classList.remove("activo");
-          document.body.classList.remove("sin-scroll");
-          if (audioPlayer) {
-            audioPlayer.pause();
-          }
-        });
-      }
-
-      /* Lista dinámica */
       function cargarAudios() {
         if (!listaAudios) return;
         listaAudios.innerHTML = "";
+
         audios.forEach((audio) => {
-          const item = document.createElement("div");
-          item.classList.add("audio-item");
-          item.textContent = audio.titulo;
-          item.addEventListener("click", () => {
-            if (audioPlayer) {
-              audioPlayer.src = audio.archivo;
-              audioPlayer.play();
-            }
-            if (tituloAudio) {
-              tituloAudio.textContent = audio.titulo;
-            }
-          });
-          listaAudios.appendChild(item);
-        });
-      }
-
-      /* ESC cierra tocador */
-      document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape") {
-          if (overlayTocador && overlayTocador.classList.contains("activo")) {
-            overlayTocador.classList.remove("activo");
-
-            document.body.classList.remove("sin-scroll");
-
-            if (audioPlayer) {
-              audioPlayer.pause();
-            }
-          }
-        }
-      });
-
-      /* Inicializar tocador */
-      cargarAudios();
-
-      // Abrir overlay
-      document.querySelector(".zona.tocador").addEventListener("click", () => {
-        overlayTocador.classList.add("activo");
-        document.body.classList.add("sin-scroll");
-      });
-
-      // Cerrar overlay
-      document.getElementById("cerrarTocador").addEventListener("click", () => {
-        overlayTocador.classList.remove("activo");
-        document.body.classList.remove("sin-scroll");
-        audioPlayer.pause();
-      });
-
-      // Crear lista de audios
-      function cargarAudios() {
-        listaAudios.innerHTML = "";
-
-        audios.forEach((audio, index) => {
           const item = document.createElement("div");
           item.classList.add("audio-item");
           item.textContent = audio.titulo;
@@ -1003,10 +894,34 @@ Todo lo que queda... está en esta oficina.`;
         });
       }
 
-      // Inicializar
+      if (zonaTocador && overlayTocador) {
+        zonaTocador.addEventListener("click", (e) => {
+          e.preventDefault();
+          overlayTocador.classList.add("activo");
+          document.body.classList.add("sin-scroll");
+        });
+      }
+
+      if (btnCerrarTocador && overlayTocador) {
+        btnCerrarTocador.addEventListener("click", () => {
+          overlayTocador.classList.remove("activo");
+          document.body.classList.remove("sin-scroll");
+          if (audioPlayer) audioPlayer.pause();
+        });
+      }
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          if (overlayTocador && overlayTocador.classList.contains("activo")) {
+            overlayTocador.classList.remove("activo");
+            document.body.classList.remove("sin-scroll");
+            if (audioPlayer) audioPlayer.pause();
+          }
+        }
+      });
+
       cargarAudios();
 
-      /* CONTROL PRINCIPAL (CLAVE) */
       window.addEventListener("load", function () {
         let desdeEscena = sessionStorage.getItem("desdeEscena");
 
@@ -1018,6 +933,7 @@ Todo lo que queda... está en esta oficina.`;
 
           activarOficina();
           mostrarUIJuego();
+          activarMensajesZonas();
 
           if (mensajeJuego) {
             mensajeJuego.innerText =
