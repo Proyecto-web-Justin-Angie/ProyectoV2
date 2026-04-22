@@ -1,255 +1,284 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tablero de investigación</title>
 
-    <link rel="stylesheet" href="estilos.css" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tablero de investigación</title>
 
-    <style>
-      /* =========================
-         OVERLAY (AISLADO)
-         TODO VA BAJO .overlay-ayuda
-         ========================= */
+  <link rel="stylesheet" href="estilos.css" />
 
-      .overlay-ayuda .contenido-evidencia {
-        display: flex;
-        gap: 20px;
-        max-height: 85vh;
-      }
+  <style>
+    /* =========================
+   CONTENEDOR TIPO "PAPEL"
+   ========================= */
+    .overlay-ayuda .contenedor-tutorial {
+      width: clamp(360px, 70vw, 1100px);
+      max-height: 85vh;
 
-      .overlay-ayuda .lado-texto {
-        display: flex;
-        flex-direction: column;
-        max-height: 80vh;
-        flex: 1;
-        overflow: hidden;
-      }
+      padding: 24px;
 
-      .overlay-ayuda #textoDetective {
-        white-space: normal;
-        line-height: 1.7;
-        color: #f0ead6;
-        overflow-y: auto;
-        padding-right: 15px;
-        scrollbar-width: thin;
-        scrollbar-color: var(--pergamino) transparent;
-      }
+      background: linear-gradient(rgba(240, 225, 190, 0.95),
+          rgba(220, 200, 155, 0.92));
 
-      .overlay-ayuda #textoDetective::-webkit-scrollbar {
-        width: 6px;
-      }
+      border: 2px solid var(--pergamino, #e8d9b8);
+      border-radius: 14px;
 
-      .overlay-ayuda #textoDetective::-webkit-scrollbar-thumb {
-        background-color: var(--pergamino, #e8d9b8);
-        border-radius: 10px;
-      }
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
 
-      .overlay-ayuda .lado-texto h2 {
-        color: var(--pergamino, #e8d9b8);
-        margin-bottom: 15px;
-      }
+      overflow: hidden;
+      color: #2b2416;
+    }
 
-      .overlay-ayuda .botones-overlay {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        margin-top: 20px;
-        align-items: center;
-      }
+    /* =========================
+   PANEL INTERNO LIMPIO
+   ========================= */
+    .overlay-ayuda .panel-central {
+      background: transparent !important;
+      box-shadow: none !important;
+    }
 
-      .overlay-ayuda .btn-esquina {
-        position: relative;
-        padding: 12px 25px;
-        min-width: 140px;
-        background: linear-gradient(
-          to bottom,
-          var(--boton-claro),
-          var(--boton-medio)
-        );
-        border: 3px solid var(--boton-borde);
-        border-radius: 10px;
-        color: var(--texto-acento);
-        font-weight: bold;
-        font-family: Georgia, "Times New Roman", serif;
-        box-shadow: 3px 3px 0 var(--boton-sombra);
-        cursor: pointer;
-        transition: 0.3s;
-      }
+    /* =========================
+   TEXTO DEL DETECTIVE
+   ========================= */
+    .overlay-ayuda #textoDetective {
+      white-space: normal;
+      line-height: 1.7;
+      color: #2b2416;
 
-      .overlay-ayuda .btn-esquina:hover {
-        border: 3px solid var(--boton-borde-hover);
-        box-shadow:
-          0 0 8px var(--brillo-calido-fuerte),
-          0 0 18px var(--brillo-calido-suave),
-          3px 3px 0 var(--boton-sombra);
-      }
+      overflow-y: auto;
+      max-height: 70vh;
 
-      .overlay-ayuda .tablero-escena {
-        position: relative;
-      }
+      padding-right: 10px;
+    }
 
-      .overlay-ayuda .sin-scroll {
-        overflow: hidden;
-      }
+    /* =========================
+   TÍTULOS
+   ========================= */
+    .overlay-ayuda .lado-texto h2 {
+      color: #3b2f1d;
+      margin-bottom: 15px;
+    }
 
-      .overlay-ayuda #imagenOverlay {
-        width: 100%;
-        max-width: 720px;
-        max-height: 650px;
-        object-fit: cover;
-        border-radius: 10px;
-        border: 2px solid var(--pergamino);
-      }
+    /* =========================
+   BOTONES
+   ========================= */
+    .overlay-ayuda .botones-overlay {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 20px;
+      align-items: center;
+    }
 
-      .overlay-ayuda #textoAsistente {
-        color: var(--pergamino);
-        font-style: italic;
-        line-height: 1.6;
-      }
-    </style>
-  </head>
+    .overlay-ayuda .btn-esquina {
+      position: relative;
+      padding: 12px 25px;
+      min-width: 140px;
 
-  <body>
-    <div class="fondo-global-juego"></div>
+      background: linear-gradient(to bottom, #e6d3a3, #cbb07a);
+      border: 3px solid #5a4528;
+      border-radius: 10px;
 
-    <main class="escena-principal">
-      <section class="contenedor-juego">
+      color: #2b2416;
+      font-weight: bold;
+      font-family: Georgia, "Times New Roman", serif;
 
-        <header class="barra-superior visible-ui">
-          <button class="btn btn-outline-light btn-sm" onclick="window.location.href='index.html'">
-            Volver atrás
+      box-shadow: 3px 3px 0 #3a2c1a;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .overlay-ayuda .btn-esquina:hover {
+      box-shadow:
+        0 0 8px rgba(255, 220, 150, 0.6),
+        0 0 18px rgba(255, 200, 120, 0.4),
+        3px 3px 0 #3a2c1a;
+    }
+
+    /* =========================
+   IMAGEN
+   ========================= */
+    .overlay-ayuda #imagenOverlay {
+      width: 100%;
+      max-height: 500px;
+      object-fit: cover;
+
+      border-radius: 10px;
+      border: 2px solid #5a4528;
+    }
+
+    /* =========================
+   CONTENIDO FLEX
+   ========================= */
+    .overlay-ayuda .contenido-evidencia {
+      display: flex;
+      gap: 20px;
+      max-height: 85vh;
+    }
+
+    /* =========================
+   LADO TEXTO
+   ========================= */
+    .overlay-ayuda .lado-texto {
+      display: flex;
+      flex-direction: column;
+      max-height: 80vh;
+      flex: 1;
+      overflow: hidden;
+    }
+  </style>
+  </style>
+</head>
+
+<body>
+  <div class="fondo-global-juego"></div>
+
+  <main class="escena-principal">
+    <section class="contenedor-juego">
+      <header class="barra-superior visible-ui">
+        <button class="btn btn-outline-light btn-sm" onclick="window.location.href = 'index.html'">
+          Volver atrás
+        </button>
+
+        <div class="grupo-botones-derecha">
+          <button class="btn-esquina" onclick="window.location.href = 'SobreP&C.html'">
+            Sobre los point & click
           </button>
+          <button class="btn-esquina" onclick="window.location.href = 'Galeria.html'">
+            Galería
+          </button>
+          <button class="btn-esquina" onclick="window.location.href = 'Informe.html'">
+            Informe
+          </button>
+          <button class="btn-esquina" onclick="window.location.href = 'Contactenos.html'">
+            Contáctenos
+          </button>
+        </div>
+      </header>
 
-          <div class="grupo-botones-derecha">
-            <button class="btn-esquina" onclick="window.location.href='SobreP&C.html'">Sobre los point & click</button>
-            <button class="btn-esquina" onclick="window.location.href='Galeria.html'">Galería</button>
-            <button class="btn-esquina" onclick="window.location.href='Informe.html'">Informe</button>
-            <button class="btn-esquina" onclick="window.location.href='Contactenos.html'">Contáctenos</button>
-          </div>
-        </header>
+      <section class="visor-central">
+        <section class="tablero-escena">
+          <div class="mapa-imagen"></div>
 
-        <section class="visor-central">
-          <section class="tablero-escena">
-
-            <div class="mapa-imagen"></div>
-
-            <div class="zona-mapa" style="top:15%;left:11%;width:10%;height:17%" data-id="dragon"></div>
-            <div class="zona-mapa" style="top:25%;left:24%;width:9%;height:16%" data-id="gusano_arena"></div>
-            <div class="zona-mapa" style="top:47%;left:30%;width:10%;height:17%" data-id="cervudo"></div>
-            <div class="zona-mapa" style="top:32%;left:58%;width:10%;height:18%" data-id="humanoide_hongos"></div>
-            <div class="zona-mapa" style="top:52%;left:83%;width:11%;height:26%" data-id="ciervo_runico"></div>
-
-          </section>
+          <div class="zona-mapa" style="top: 15%; left: 11%; width: 10%; height: 17%" data-id="dragon"></div>
+          <div class="zona-mapa" style="top: 25%; left: 24%; width: 9%; height: 16%" data-id="gusano_arena"></div>
+          <div class="zona-mapa" style="top: 47%; left: 30%; width: 10%; height: 17%" data-id="cervudo"></div>
+          <div class="zona-mapa" style="top: 32%; left: 58%; width: 10%; height: 18%" data-id="humanoide_hongos"></div>
+          <div class="zona-mapa" style="top: 52%; left: 83%; width: 11%; height: 26%" data-id="ciervo_runico"></div>
         </section>
-
-        <footer class="barra-inferior-juego visible-ui">
-          <div class="panel-mensaje-juego">
-            <p id="mensajeJuego">Inspecciona los documentos del tablero.</p>
-          </div>
-        </footer>
-
       </section>
-    </main>
 
-    <!-- =========================
+      <footer class="barra-inferior-juego visible-ui">
+        <div class="panel-mensaje-juego">
+          <p id="mensajeJuego">Inspecciona los documentos del tablero.</p>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <!-- =========================
          OVERLAY AISLADO
          ========================= -->
-    <div id="ayuda" class="overlay-ayuda">
-      <div class="contenedor-tutorial">
+  <div id="ayuda" class="overlay-ayuda">
+    <div class="contenedor-tutorial">
+      <section class="pagina pagina-evidencia">
+        <section class="panel-central sin-papiro">
+          <div class="contenido-evidencia">
+            <div class="lado-imagen">
+              <img id="imagenOverlay" />
 
-        <section class="pagina pagina-evidencia">
-          <section class="panel-central sin-papiro">
-
-            <div class="contenido-evidencia">
-
-              <div class="lado-imagen">
-                <img id="imagenOverlay" />
-
-                <div class="perfil-cita">
-                  <blockquote id="textoAsistente"></blockquote>
-                </div>
-
-                <div class="botones-overlay">
-                  <button id="btnCerrar" class="btn-esquina">Cerrar informe</button>
-                  <button class="btn-esquina" onclick="window.location.href='index.html'">
-                    Volver a la oficina
-                  </button>
-                </div>
+              <div class="perfil-cita">
+                <blockquote id="textoAsistente"></blockquote>
               </div>
 
-              <div class="lado-texto">
-                <h2 id="tituloDetalle">Notas del detective</h2>
-                <p id="textoDetective">Observación pendiente.</p>
+              <div class="botones-overlay">
+                <button id="btnCerrar" class="btn-esquina">
+                  Cerrar informe
+                </button>
+                <button class="btn-esquina" onclick="window.location.href = 'index.html'">
+                  Volver a la oficina
+                </button>
               </div>
-
             </div>
 
-          </section>
+            <div class="lado-texto">
+              <h2 id="tituloDetalle">Notas del detective</h2>
+              <p id="textoDetective">Observación pendiente.</p>
+            </div>
+          </div>
         </section>
-
-      </div>
+      </section>
     </div>
+  </div>
 
-    <script>
-      const overlay = document.getElementById("ayuda");
-      const imagenOverlay = document.getElementById("imagenOverlay");
-      const textoDetective = document.getElementById("textoDetective");
-      const textoAsistente = document.getElementById("textoAsistente");
-      const tituloDetalle = document.getElementById("tituloDetalle");
+  <script>
+    const overlay = document.getElementById("ayuda");
+    const imagenOverlay = document.getElementById("imagenOverlay");
+    const textoDetective = document.getElementById("textoDetective");
+    const textoAsistente = document.getElementById("textoAsistente");
+    const tituloDetalle = document.getElementById("tituloDetalle");
 
-      const titulos = {
-        dragon: "Entidad Alfa: Dragón de Incineración",
-        gusano_arena: "Entidad Subterránea Colmena: Gusano de Arena",
-        cervudo: "Entidad de Distorsión Forestal: Cervudo",
-        humanoide_hongos: "Entidad Fúngica de Mimetismo Humanoide",
-        ciervo_runico: "Entidad Anómala Rúnica: Ciervo Rúnico"
-      };
+    const titulos = {
+      dragon: "Entidad Alfa: Dragón de Incineración",
+      gusano_arena: "Entidad Subterránea Colmena: Gusano de Arena",
+      cervudo: "Entidad de Distorsión Forestal: Cervudo",
+      humanoide_hongos: "Entidad Fúngica de Mimetismo Humanoide",
+      ciervo_runico: "Entidad Anómala Rúnica: Ciervo Rúnico",
+    };
 
-      const narraciones = {
-        dragon: "Registro de subjugación — Dragón/n/Unidad de alto riesgo térmico...",
-        gusano_arena: "Registro de subjugación — Gusano de arena/n/Colonia subterránea...",
-        cervudo: "Registro de subjugación — Cervudo/n/Distorsión perceptiva...",
-        humanoide_hongos: "Registro de subjugación — Humanoide fúngico/n/Infección cognitiva...",
-        ciervo_runico: "Registro de subjugación — Ciervo rúnico/n/Anomalía dimensional..."
-      };
+    const narraciones = {
+      dragon:
+        "Registro de subjugación — Dragón/n/Unidad de alto riesgo térmico...",
+      gusano_arena:
+        "Registro de subjugación — Gusano de arena/n/Colonia subterránea...",
+      cervudo: "Registro de subjugación — Cervudo/n/Distorsión perceptiva...",
+      humanoide_hongos:
+        "Registro de subjugación — Humanoide fúngico/n/Infección cognitiva...",
+      ciervo_runico:
+        "Registro de subjugación — Ciervo rúnico/n/Anomalía dimensional...",
+    };
 
-      const comentarios = {
-        dragon: ["Eso no es fauna local.", "Está siendo dirigido."],
-        gusano_arena: ["El suelo ya no es seguro.", "Es una red viva."],
-        cervudo: ["El entorno cambia.", "La percepción falla."],
-        humanoide_hongos: ["No es humano.", "Es sustitución."],
-        ciervo_runico: ["No es criatura.", "Es evento."]
-      };
+    const comentarios = {
+      dragon: ["Eso no es fauna local.", "Está siendo dirigido."],
+      gusano_arena: ["El suelo ya no es seguro.", "Es una red viva."],
+      cervudo: ["El entorno cambia.", "La percepción falla."],
+      humanoide_hongos: ["No es humano.", "Es sustitución."],
+      ciervo_runico: ["No es criatura.", "Es evento."],
+    };
 
-      const imagenes = {
-        dragon: "Multimedia/encargo1.jpg",
-        gusano_arena: "Multimedia/encargo2.jpg",
-        cervudo: "Multimedia/encargo3.jpg",
-        humanoide_hongos: "Multimedia/encargo4.jpg",
-        ciervo_runico: "Multimedia/encargo5.jpg"
-      };
+    const imagenes = {
+      dragon: "Multimedia/encargo1.jpg",
+      gusano_arena: "Multimedia/encargo2.jpg",
+      cervudo: "Multimedia/encargo3.jpg",
+      humanoide_hongos: "Multimedia/encargo4.jpg",
+      ciervo_runico: "Multimedia/encargo5.jpg",
+    };
 
-      document.querySelectorAll(".zona-mapa").forEach(zona => {
-        zona.addEventListener("click", () => {
-          const id = zona.dataset.id;
+    document.querySelectorAll(".zona-mapa").forEach((zona) => {
+      zona.addEventListener("click", () => {
+        const id = zona.dataset.id;
 
-          tituloDetalle.textContent = titulos[id];
-          textoDetective.innerHTML = (narraciones[id] || "").replace(/\/n\//g, "<br><br>");
-          textoAsistente.innerHTML = (comentarios[id] || []).map(c => "• " + c).join("<br>");
-          imagenOverlay.src = imagenes[id];
+        tituloDetalle.textContent = titulos[id];
+        textoDetective.innerHTML = (narraciones[id] || "").replace(
+          /\/n\//g,
+          "<br><br>",
+        );
+        textoAsistente.innerHTML = (comentarios[id] || [])
+          .map((c) => "• " + c)
+          .join("<br>");
+        imagenOverlay.src = imagenes[id];
 
-          overlay.classList.add("activo");
-          document.body.classList.add("sin-scroll");
-        });
+        overlay.classList.add("activo");
+        document.body.classList.add("sin-scroll");
       });
+    });
 
-      document.getElementById("btnCerrar").addEventListener("click", () => {
-        overlay.classList.remove("activo");
-        document.body.classList.remove("sin-scroll");
-      });
-    </script>
+    document.getElementById("btnCerrar").addEventListener("click", () => {
+      overlay.classList.remove("activo");
+      document.body.classList.remove("sin-scroll");
+    });
+  </script>
+</body>
 
-  </body>
 </html>
