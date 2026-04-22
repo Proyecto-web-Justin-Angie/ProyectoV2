@@ -61,28 +61,28 @@
                 </section>
 
                 <section class="bloque-wiki">
-                  <form id="formulario" action="mailto:justinchavarria8592@gmail.com" method="post" enctype="text/plain" novalidate>
+                  <form id="formulario" name="contacto" method="POST" netlify novalidate> 
                     
                     <h5>Datos personales</h5>
                     <div class="row g-3">
                       <div class="col-md-6">
                         <label class="form-label obligatorio">Nombre</label>
-                        <input type="text" id="nombre" class="form-control" placeholder="Su nombre completo" />
+                        <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Su nombre completo" />  
                       </div>
 
                       <div class="col-md-6">
                         <label class="form-label obligatorio">Email</label>
-                        <input type="email" id="email" class="form-control" placeholder="correo@ejemplo.com" />
+                        <input type="email" id="email" name="email" class="form-control" placeholder="correo@ejemplo.com" />
                       </div>
 
                       <div class="col-md-6">
                         <label class="form-label obligatorio">Teléfono</label>
-                        <input type="text" id="telefono" class="form-control" placeholder="8 dígitos numéricos" />
+                        <input type="text" id="telefono" name="telefono" class="form-control" placeholder="8 dígitos numéricos" />
                       </div>
 
                       <div class="col-md-6">
                         <label class="form-label obligatorio">Edad</label>
-                        <input type="number" id="edad" class="form-control" placeholder="Ej: 25" />
+                        <input type="number" id="edad" name="edad" class="form-control" placeholder="Ej: 25" />
                       </div>
                     </div>
 
@@ -92,7 +92,7 @@
                     <div class="row g-3">
                       <div class="col-md-6">
                         <label class="form-label obligatorio">País</label>
-                        <select id="pais" class="form-select">
+                        <select id="pais" name="pais" class="form-select">
                           <option value="">Seleccione</option>
                           <option>Costa Rica</option>
                           <option>México</option>
@@ -103,7 +103,7 @@
 
                       <div class="col-md-6 oculto" id="otroPaisDiv">
                         <label class="form-label obligatorio">Especifique país</label>
-                        <input type="text" id="otroPais" class="form-control" />
+                        <input type="text" id="otroPais" name="otroPais" class="form-control" />
                       </div>
                     </div>
 
@@ -113,7 +113,7 @@
                     <div class="row g-3">
                       <div class="col-12">
                         <label class="form-label obligatorio">Motivo</label>
-                        <select id="motivo" class="form-select">
+                        <select id="motivo" name="motivo" class="form-select">
                           <option value="">Seleccione</option>
                           <option>Error</option>
                           <option>Sugerencia</option>
@@ -124,12 +124,12 @@
 
                       <div class="col-12 oculto" id="otroMotivoDiv">
                         <label class="form-label obligatorio">Especifique motivo</label>
-                        <input type="text" id="otroMotivo" class="form-control" />
+                       <input type="text" id="otroMotivo" name="otroMotivo" class="form-control" />
                       </div>
 
                       <div class="col-12">
                         <label class="form-label obligatorio">Mensaje</label>
-                        <textarea id="mensaje" class="form-control" rows="3" placeholder="Escriba aquí su consulta..."></textarea>
+                        <textarea id="mensaje" name="mensaje" class="form-control" rows="3" placeholder="Escriba aquí su consulta..."></textarea>
                       </div>
                     </div>
 
@@ -149,17 +149,17 @@
 
                       <div class="col-md-6">
                         <label class="form-label obligatorio">Fecha de reporte</label>
-                        <input type="date" id="fecha" class="form-control" />
+                        <input type="date" id="fecha" name="fecha" class="form-control" />
                       </div>
 
                       <div class="col-md-6">
                         <label class="form-label">Urgencia: <span id="valorUrgencia" class="badge bg-dark">5</span></label>
-                        <input type="range" id="urgencia" min="1" max="10" value="5" class="form-range" />
+                        <input type="range" id="urgencia" name="urgencia" min="1" max="10" value="5" class="form-range" />
                       </div>
 
                       <div class="col-12">
                         <div class="form-check">
-                          <input type="checkbox" id="terminos" class="form-check-input" />
+                          <input type="checkbox" id="terminos" name="terminos" class="form-check-input" />
                           <label class="form-check-label obligatorio">Acepto los términos y condiciones</label>
                         </div>
                       </div>
