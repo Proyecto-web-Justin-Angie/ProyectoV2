@@ -4,14 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tablero de investigación</title>
+
     <link rel="stylesheet" href="estilos.css" />
 
     <style>
-      /* --- ESTILOS DEL OVERLAY (Copiados de Galería) --- */
       .lado-texto {
         display: flex;
         flex-direction: column;
-        max-height: 80vh; 
+        max-height: 80vh;
         flex: 1;
         overflow: hidden;
       }
@@ -26,7 +26,10 @@
         scrollbar-color: var(--pergamino) transparent;
       }
 
-      #textoDetective::-webkit-scrollbar { width: 6px; }
+      #textoDetective::-webkit-scrollbar {
+        width: 6px;
+      }
+
       #textoDetective::-webkit-scrollbar-thumb {
         background-color: var(--pergamino, #e8d9b8);
         border-radius: 10px;
@@ -51,12 +54,15 @@
         max-height: 85vh;
       }
 
-      /* --- BOTONES --- */
       .btn-esquina {
         position: relative;
         padding: 12px 25px;
         min-width: 140px;
-        background: linear-gradient(to bottom, var(--boton-claro), var(--boton-medio));
+        background: linear-gradient(
+          to bottom,
+          var(--boton-claro),
+          var(--boton-medio)
+        );
         border: 3px solid var(--boton-borde);
         border-radius: 10px;
         color: var(--texto-acento);
@@ -69,41 +75,63 @@
 
       .btn-esquina:hover {
         border: 3px solid var(--boton-borde-hover);
-        background: linear-gradient(to bottom, var(--boton-hover-claro), var(--boton-hover-medio));
-        box-shadow: 0 0 8px var(--brillo-calido-fuerte), 0 0 18px var(--brillo-calido-suave), 3px 3px 0 var(--boton-sombra);
+        box-shadow:
+          0 0 8px var(--brillo-calido-fuerte),
+          0 0 18px var(--brillo-calido-suave),
+          3px 3px 0 var(--boton-sombra);
       }
 
-      /* --- MAPA Y ZONAS --- */
-      .tablero-escena { position: relative; }
-      .sin-scroll { overflow: hidden; }
+      .tablero-escena {
+        position: relative;
+      }
+
+      .sin-scroll {
+        overflow: hidden;
+      }
+
+      /* IMAGEN MÁS GRANDE */
+      #imagenOverlay {
+        width: 100%;
+        max-width: 720px;
+        max-height: 650px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 2px solid var(--pergamino);
+      }
+
+      /* COMENTARIOS MÁS CLAROS */
+      #textoAsistente {
+        color: var(--pergamino);
+        font-style: italic;
+        line-height: 1.6;
+      }
     </style>
   </head>
 
   <body>
     <div class="fondo-global-juego"></div>
-
     <main class="escena-principal">
       <section class="contenedor-juego">
         <header class="barra-superior visible-ui">
-          <button type="button" class="btn-esquina" onclick="sessionStorage.setItem('desdeEscena', 'true'); window.location.href = 'index.html';">
+          <button class="btn btn-outline-light btn-sm" onclick="window.location.href = 'index.html'">Volver</button>
             Volver atrás
           </button>
           <div class="grupo-botones-derecha">
-            <button class="btn-esquina" onclick="window.location.href = 'SobreP&C.html'">Sobre los point & click</button>
-            <button class="btn-esquina" onclick="window.location.href = 'Galeria.html'">Galería</button>
-            <button class="btn-esquina" onclick="window.location.href = 'Informe.html'">Informe</button>
+            <button class="btn-esquina" onclick="window.location.href='SobreP&C.html'">Sobre los point & click</button>
+            <button class="btn-esquina" onclick="window.location.href='Galeria.html'">Galería</button>
+            <button class="btn-esquina" onclick="window.location.href='Informe.html'">Informe</button>
+            <button class="btn-esquina" onclick="window.location.href='Contactenos.html'">Contáctenos</button>
           </div>
         </header>
 
         <section class="visor-central">
-          <section class="tablero-escena" aria-label="Tablero de investigación">
+          <section class="tablero-escena">
             <div class="mapa-imagen"></div>
-
-            <div class="zona-mapa" style="top: 15%; left: 11%; width: 10%; height: 17%;" data-id="sospechoso_a"></div>
-            <div class="zona-mapa" style="top: 25%; left: 24%; width: 9%; height: 16%;" data-id="victima"></div>
-            <div class="zona-mapa" style="top: 47%; left: 30%; width: 10%; height: 17%;" data-id="testigo"></div>
-            <div class="zona-mapa" style="top: 32%; left: 58%; width: 10%; height: 18%;" data-id="comisario"></div>
-            <div class="zona-mapa" style="top: 52%; left: 83%; width: 11%; height: 26%;" data-id="prensa"></div>
+            <div class="zona-mapa" style="top:15%;left:11%;width:10%;height:17%" data-id="dragon"></div>
+            <div class="zona-mapa" style="top:25%;left:24%;width:9%;height:16%" data-id="gusano_arena"></div>
+            <div class="zona-mapa" style="top:47%;left:30%;width:10%;height:17%" data-id="cervudo"></div>
+            <div class="zona-mapa" style="top:32%;left:58%;width:10%;height:18%" data-id="humanoide_hongos"></div>
+            <div class="zona-mapa" style="top:52%;left:83%;width:11%;height:26%" data-id="ciervo_runico"></div>
           </section>
         </section>
 
@@ -115,21 +143,26 @@
       </section>
     </main>
 
+    <!-- OVERLAY -->
     <div id="ayuda" class="overlay-ayuda">
       <div class="contenedor-tutorial">
         <section class="pagina pagina-evidencia">
           <section class="panel-central sin-papiro">
+
             <div class="contenido-evidencia">
+
               <div class="lado-imagen">
-                <img id="imagenOverlay" class="img-fluid" style="max-height: 400px; border-radius: 10px; border: 2px solid var(--pergamino);"/>
-                
+                <img id="imagenOverlay" class="img-fluid" />
+
                 <div class="perfil-cita">
-                  <blockquote id="textoAsistente" style="color: var(--pergamino)">...</blockquote>
+                  <blockquote id="textoAsistente"></blockquote>
                 </div>
 
                 <div class="botones-overlay">
                   <button id="btnCerrar" class="btn-esquina">Cerrar informe</button>
-                  <button class="btn-esquina" onclick="window.location.href = 'Oficina.html';">Volver a la oficina</button>
+                  <button class="btn-esquina" onclick="window.location.href='Oficina.html'">
+                    Volver a la oficina
+                  </button>
                 </div>
               </div>
 
@@ -144,67 +177,75 @@
     </div>
 
     <script>
-      const mensajeJuego = document.getElementById("mensajeJuego");
       const overlay = document.getElementById("ayuda");
       const imagenOverlay = document.getElementById("imagenOverlay");
       const textoDetective = document.getElementById("textoDetective");
       const textoAsistente = document.getElementById("textoAsistente");
       const tituloDetalle = document.getElementById("tituloDetalle");
 
-      // DATOS DE LOS CARTELES (Mismo formato que Galería)
+      const titulos = {
+        dragon: "Entidad Alfa: Dragón de Incineración",
+        gusano_arena: "Entidad Subterránea Colmena: Gusano de Arena",
+        cervudo: "Entidad de Distorsión Forestal: Cervudo",
+        humanoide_hongos: "Entidad Fúngica de Mimetismo Humanoide",
+        ciervo_runico: "Entidad Anómala Rúnica: Ciervo Rúnico"
+      };
+
       const narraciones = {
-        "sospechoso_a": "Registro de sospechoso — Sujeto A/n/Individuo visto en las inmediaciones de Allashar. Su perfil no encaja con los residentes locales; la ropa presenta un desgaste incompatible con el clima de la región./n/Se le asocia con la desaparición de registros en la biblioteca central. Es meticuloso, no deja rastros biológicos, solo vacíos en las estanterías.",
-        "victima": "Expediente de la Víctima/n/Causa de muerte: Interrupción sistémica. No hay trauma físico externo, pero la actividad neuronal se detuvo en seco./n/En su mano derecha sostenía un fragmento de carbón que, bajo análisis, resultó ser madera del bosque de Zelenograd convertida en diamante industrial.",
-        "testigo": "Declaración del Testigo/n/— 'No era una persona, señor. Era como si el aire se doblara alrededor de algo'. El testigo presenta signos de estrés post-traumático y una leve pigmentación metálica en las retinas.",
-        "comisario": "Informe del Comisario/n/La ciudad de Stormgarde no podrá sostener el bloqueo mucho más tiempo. Si los suministros de Hemin no llegan, el equilibrio social colapsará./n/Sospecho que alguien dentro del consejo está filtrando nuestras rutas de patrulla.",
-        "prensa": "Recorte de Prensa/n/Titular: 'EL SOL SE APAGA EN EL ESTE'. Los avistamientos de la entidad denominada 'El Cérvido' han aumentado un 40% este mes. El gobierno pide calma mientras evacuan los sectores periféricos."
+        dragon: "Registro de subjugación — Dragón/n/Unidad de alto riesgo térmico...",
+        gusano_arena: "Registro de subjugación — Gusano de arena/n/Colonia subterránea...",
+        cervudo: "Registro de subjugación — Cervudo/n/Distorsión perceptiva...",
+        humanoide_hongos: "Registro de subjugación — Humanoide fúngico/n/Infección cognitiva...",
+        ciervo_runico: "Registro de subjugación — Ciervo rúnico/n/Anomalía dimensional..."
       };
 
       const comentarios = {
-        "sospechoso_a": "Mire esa cara, jefe… tiene 'culpable' escrito en la frente con letras grandes.",
-        "victima": "Pobre tipo. Dicen que se quedó tieso como una estatua de repente.",
-        "testigo": "A este pobre le dio un buen susto. Yo que él, no volvería a mirar por la ventana de noche.",
-        "comisario": "El viejo comisario está nervioso. Sabe que si Stormgarde cae, nosotros vamos detrás.",
-        "prensa": "La prensa siempre exagerando… aunque esta vez, me da que se quedan cortos."
+        dragon: [
+          "Eso no es fauna local, es una unidad de combate natural.",
+          "Algo lo está dirigiendo o ya aprendió a cazar."
+        ],
+        gusano_arena: [
+          "El suelo ya no es confiable.",
+          "No es uno… es una red viva."
+        ],
+        cervudo: [
+          "El entorno cambia cuando aparece.",
+          "La percepción falla cerca de él."
+        ],
+        humanoide_hongos: [
+          "No es transformación, es sustitución.",
+          "Ya no es humano en sentido funcional."
+        ],
+        ciervo_runico: [
+          "No es criatura.",
+          "Es un evento con forma."
+        ]
       };
 
-      const titulos = {
-        "sospechoso_a": "Perfil: Sospechoso A",
-        "victima": "Expediente #402",
-        "testigo": "Archivo de Testimonio",
-        "comisario": "Reporte Confidencial",
-        "prensa": "Prensa Local"
+      const imagenes = {
+        dragon: "Multimedia/encargo1.jpg",
+        gusano_arena: "Multimedia/encargo2.jpg",
+        cervudo: "Multimedia/encargo3.jpg",
+        humanoide_hongos: "Multimedia/encargo4.jpg",
+        ciervo_runico: "Multimedia/encargo5.jpg"
       };
 
-      // CONFIGURACIÓN DE ZONAS
       document.querySelectorAll(".zona-mapa").forEach(zona => {
         const id = zona.dataset.id;
 
-        zona.addEventListener("mouseenter", () => {
-          mensajeJuego.textContent = "Examinar: " + titulos[id];
-        });
-
-        zona.addEventListener("mouseleave", () => {
-          mensajeJuego.textContent = "Inspecciona los documentos del tablero.";
-        });
-
         zona.addEventListener("click", () => {
-          // Rellenar Overlay
           tituloDetalle.textContent = titulos[id];
-          textoDetective.innerHTML = (narraciones[id] || "Sin notas.").replace(/\/n\//g, "<br><br>");
-          textoAsistente.textContent = comentarios[id] || "...";
-          
-          // Imagen (Usamos una por defecto o específica si tienes)
-          imagenOverlay.src = `Multimedia/Evidencia_${id}.png`; 
-          
-          // Mostrar
+          textoDetective.innerHTML = (narraciones[id] || "").replace(/\/n\//g, "<br><br>");
+          textoAsistente.innerHTML = (comentarios[id] || [])
+            .map(c => "• " + c)
+            .join("<br>");
+
+          imagenOverlay.src = imagenes[id];
           overlay.classList.add("activo");
           document.body.classList.add("sin-scroll");
-          textoDetective.scrollTop = 0;
         });
       });
 
-      // CERRAR
       document.getElementById("btnCerrar").addEventListener("click", () => {
         overlay.classList.remove("activo");
         document.body.classList.remove("sin-scroll");
