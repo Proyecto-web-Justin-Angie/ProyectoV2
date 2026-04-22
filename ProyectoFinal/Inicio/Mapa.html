@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mapa de investigación</title>
+    <!-- Bootstrap y estilos principales -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="estilos.css" />
+
+    <style>
+      /* Texto largo del lado derecho */
+      .lado-texto {
+        display: flex;
+        flex-direction: column;
+        max-height: 80vh;
+        flex: 1;
+        overflow: hidden;
+      }
+
+      #textoRegion {
+        white-space: normal;
+        line-height: 1.7;
+        color: var(--pergamino);
+        overflow-y: auto;
+        padding-right: 15px;
+      }
+
+      .lado-texto h2 {
+        color: var(--pergamino);
+        margin-bottom: 15px;
+      }
+
+      .botones-overlay {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 20px;
+        align-items: center;
+      }
+
+      .contenido-evidencia {
+        display: flex;
+        gap: 20px;
+        max-height: 85vh;
+      }
+
+      .btn-esquina {
+        position: relative;
+        padding: 12px 25px;
+        min-width: 140px;
+        background: linear-gradient(
+          to bottom,
+          var(--boton-claro),
+          var(--boton-medio)
+        );
+        border: 3px solid var(--boton-borde);
+        border-radius: 10px;
+        color: var(--texto-acento);
+        font-weight: bold;
+        font-family: Georgia, "Times New Roman", serif;
+        box-shadow: 3px 3px 0 var(--boton-sombra);
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .btn-esquina::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 0%;
+        height: 2px;
+        background: var(--brillo);
+        transition: width 0.3s;
+      }
+
+      .btn-esquina:hover::after {
+        width: 100%;
+      }
+
+      .btn-esquina:hover {
+        border: 3px solid var(--boton-borde-hover);
+        background: linear-gradient(
+          to bottom,
+          var(--boton-hover-claro),
+          var(--boton-hover-medio)
+        );
+        box-shadow:
+          0 0 8px var(--brillo-calido-fuerte),
+          0 0 18px var(--brillo-calido-suave),
+          3px 3px 0 var(--boton-sombra);
+      }
+
+      .btn-esquina:active {
+        transform: translate(2px, 2px);
+        box-shadow: 1px 1px 0 var(--boton-sombra);
+      }
+
+      #carouselRegion {
+        width: 100%;
+        max-width: 700px; /* más grande */
+      }
+
+      .carousel-img {
+        height: 420px;
+        object-fit: cover;
+        border-radius: 12px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="fondo-global-juego"></div>
+
+    <main class="escena-principal">
+      <section class="contenedor-juego">
+        <header class="barra-superior visible-ui">
+          <button
+            class="btn-esquina"
+            onclick="window.location.href = 'Oficina.html'"
+          >
+            Volver atrás
+          </button>
+
+          <div class="grupo-botones-derecha">
+            <button onclick="window.location.href = 'SobreP&C.html'">
+              Sobre los point & click
+            </button>
+
+            <button onclick="window.location.href = 'Galeria.html'">
+              Galería
+            </button>
+
+            <button onclick="window.location.href = 'Informe.html'">
+              Informe
+            </button>
+
+            <button onclick="window.location.href = 'Contacto.html'">
+              Contáctenos
+            </button>
+          </div>
+        </header>
+
+        <section class="visor-central">
+          <section
+            id="mapaInteractivo"
+            class="mapa-escena"
+            aria-label="Mapa de investigación"
+          >
+            <div class="mapa-imagen"></div>
+
+            <a class="zona-mapa zelenograd" data-region="zelenograd" data-nombre="Zelenograd"></a>
+            <a class="zona-mapa templo-tiempo" data-region="templo" data-nombre="Templo del Tiempo"></a>
+            <a class="zona-mapa fuego-dragon" data-region="fuego" data-nombre="Fuego del Dragón"></a>
+            <a class="zona-mapa torre-babel" data-region="babel" data-nombre="Torre de Babel"></a>
+            <a class="zona-mapa tierras-congeladas" data-region="hielo" data-nombre="Tierras Congeladas"></a>
+            <a class="zona-mapa stormgarde" data-region="storm" data-nombre="Stormgarde"></a>
+            <a class="zona-mapa allashar" data-region="allashar" data-nombre="Allashar"></a>
+            <a class="zona-mapa hemin" data-region="hemin" data-nombre="Hemin"></a>
+            <a class="zona-mapa hastahar" data-region="hastahar" data-nombre="Hastahar"></a>
+          </section>
+        </section>
+
+        <footer class="barra-inferior-juego visible-ui">
+          <div class="panel-mensaje-juego">
+            <p id="mensajeJuego">Examina el mapa y selecciona una ubicación.</p>
+          </div>
+        </footer>
+      </section>
+    </main>
+
+    <div id="overlayRegion" class="overlay-ayuda">
+      <div class="contenedor-tutorial">
+        <section class="pagina pagina-evidencia">
+          <section class="panel-central sin-papiro">
+            <div class="contenido-evidencia">
+              <div class="lado-imagen">
+                
+                <div id="carouselRegion" class="carousel slide" data-bs-ride="carousel">
+                  <div class="carousel-inner" id="carouselInnerRegion"></div>
+
+                  <button class="carousel-control-prev" type="button" data-bs-target="#carouselRegion" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                  </button>
+
+                  <button class="carousel-control-next" type="button" data-bs-target="#carouselRegion" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                  </button>
+                </div>
+
+                <div class="perfil-cita">
+                    <blockquote style="color: var(--pergamino);" id="textoAsistente">...</blockquote>
+                    <blockquote style="color: var(--pergamino);" id="textoDetective">...</blockquote>
+                </div>
+
+                <div class="botones-overlay">
+                  <button id="btnCerrarOverlay" class="btn-esquina">Cerrar</button>
+                  <button class="btn-esquina" onclick="window.location.href = 'Oficina.html'">Volver a la oficina</button>
+                </div>
+              </div>
+
+              <div class="lado-texto">
+                <h2>Sobre esta región</h2>
+                <p id="textoRegion">Información pendiente.</p>
+              </div>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+
+    <script>
+      let mensajeJuego = document.getElementById("mensajeJuego");
+      let zonas = document.querySelectorAll(".zona-mapa");
+
+      zonas.forEach((zona) => {
+        zona.addEventListener("mouseenter", () => {
+          mensajeJuego.textContent = "Ubicación detectada: " + zona.dataset.nombre + ". Haz clic para examinar.";
+        });
+        zona.addEventListener("mouseleave", () => {
+          mensajeJuego.textContent = "Examina el mapa y selecciona una ubicación.";
+        });
+        zona.addEventListener("click", () => {
+          abrirRegion(zona.dataset.region);
+        });
+      });
+      function abrirRegion(region) {
+        const overlay = document.getElementById("overlayRegion");
+        const textoRegion = document.getElementById("textoRegion");
+        const asistente = document.getElementById("textoAsistente");
+        const detective = document.getElementById("textoDetective");
+        const carouselInner = document.getElementById("carouselInnerRegion");
+
+        const narraciones = {
+          zelenograd:
+            "Registro de campo — Sector cartográfico: Zelenograd/n/La región designada como Zelenograd no admite delimitación convencional. No es un territorio en el sentido cartográfico estricto, sino una extensión en negociación constante con aquello que pretende medirla. Los registros históricos no coinciden en su origen; no por error de transmisión, sino por imposibilidad estructural de fijarlo. Zelenograd no comienza. Se manifiesta./n/Los estratos más antiguos describen un entorno que ya no respondía a las reglas ordinarias de formación natural: polen sin clasificación, crecimiento no estacional, fauna con desviaciones morfológicas incompatibles con cualquier línea evolutiva conocida. No se trata de anomalías aisladas. Es un sistema en transformación sostenida./n/El consenso —palabra que empleo con reservas— atribuye este proceso a la permanencia prolongada de un individuo: un Aerathien’lin. La hipótesis resulta incómoda, no por su contenido, sino por su coherencia. Un agente único, exposición prolongada, resultado acumulativo. No hay intención en el origen. Solo consecuencia. Zelenograd no fue creado. Fue provocado./n/Las fuentes imperiales lo describen como frontera. Las tribales, como entidad. Las monásticas, como transición entre ambas. Ninguna coincide en su naturaleza, pero todas coinciden en un punto: el bosque no responde. Impone./n/Los mapas, cuando existen, caducan. Senderos desaparecen, regiones cambian de posición relativa, límites previamente establecidos se vuelven irrelevantes. No es imprecisión técnica. Es obsolescencia inducida. La cartografía, en este contexto, no describe el territorio. Registra su fracaso./n/El crecimiento no es radial ni progresivo. Zelenograd avanza, se detiene, se repliega y reaparece sin respetar continuidad espacial. Regiones enteras son absorbidas sin transición; otras, abandonadas sin explicación funcional. Los periodos de expansión coinciden, de forma inconvenientemente consistente, con eventos de alta actividad etérica. No absorbe energía. La redistribuye. Como si corrigiera excesos./n/Esto sugiere función. No finalidad. No cometo el error de atribuirle propósito consciente. Pero tampoco puedo sostener que se trate de un fenómeno pasivo./n/Las denominaciones asignadas a la región son múltiples y mutuamente incompatibles: Madre Fría, Laberinto que Sueña, Ancestro Verde, Devorador de Sangres. No son nombres. Son reacciones. Cada cultura ha descrito lo que ha podido comprender… o sobrevivir./n/La recurrencia de ciertos patrones lingüísticos —origen, hambre, memoria, juicio— indica una constante interpretativa: Zelenograd no es percibido como entorno. Es percibido como presencia./n/No encuentro evidencia concluyente de conciencia en términos biológicos. Tampoco encuentro una explicación satisfactoria que la descarte sin ignorar datos relevantes. Esto, en condiciones normales, sería motivo suficiente para descartar la hipótesis. Aquí, resulta insuficiente./n/Conclusión operativa: Zelenograd debe ser tratado como sistema activo de comportamiento no completamente comprendido, con capacidad de alterar condiciones espaciales, biológicas y posiblemente cognitivas en su entorno inmediato y extendido./n/Anotación personal:/n/He dedicado años a desacreditar conclusiones prematuras. A exigir evidencia donde otros aceptaban superstición. Resulta, por tanto, irritante —y metodológicamente inaceptable— que este fenómeno insista en comportarse como si la superstición hubiese estado… incompletamente formulada./n/No es ignorancia lo que observo en los registros antiguos./n/Es… una forma menos precisa de estar en lo correcto./n/Y eso, más que cualquier otra cosa, empieza a ser un problema.",
+          templo: 
+          "Registro de campo — Sector cartográfico: Templo del tiempo de los dioses antiguos/n/La región identificada como el llamado “Templo del tiempo” no corresponde a una ruina convencional, ni a un asentamiento degradado por causas ordinarias. Los restos arquitectónicos sugieren la existencia de una ciudad previa a toda cronología imperial conocida en estas tierras; anterior, incluso, a los primeros registros fiables de urbanización humana. Su datación, por tanto, no solo es incierta: es incómodamente anterior a los marcos aceptados. Esto incluye, de forma particularmente problemática, la propia aparición de Zelenograd./n/Lo que persiste no es una ciudad en ruinas, sino el residuo de un evento terminal. Columnas, cúpulas y estructuras parcialmente sumergidas indican un colapso abrupto, no progresivo. No hay signos de abandono paulatino, migración o guerra convencional. Hay interrupción. Total./n/Las fuentes disponibles —fragmentarias, en su mayoría orales o reinterpretadas en registros posteriores— coinciden en un punto central: la ciudad estaba dedicada al culto de entidades ahora ausentes de toda taxonomía religiosa vigente. No se conservan nombres. No se conservan símbolos plenamente legibles. Solo referencias indirectas a “dioses antiguos”, término que, en ausencia de mejor clasificación, mantengo por conveniencia, no por precisión./n/La narrativa predominante describe un patrón reconocible: entidades dependientes de la fe que, ante la disminución o estancamiento de esta, inducen un evento de escala catastrófica con el objetivo de reforzar la devoción de sus seguidores. El método —generar crisis para luego ofrecer salvación— no es nuevo. Lo que resulta relevante es el fallo en la ejecución./n/El cataclismo ocurrió. La salvación, no./n/Los habitantes no murieron. Tampoco sobrevivieron en términos funcionales. Fueron transformados. Las estructuras internas del templo y las zonas adyacentes contienen figuras humanoides de composición áurea, distribuidas en posiciones que sugieren actividad interrumpida: huida, súplica, colapso. No son estatuas conmemorativas. Son… resultados./n/La homogeneidad del material —oro de pureza inusual— y la preservación de detalles anatómicos descartan procesos artesanales. Esto no es escultura. Es conversión./n/La consecuencia es doble: pérdida total de la población y, con ello, desaparición inmediata de la base devocional. Si las entidades en cuestión dependían de dicha fe para su persistencia —hipótesis consistente con múltiples sistemas teológicos— entonces el evento no solo destruyó la ciudad. Eliminó a sus dioses./n/El lugar recibe, en registros posteriores, dos denominaciones recurrentes: “Ciudad de la Codicia” y “Ciudad del Castigo”. Ambas reflejan no el origen del fenómeno, sino su estado actual. Individuos que han intentado extraer material —principalmente el oro— reportan, cuando regresan, un patrón constante: no regresan completos… o no regresan en absoluto./n/Las pocas expediciones documentadas que lograron retirar fragmentos describen casos de transformación progresiva en los participantes. Endurecimiento tisular, pérdida de movilidad, brillo metálico en superficies expuestas. Etapas finales coinciden con la inmovilidad total y la posterior asimilación al entorno. No hay evidencia de reversibilidad./n/No es un mecanismo de defensa activo. Es una condición persistente./n/Una maldición, en términos menos técnicos. Aunque el término, nuevamente, describe más la experiencia que el fenómeno./n/La porción principal del complejo se encuentra parcialmente sumergida. El acceso terrestre es limitado; el acceso fluvial, inestable. El aislamiento geográfico es significativo, pero no absoluto. Y, sin embargo, Zelenograd no ha reclamado esta región./n/Esto introduce una contradicción relevante./n/El bosque ha demostrado capacidad de expansión sobre territorios hostiles, inestables o energéticamente activos. Aquí, no lo ha hecho. No hay indicios de avance, ni de intento fallido. Simplemente… ausencia./n/No es resistencia./n/Es omisión./n/Lo cual resulta más difícil de interpretar./n/Conclusión operativa: el Templo del tiempo debe ser considerado una zona de riesgo absoluto, con propiedades de transformación irreversible asociadas a la interacción material con su entorno. La naturaleza del evento original sugiere intervención de entidades de orden no clasificado, con fallo crítico en la fase de resolución. La persistencia del efecto indica que dicho fallo no fue corregido… o no pudo serlo./n/Anotación personal:/n/Resulta tentador clasificar este lugar como advertencia. Un ejemplo temprano de exceso teológico y sus consecuencias. Sería una lectura cómoda. Ordenada. Incorrecta./n/Esto no parece un castigo./n/Parece… un error./n/Y si fue un error, entonces no hay garantía de que sea único./n/Lo cual introduce una variable adicional que preferiría no tener que considerar./n/No por ahora.",
+          fuego: 
+          "Registro de campo — Sector cartográfico: Fuego del Dragón/n/La cadena montañosa conocida como el Fuego del Dragón constituye, en términos geográficos, una barrera natural; en términos funcionales, un ecosistema soberano. No se trata únicamente de un hábitat, sino de un dominio estructurado por la presencia prolongada de entidades dracónicas. Su configuración actual es el resultado de una contracción territorial sostenida: regiones que antaño formaban parte de su extensión han sido progresivamente absorbidas por Zelenograd./n/Este proceso no ha derivado en confrontación directa a gran escala. Lo cual, en sí mismo, resulta significativo./n/Las poblaciones de dragones registradas en la zona presentan una diversidad morfológica que invalida cualquier clasificación simplista: estructuras aladas tradicionales coexisten con variantes emplumadas, formas adaptadas al vuelo de altura, e incluso manifestaciones antropomórficas con capacidad de interacción humana prolongada. La variabilidad no es anomalía. Es norma./n/De igual forma, la caracterización conductual es inconsistente con la noción popular de una criatura regida exclusivamente por orgullo o impulso territorial. Se observan patrones de organización, jerarquías flexibles, transmisión de conocimiento intergeneracional y, en algunos casos, estructuras sociales complejas que rozan lo político./n/No son bestias./n/Son actores./n/Actores que, sin embargo, han optado por no intervenir frente al avance de Zelenograd./n/La interpretación más extendida entre observadores externos es la de cautela. Entre los propios dragones, según registros indirectos, la lectura es menos uniforme. Las generaciones más jóvenes tienden a interpretar la inacción como debilidad. No es una postura aislada. Es recurrente./n/Los casos documentados de incursiones voluntarias en el bosque por parte de individuos jóvenes siguen un patrón consistente: desaparición total o retorno en estado crítico. Las heridas observadas en los supervivientes no corresponden a enfrentamientos convencionales. No hay marcas claras de depredación directa ni de combate territorial. Son… alteraciones. Pérdidas funcionales, degradación estructural, en algunos casos, modificaciones irreversibles./n/No regresan derrotados./n/Regresan… incompatibles./n/Esto ha reforzado la postura conservadora de los individuos más antiguos, quienes parecen comprender —o haber aceptado— que el conflicto no es simétrico. No se trata de defender territorio. Se trata de reconocer límites./n/Y Zelenograd impone los suyos./n/La ausencia de ofensivas organizadas por parte de los dragones no debe interpretarse como incapacidad. La capacidad destructiva de estas entidades, incluso en número reducido, es suficiente para comprometer asentamientos humanos completos y alterar ecosistemas locales en periodos breves. El hecho de que no se haya dirigido de forma sostenida contra el bosque sugiere evaluación previa, no indecisión./n/Esto introduce una variable incómoda: si un conjunto de entidades con alta adaptabilidad, inteligencia funcional y capacidad ofensiva significativa evita un conflicto… la causa no suele ser falta de oportunidad./n/Suele ser conocimiento./n/Para la humanidad, la región permanece como zona de riesgo elevado. La coexistencia indirecta entre el dominio dracónico y Zelenograd genera un margen de estabilidad relativa, pero no seguridad. Los dragones no buscan activamente la expansión humana, pero tampoco la toleran sin condiciones. Su proximidad a un sistema mayor que consume territorios a escala continental no ha reducido su peligrosidad. Solo la ha contenido./n/Conclusión operativa: el Fuego del Dragón debe ser tratado como territorio autónomo habitado por entidades inteligentes de alta variabilidad morfológica y conductual, con capacidad ofensiva considerable y política interna no completamente comprendida. Su relación con Zelenograd no es de dominio ni de resistencia, sino de coexistencia forzada bajo términos no declarados./n/Anotación personal:/n/La narrativa común describe a los dragones como soberbios hasta la autodestrucción. Es una simplificación útil. También es incorrecta./n/La soberbia que conduce a la muerte rara vez sobrevive lo suficiente para volverse tradición./n/Estos han sobrevivido./n/Lo que implica, necesariamente, que han aprendido algo./n/Y, dado el contexto en el que han decidido no actuar…/n/Empiezo a sospechar que ese “algo” no es tranquilizador./n/En absoluto.",
+          babel: 
+          "Registro de campo — Sector cartográfico: Torre de Babel/n/La estructura conocida como “Torre de Babel” no guarda correspondencia funcional ni conceptual con las versiones más difundidas del mismo nombre. La denominación parece haber sido asignada por analogía posterior, no por continuidad histórica. En los registros disponibles también aparece como “Torre de los Deseos” y “Torre de la Verdad”, títulos que, lejos de aclarar su propósito, lo complican./n/Se trata de una construcción atribuida a una civilización cuya capacidad tecnológica excede de forma evidente el nivel observable del continente en el que se encuentra. No existe transición evolutiva que justifique su aparición. No hay precedentes. No hay continuidad. Solo… presencia./n/El exterior de la torre no refleja esta discrepancia. Su arquitectura visible se mantiene dentro de parámetros compatibles con el desarrollo material de la región, como si existiera una intención deliberada de no destacar. Este camuflaje no es perfecto, pero sí suficiente para evitar cuestionamientos inmediatos. El interior, en cambio, no mantiene dicha coherencia./n/La estructura interna no responde a ninguna lógica espacial convencional. Los testimonios coinciden en un punto: cada nivel constituye un entorno autónomo, con condiciones ambientales propias, ciclos temporales independientes y, en algunos casos, cielos abiertos contenidos dentro de límites arquitectónicos definidos. No es ampliación de espacio. Es sustitución./n/El primer nivel ha sido descrito con mayor consistencia que los superiores, dado que constituye el punto de contacto inicial con los denominados “retadores”. Se presenta como una pradera extensa, cubierta de flora silvestre, interrumpida por elementos arquitectónicos incompletos: puertas monumentales sin estructura asociada, muros aislados, columnas de estilo clásico dispersas sin patrón aparente. No es ruina. Es… fragmento./n/La distribución carece de simetría funcional, pero no de intención estética. Todo parece dispuesto para sugerir grandeza… sin concretarla./n/Tras un desplazamiento prolongado —cuya duración no ha podido ser medida con precisión— se alcanza una estructura circular delimitada por pilares de gran escala, rejas de altura desproporcionada y una única entrada acorde a dichas dimensiones. En su centro se encuentra un árbol de tamaño excepcional y, frente a él, una mesa pequeña, diseñada para dos individuos./n/Es allí donde se produce el primer contacto formal./n/La entidad descrita como “administrador del piso” recibe a los sujetos y establece las condiciones de interacción. No se han registrado descripciones contradictorias de este encuentro, lo cual sugiere consistencia en la manifestación. El contenido de su exposición es igualmente uniforme: la torre concede un deseo a quien alcance su punto más alto./n/No existe evidencia verificable de que tal evento haya ocurrido./n/Ningún registro confirma la llegada a la cima./n/Ningún registro la descarta./n/Tras la explicación inicial, el individuo es confrontado con una elección: continuar el ascenso o abandonar la estructura. La decisión es irreversible. Aquellos que optan por retirarse son devueltos a su lugar de origen sin posibilidad de reingreso. No mediante restricción física, sino mediante exclusión… funcional. La torre deja de reconocerlos./n/Esto introduce una jerarquía no explícita: no todos los individuos son convocados, y aquellos que rechazan la progresión son, de facto, descartados./n/Los niveles superiores carecen de documentación fiable. Las referencias indirectas mencionan entornos hostiles, presencia de entidades letales y variaciones extremas en las condiciones físicas y cognitivas del espacio. No hay consenso suficiente para establecer patrones./n/Lo único consistente es la falta de retorno./n/La torre no parece diseñada para ser comprendida en su totalidad, sino para ser experimentada de forma secuencial bajo condiciones de riesgo creciente. Su lógica no es constructiva. Es selectiva./n/Conclusión operativa: la Torre de Babel debe ser tratada como estructura anómala de origen no determinado, con capacidad de alterar espacio, tiempo y condiciones ambientales de forma localizada. Su función aparente —conceder deseos— no puede ser verificada, pero sí su mecanismo de selección y exclusión. La interacción con la estructura implica aceptación de riesgo no cuantificable y pérdida potencial de retorno./n/Anotación personal:/n/Una promesa que no puede ser verificada carece de valor probatorio./n/Pero no de poder./n/La torre no necesita cumplir su promesa para ser efectiva./n/Solo necesita que alguien esté dispuesto a creer que podría./n/Y, dado el historial de la especie…/n/Esa condición se cumple con una facilidad que resulta, francamente, alarmante./n/No es la estructura lo que más me preocupa./n/Es el tipo de individuo que decide entrar… después de haber sido advertido./n/Y el hecho de que, inevitablemente,/n/siempre hay uno./n/Siempre.",
+          hielo: 
+          "Registro de campo — Sector cartográfico: Tierras Congeladas/n/La región conocida como las Tierras Congeladas constituye una anomalía persistente dentro del patrón expansivo de Zelenograd. A diferencia de otras zonas del continente, su avance aquí se encuentra contenido. No detenido por oposición directa, sino por una incompatibilidad aún no determinada. El bosque no progresa. Tampoco retrocede. Simplemente… no entra./n/Las condiciones ambientales son hostiles a la ocupación humana sostenida: temperaturas extremas, vientos constantes y una estabilidad climática que, paradójicamente, parece reforzar su propia severidad. No hay ciclos claros de mitigación. El frío no cede. Se mantiene./n/Esto no impide la existencia de vida adaptada./n/Las especies locales presentan rasgos de especialización extrema, pero ninguna resulta tan relevante como la población descrita en fuentes regionales como “dragonoides”. Morfología humanoide, recubrimiento de escamas oscuras, resistencia física muy por encima de parámetros humanos. Su presencia se concentra en las zonas montañosas de mayor altitud, donde las condiciones alcanzan niveles que excluyen casi cualquier otra forma de asentamiento organizado./n/Las tradiciones que los rodean los vinculan con una figura concreta: Fafnir. La coincidencia nominal con registros históricos externos no puede considerarse casual, aunque tampoco verificable en términos directos. La narrativa predominante describe a estos individuos como descendientes de dicha entidad, lo cual explicaría tanto su fisiología como su adaptación al entorno./n/No obstante, lo relevante no es su origen, sino su comportamiento./n/Los individuos que abandonan estas comunidades suelen integrarse en sistemas mercenarios. Su rendimiento en combate está ampliamente documentado: fuerza, resistencia y tolerancia al daño en niveles que alteran cualquier evaluación táctica convencional. No son numerosos. No necesitan serlo./n/La región recibe también la denominación de “Tierras de los Gigantes”. No se trata de una metáfora./n/Restos óseos de gran escala se encuentran parcialmente expuestos bajo el hielo, distribuidos de forma irregular. No hay registro completo de esqueletos intactos, pero los fragmentos disponibles son suficientes para confirmar la existencia previa de entidades de tamaño considerable. Su estado de conservación sugiere una interrupción abrupta, no un proceso de extinción prolongado./n/Las fuentes legendarias atribuyen este evento a una única causa: Fafnir./n/Las versiones difieren en el detonante —maldición, corrupción, o simple descontrol— pero coinciden en el resultado. Una campaña de destrucción indiscriminada que incluyó enanos, dioses y gigantes. La escala del conflicto excede cualquier marco histórico verificable, lo cual no invalida el patrón subyacente: concentración de restos, ausencia de continuidad cultural y un cambio climático extremo localizado./n/El elemento más constante en estas narrativas es el aliento de la entidad. No como arma puntual, sino como agente transformador. El frío no sería una condición previa del entorno, sino su consecuencia./n/Esto invierte la relación causal./n/El clima no define a la región./n/La región es el residuo de un evento./n/El cuerpo de Fafnir no ha sido localizado. Tampoco su supuesto tesoro. Ambas ausencias son… consistentes. En contextos donde la evidencia es abundante, la falta de un elemento central no suele indicar inexistencia, sino inaccesibilidad./n/Las zonas periféricas —particularmente Stormgarde y Allashar— mantienen estructuras militares significativamente más desarrolladas que el promedio continental. No por ambición expansionista, sino por necesidad defensiva. Las incursiones desde las Tierras Congeladas son frecuentes: entidades no clasificadas, comportamiento hostil, patrones de aparición irregulares./n/No es migración./n/Es filtración./n/Esto sugiere que la región no es un sistema cerrado. Produce… o libera./n/Conclusión operativa: las Tierras Congeladas deben ser consideradas un entorno de alta hostilidad ambiental y biológica, con presencia de especies adaptadas de elevada peligrosidad y evidencia de eventos históricos de escala no convencional. Su resistencia a Zelenograd introduce una variable crítica en el análisis del bosque, indicando la existencia de condiciones capaces de limitar su expansión./n/Anotación personal:/n/Un territorio que ni el bosque consume ni el hombre habita./n/Restos de algo que, según los registros, mató incluso a aquello que debería haber estado fuera de su alcance./n/Y descendientes que han aprendido a vivir sobre ese resultado./n/La pregunta evidente no es qué ocurrió aquí./n/Eso, en términos generales, está descrito./n/La pregunta es por qué… sigue ocurriendo./n/Y, más importante aún,/n/qué exactamente sigue activo bajo el hielo./n/Preferiría no tener que comprobarlo./n/La experiencia indica que esa preferencia rara vez influye en el resultado.",
+          storm: 
+          "Registro de campo — Región: Stormgarde/n/Clasificación preliminar: enclave militar-industrial de frontera./n/Stormgarde no destaca por su extensión territorial ni por una supremacía política tradicional. Su relevancia no radica en tamaño, sino en función. Es, en términos operativos, un punto de contención./n/Ubicado en proximidad directa a las denominadas tierras congeladas, el asentamiento actúa como interfaz entre zonas habitables y regiones de alta inestabilidad biológica y thaumárgica. Su arquitectura responde a esta condición: murallas gruesas, diseño compacto, acceso controlado. No hay estética superflua. Todo en su estructura cumple un propósito defensivo./n/Los puertos, permanentemente expuestos a corrientes frías, permanecen activos pese a condiciones adversas. Esto sugiere una dependencia logística constante. Stormgarde no es autosuficiente: intercambia, importa, redistribuye. Sobrevive mediante flujo continuo./n/La composición demográfica es inusual. La concentración de individuos clasificados como mercenarios, aventureros o contratistas independientes excede los parámetros observados en otros núcleos urbanos. No se trata de una anomalía cultural, sino de una consecuencia directa del entorno. Donde existe amenaza constante, surge demanda sostenida de violencia organizada./n/En consecuencia, Stormgarde no recluta fuerza militar: la atrae./n/Individuos de múltiples razas convergen aquí, no por lealtad, sino por oportunidad. La diversidad no es ideológica. Es funcional./n/El poder militar del enclave, aunque significativo, no se deriva de una estructura jerárquica rígida, sino de una acumulación de experiencia práctica. Combatientes habituados a enfrentamientos reales, no a entrenamiento teórico. Esto introduce una variable relevante: eficacia elevada, pero cohesión variable./n/No es un ejército tradicional./n/Es un ecosistema de combate./n/La actividad predominante se centra en la caza de entidades hostiles y la recolección de materiales de alto valor provenientes de las tierras congeladas. Ambos procesos implican riesgo elevado, pero generan recursos que no pueden obtenerse en regiones más estables. Este intercambio define la economía local./n/En este contexto, la herrería adquiere un papel central. No como oficio secundario, sino como infraestructura crítica. La abundancia de minerales en el territorio, combinada con la demanda constante de armamento y equipo especializado, ha transformado a Stormgarde en un nodo de producción metalúrgica de alto nivel./n/Herreros de diversas regiones migran hacia este enclave. No por prestigio, sino por acceso a materiales y clientela. La calidad del equipo producido aquí no es consecuencia de tradición, sino de presión constante por eficiencia. El error no se tolera. El fallo se paga en bajas./n/Las armas de Stormgarde no son ornamentales./n/Son herramientas de supervivencia./n/La relación con las tierras congeladas es ambivalente. Por un lado, representan una fuente de recursos excepcional. Por otro, un origen constante de amenazas. Bestias mágicas y entidades de naturaleza incierta emergen de estas regiones con frecuencia suficiente para mantener al asentamiento en estado de alerta permanente./n/Esto ha generado una cultura local basada en la preparación continua. No hay periodos prolongados de estabilidad. Solo intervalos entre incidentes./n/Comparativamente, Stormgarde presenta similitudes operativas con Allashar, otra región expuesta a incursiones provenientes del mismo origen. Sin embargo, mientras Allashar tiende hacia una estructura más formalizada, Stormgarde se mantiene adaptable. Menos predecible. Más eficiente en escenarios no estructurados./n/Anotación analítica:/n/Stormgarde no es un reino en el sentido tradicional. Es una respuesta./n/Una concentración de recursos, individuos y conocimiento diseñada —de forma consciente o emergente— para resistir aquello que otras regiones no pueden contener./n/No prospera a pesar del peligro./n/Prospera a partir de él./n/Lo cual introduce una cuestión metodológica relevante:/n/Si las condiciones que lo sostienen desaparecieran…/n/¿Stormgarde seguiría existiendo?/n/O, como otros sistemas dependientes de la amenaza,/n/¿colapsaría junto con ella?/n/La respuesta, por ahora, permanece indeterminada./n/Como la mayoría de cosas que funcionan demasiado bien bajo presión.",
+          allashar: 
+          "Registro de campo — Región: Allashar/n/Clasificación preliminar: enclave arcano-científico de frontera./n/Allashar ocupa una posición estratégica singular: es, hasta donde los registros actuales permiten afirmar, el asentamiento humano más próximo a Zelenograd. Esta proximidad no ha resultado en su colapso, lo cual exige ser analizado no como anomalía, sino como adaptación./n/A diferencia de Stormgarde, cuya relación con el entorno se define por confrontación directa, Allashar establece un modelo distinto: observación, explotación controlada y estudio sistemático. No busca contener el fenómeno./n/Busca comprenderlo./n/La población refleja esta diferencia. Aunque comparte con Stormgarde la atracción de individuos en busca de recursos, el perfil dominante aquí no es el combatiente, sino el investigador. Magos, hechiceros, estudiosos de lo thaumárgico, naturalistas y técnicos convergen en este punto con un objetivo común: extraer conocimiento de un entorno que, en otros contextos, solo produce bajas./n/Esto no elimina el riesgo./n/Lo racionaliza./n/La región adyacente de mayor relevancia es el denominado “bosque de sangre”, una extensión de Zelenograd que, pese a su escala relativa reducida dentro del sistema total, permanece vastamente inexplorada. Su característica más evidente es cromática: una flora dominada por tonalidades rojizas, asociadas a un estado de perpetuo otoño./n/No se trata de una estación./n/Es una condición estable./n/Las entidades presentes en esta subregión, aunque clasificadas como menos agresivas o letales en comparación con otras áreas del bosque, siguen excediendo los parámetros de seguridad convencionales. La percepción de “menor peligro” ha facilitado la exploración inicial, pero no debe interpretarse como ausencia de amenaza. Es, en el mejor de los casos, una gradación./n/Una zona de acceso./n/No de control./n/La economía local se estructura en torno a tres ejes principales: producción de alcohol, almacenamiento de alimentos en reserva y desarrollo de herramientas de naturaleza mágica. Cada uno de estos elementos responde directamente a las condiciones del entorno./n/El alcohol no es únicamente un producto cultural./n/Es conservante. Es desinfectante. Es recurso./n/Las reservas alimentarias no son opcionales, sino necesarias ante la posibilidad constante de interrupciones en rutas o incursiones hostiles. Y las herramientas mágicas constituyen la verdadera ventaja competitiva de Allashar: instrumentos diseñados no para la guerra directa, sino para la manipulación, medición y adaptación frente a fenómenos anómalos./n/A diferencia de Stormgarde, el territorio carece de riqueza mineral significativa. Esto limita el desarrollo metalúrgico pesado, pero se compensa con una abundancia notable de flora inusual. La cercanía a Zelenograd actúa como catalizador biológico, generando especies vegetales de propiedades no replicables en otras regiones./n/Como consecuencia, Allashar atrae una concentración elevada de médicos, herbolistas y especialistas en compuestos orgánicos. Aquí, la medicina no es estática./n/Evoluciona./n/El estudio de estas plantas no solo tiene aplicaciones curativas, sino también experimentales. Se documentan intentos de integración entre biología alterada y prácticas thaumárgicas, lo que posiciona a Allashar como un centro activo de desarrollo tecnológico en un sentido amplio del término./n/Tecnología no mecánica./n/Sino conceptual./n/La exploración es constante. A pesar de los siglos transcurridos desde su fundación, el territorio circundante —particularmente dentro del bosque de sangre— permanece incompleto en términos cartográficos. Esto no responde a negligencia, sino a limitaciones inherentes al objeto de estudio. Zelenograd, incluso en sus extensiones más “accesibles”, resiste la fijación./n/Allashar lo sabe./n/Y, a diferencia de otros, no intenta imponerle estabilidad./n/Anotación analítica:/n/Allashar representa una aproximación distinta al mismo problema que define a Stormgarde. Donde uno responde con fuerza, el otro responde con comprensión. Ninguno ha fracasado. Lo cual sugiere que ambos modelos, aunque opuestos en método, son igualmente válidos dentro de sus respectivos contextos./n/No obstante, esta coexistencia plantea una cuestión relevante:/n/¿Es Allashar un centro de estudio…/n/o una etapa intermedia?/n/Un lugar donde el fenómeno es observado antes de volverse inmanejable./n/O peor:/n/un lugar donde lo inmanejable aprende a ser comprendido./n/La distinción, en este punto, aún no es concluyente./n/Pero la proximidad al bosque —y la persistencia del asentamiento— indican que Allashar no solo estudia a Zelenograd./n/Convive con él./n/Y toda convivencia prolongada, eventualmente,/n/deja de ser unilateral.",
+          hemin: 
+          "Registro de campo — Región: Hemin/n/Clasificación preliminar: enclave comercial portuario de alta circulación./n/Hemin, en términos territoriales, es reducido. Su extensión no compite con la de otros reinos del continente. Sin embargo, esta limitación geográfica no se traduce en irrelevancia. Al contrario./n/Su influencia excede su tamaño./n/Es denominado, con frecuencia consistente entre fuentes diversas, como “el corazón del continente”. La designación no responde a una posición estrictamente central, sino a una función: circulación constante de bienes, información y tránsito humano./n/Hemin no domina territorios./n/Conecta sistemas./n/Su proximidad a la denominada Torre de Babel no es incidental. Aunque no existen registros que indiquen control directo o interacción formal con la estructura, la cercanía ha convertido a Hemin en punto de paso obligado para aquellos individuos que, por elección o por circunstancias menos claras, buscan aproximarse a ella./n/Esto introduce un flujo adicional de visitantes atípicos: exploradores, aspirantes, desertores de la torre. Ninguno permanece demasiado tiempo./n/Pero todos dejan algo atrás./n/El núcleo operativo de Hemin reside en sus puertos y mercados. A diferencia de enclaves como Stormgarde o Allashar, donde la especialización responde a la supervivencia frente a amenazas específicas, Hemin desarrolla su identidad en torno al intercambio. Aquí, la diversidad no es consecuencia./n/Es objetivo./n/Los mercados presentan una densidad de bienes inusual incluso en comparación con otros centros comerciales. La afirmación recurrente de que “puede encontrarse cualquier cosa” no es del todo precisa, pero se aproxima lo suficiente como para ser funcionalmente válida. La acumulación de rutas comerciales —marítimas y terrestres— converge en este punto, generando una disponibilidad constante de productos de origen diverso./n/Entre estos, destacan dos categorías: joyas preciosas y especias./n/Las regiones desérticas asociadas a Hemin, aunque limitadas en habitabilidad, presentan una riqueza mineral y orgánica específica. No en volumen bruto, sino en calidad. Gemas de formación particular y especias de composición compleja, difíciles de replicar en otros entornos./n/El valor no reside únicamente en la materia prima./n/Sino en su procesamiento./n/Los habitantes de Hemin son reconocidos —de forma consistente entre fuentes externas— por su capacidad para trabajar estos materiales con un nivel de precisión elevado. La talla de gemas y la preparación de especias no se ejecutan como oficios comunes, sino como prácticas refinadas, optimizadas a lo largo de generaciones./n/No es artesanía decorativa./n/Es especialización técnica./n/La economía local, por tanto, no depende de la acumulación, sino de la transformación. Hemin no necesita producir en grandes cantidades si puede aumentar el valor de lo que ya posee./n/Esto le otorga estabilidad./n/Y relevancia desproporcionada./n/Anotación analítica:/n/Hemin representa un tercer modelo de adaptación continental. Donde Stormgarde resiste y Allashar estudia, Hemin integra./n/No enfrenta directamente las anomalías del mundo./n/Ni intenta comprenderlas en su totalidad./n/Las incorpora al flujo comercial./n/Esto plantea una observación relevante:/n/En un continente definido por fuerzas que exceden el control humano —Zelenograd, la Torre, regiones inestables—, Hemin no busca controlarlas./n/Busca beneficiarse de su existencia./n/Lo cual, desde una perspectiva estrictamente funcional,/n/es, posiblemente, la estrategia más eficiente./n/Aunque no necesariamente la más segura a largo plazo./n/Porque todo sistema que depende de la circulación constante…/n/eventualmente enfrenta aquello que no puede permitirse intercambiar./n/Y en Hemin,/n/aún no está claro cuál será ese límite.",
+          hastahar: 
+          "Registro de campo — Región: Hastahar/n/Clasificación preliminar: enclave tribal consolidado con especialización en control biológico./n/Hastahar no responde al modelo tradicional de formación estatal. No surge de expansión territorial, herencia imperial ni centralización progresiva. Su origen es más reciente./n/Y más directo./n/Se trata de la convergencia de múltiples tribus nómadas que, en un entorno hostil —desértico, inestable, carente de recursos superficiales—, desarrollaron una solución común: la domesticación de las bestias locales./n/Inicialmente, esta práctica no tenía fines culturales ni económicos./n/Era supervivencia./n/Las criaturas del desierto, adaptadas a condiciones extremas, superaban al humano en resistencia, percepción y movilidad. Domarlas no solo permitía defensa frente a otras entidades hostiles, sino acceso indirecto a recursos: rutas, agua, refugio./n/Controlar a la bestia era, en términos funcionales, controlar el entorno./n/Con el tiempo, estas tribus dejaron de desplazarse. No por pérdida de capacidad, sino por acumulación de ventaja. La domesticación exitosa eliminó la necesidad de migración constante, permitiendo la formación de un asentamiento estable./n/Ese asentamiento es Hastahar./n/Su historia, en comparación con otras regiones del continente, es breve. Se limita a unas pocas generaciones. Sin embargo, esta limitación temporal no ha impedido el desarrollo de una identidad definida./n/Al contrario./n/La ausencia de estructuras heredadas ha permitido una configuración social menos rígida./n/Más adaptable./n/Hastahar presenta una diversidad cultural elevada. Esto no es producto de intercambio externo, sino de la integración interna de múltiples tradiciones tribales. Lo que en otros contextos generaría conflicto, aquí se ha convertido en sistema./n/La libertad individual, reportada de forma consistente en testimonios externos, no implica ausencia de orden. Es, más bien, una distribución distinta del mismo./n/No se impone desde arriba./n/Se mantiene desde dentro./n/La reputación de Hastahar como región de domadores de bestias es precisa, pero incompleta. No se trata únicamente de habilidad técnica. Existe una relación prolongada entre humano y criatura que trasciende la utilidad inmediata. Observaciones de campo sugieren patrones de vínculo, cooperación e incluso dependencia mutua en ciertos casos./n/No es control absoluto./n/Es coexistencia dirigida./n/Este factor introduce una variable relevante en términos militares. Las fuerzas de Hastahar no dependen exclusivamente de armamento convencional, sino de unidades híbridas: combatientes y bestias operando en conjunto. Esto genera ventajas tácticas significativas en entornos abiertos, particularmente en el desierto, donde otras fuerzas pierden eficiencia./n/La percepción externa de Hastahar suele centrarse en un aspecto distinto: su cultura festiva./n/Relatos coinciden en describir una población inclinada al baile, la celebración y los banquetes. Este rasgo, aunque real, ha sido mal interpretado como señal de desorden o falta de disciplina./n/La evidencia no respalda esta conclusión./n/La celebración no sustituye la estructura./n/La complementa./n/La frecuencia de festividades puede entenderse como mecanismo de cohesión social en un sistema compuesto por múltiples orígenes. Donde no hay una tradición única dominante, se construyen espacios compartidos./n/Se refuerza identidad./n/Se reduce fricción./n/Anotación analítica:/n/Hastahar demuestra que el control del entorno no requiere necesariamente su transformación, como en Allashar, ni su confrontación directa, como en Stormgarde./n/Puede lograrse mediante integración./n/Aprendiendo a operar dentro de sus reglas./n/O, más precisamente,/n/adoptando parte de ellas./n/Esto plantea una cuestión relevante:/n/Si una sociedad puede adaptarse a las bestias del desierto hasta coexistir con ellas…/n/¿qué ocurriría si ese mismo principio se aplicara a fenómenos de mayor escala?/n/Zelenograd, por ejemplo./n/La hipótesis resulta metodológicamente incómoda./n/Pero no inválida./n/Y Hastahar, sin proponérselo,/n/sugiere que la línea entre dominar y adaptarse…/n/es más delgada de lo que otros modelos están dispuestos a admitir.",
+        };
+
+        const comentarios = {
+          zelenograd: {
+            detective: "— Observación: la consistencia del fenómeno descrito sugiere un sistema activo, no un entorno pasivo. No es un bosque en términos convencionales.",
+            asistente: "— Mire, jefe… si esto que escribió el tipo es verdad, entonces ese bosque no crece… se mueve. Y eso ya me da mala espina."
+          },
+          templo: {
+            detective: "— Registro relevante: conversión total de materia orgánica en estado metálico sin degradación aparente. El evento no es simbólico; es físico y mal ejecutado.",
+            asistente: "— O sea… ¿intentaron jugar a ser dioses y los convirtieron en estatuas? Qué genios… de los peligrosos."
+          },
+          fuego: {
+            detective: "— Inferencia: la conducta de repliegue en organismos de alta dominancia indica reconocimiento de una amenaza superior. No es cobardía; es evaluación correcta.",
+            asistente: "— Si hasta los dragones prefieren no meterse ahí, yo no pienso discutirles. Algo saben que nosotros no."
+          },
+          babel: {
+            detective: "— Análisis: la estructura descrita invalida principios espaciales básicos. No se trata de arquitectura; es un entorno autónomo con reglas propias.",
+            asistente: "— Una torre que promete deseos, nadie llega arriba y encima cambia por dentro… sí, claro, totalmente confiable."
+          },
+          hielo: {
+            detective: "— Observación: persistencia de vida en condiciones extremas sugiere adaptación no convencional o intervención externa prolongada.",
+            asistente: "— Entre hielo eterno, bichos raros y leyendas de locura… este lugar suena como el peor sitio para ir de vacaciones."
+          },
+          storm: {
+            detective: "— Evaluación: estructura social sostenida por presión constante. No es estabilidad real, sino equilibrio bajo amenaza continua.",
+            asistente: "— Básicamente viven peleando todo el tiempo… y aun así funcionan. No sé si admirarlos o preocuparme más."
+          },
+          allashar: {
+            detective: "— Conclusión provisional: interacción sistemática con el fenómeno sin colapso inmediato. Indica metodología rigurosa… o tolerancia por parte del entorno.",
+            asistente: "— Estos no huyen del bosque, lo estudian… eso ya no es valentía, jefe, eso es otra cosa."
+          },
+          hemin: {
+            detective: "— Análisis económico: sistema basado en circulación constante de bienes. Eficiente en condiciones normales; vulnerable ante interrupciones.",
+            asistente: "— Si ahí se consigue de todo, seguro también se consigue lo que nadie debería tener."
+          },
+          hastahar: {
+            detective: "— Observación: transición de supervivencia nómada a estructura social estable mediante integración con el entorno. No es improvisación; es adaptación sostenida.",
+            asistente: "— Pasaron de sobrevivir en el desierto a domar bestias y hacer fiestas… no le voy a mentir, suena mejor que muchos otros lugares."
+          }
+        };
+
+        const imagenesRegiones = {
+          zelenograd: [
+            "Multimedia/Zelenograd1.png",
+            "Multimedia/Zelenograd2.png",
+            "Multimedia/Zelenograd3.png"
+          ],
+          templo: [
+            "Multimedia/templo_1.png",
+            "Multimedia/templo_2.png",
+            "Multimedia/templo_3.png"
+          ],
+          fuego: [
+            "Multimedia/fuego_1.png",
+            "Multimedia/fuego_2.png"
+          ],
+          babel: [
+            "Multimedia/babel_1.png",
+            "Multimedia/babel_2.png"
+          ],
+          hielo: [
+            "Multimedia/hielo_1.png",
+            "Multimedia/hielo_2.png"
+          ],
+          storm: [
+            "Multimedia/storm_1.png",
+            "Multimedia/storm_2.png"
+          ],
+          allashar: [
+            "Multimedia/allashar_1.png",
+            "Multimedia/allashar_2.png"
+          ],
+          hemin: [
+            "Multimedia/hemin_1.png",
+            "Multimedia/hemin_2.png"
+          ],
+          hastahar: [
+            "Multimedia/hastahar_1.png",
+            "Multimedia/hastahar_2.png"
+          ]
+        };
+
+        function cargarCarrusel(region) {
+          const carouselInner = document.getElementById("carouselInnerRegion");
+          // Limpiar carrusel
+          carouselInner.innerHTML = "";
+          // Obtener imágenes SOLO de esa región
+          const imagenes = imagenesRegiones[region];
+
+          if (!imagenes || imagenes.length === 0) {
+            carouselInner.innerHTML = `
+              <div class="carousel-item active">
+                <img src="Multimedia/Evidencia_Default.png" class="d-block w-100">
+              </div>`;
+            return;
+          }
+
+          // Crear slides
+          imagenes.forEach((src, index) => {
+            const active = index === 0 ? "active" : "";
+            carouselInner.innerHTML += `
+              <div class="carousel-item ${active}">
+                <img src="${src}"
+                    class="d-block w-100 carousel-img"
+                    onerror="this.src='Multimedia/Evidencia_Default.png'">
+              </div>`;
+          });
+        }
+
+        /* INSERTAR TEXTOS */
+        textoRegion.innerHTML = (narraciones[region] || "Sin datos.").replace(/\/n\//g, "<br><br>");
+
+        const datosComentario = comentarios[region];
+        if (datosComentario) {
+          asistente.textContent = datosComentario.asistente;
+          detective.textContent = datosComentario.detective;
+        } else {
+          asistente.textContent = "Sin observaciones.";
+          detective.textContent = "Sin observaciones.";
+        }
+
+        overlay.classList.add("activo");
+        document.body.classList.add("sin-scroll");
+      }
+
+      /* CERRAR */
+      document.getElementById("btnCerrarOverlay").addEventListener("click", () => {
+        document.getElementById("overlayRegion").classList.remove("activo");
+        document.body.classList.remove("sin-scroll");
+      });
+    </script>
+    <!-- SCRIPT PRINCIPAL (Bootstrap para interacción UI como colapsos y carrusel) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

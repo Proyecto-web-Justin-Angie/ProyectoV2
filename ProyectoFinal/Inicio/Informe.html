@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Informe Forense — Escena del Crimen</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="estilos.css" />
+    <style>
+      /* Estilo para campos con error */
+      .error {
+        border: 2px solid #dc3545 !important;
+        background-color: rgba(220, 53, 69, 0.05) !important;
+      }
+      .panel-papel { background-color: #fdfcf0; border: 1px solid #dcd7b5; }
+      .panel-papel-suave { background-color: #f8f9fa; border-left: 5px solid #212529; }
+      legend { font-weight: bold; font-size: 1.1rem; color: #444; border-bottom: 1px solid #ddd; margin-bottom: 15px; }
+    </style>
+  </head>
+
+  <body>
+    <div class="fondo-global-juego"></div>
+    <main class="escena-principal">
+      <section class="contenedor-juego">
+        <header class="barra-superior visible-ui">
+          <button class="btn-esquina" onclick="sessionStorage.setItem('desdeEscena', 'true'); window.location.href = 'Oficina.html';">
+            Volver atrás
+          </button>
+          <div class="grupo-botones-derecha">
+            <button onclick="window.location.href = 'SobreP&C.html'">Sobre los point & click</button>
+            <button onclick="window.location.href = 'Galeria.html'">Galería</button>
+            <button onclick="window.location.href = 'Contacto.html'">Contáctenos</button>
+          </div>
+        </header>
+
+        <section class="visor-central">
+          <div class="pagina-wiki">
+            <div class="container-fluid">
+              <div class="row g-4 mb-3">
+                <div class="col-12">
+                  <aside class="p-3 panel-papel-suave shadow">
+                    <h4>Resumen del caso</h4>
+                    <ul class="list-group mb-3">
+                      <li class="list-group-item">Caso Nº 047</li>
+                      <li class="list-group-item">Estado: <strong>En análisis</strong></li>
+                      <li class="list-group-item">Prioridad: Alta</li>
+                    </ul>
+                    <div class="alert alert-dark">Complete el informe con precisión técnica.</div>
+                  </aside>
+                </div>
+              </div>
+
+              <div class="row g-4">
+                <div class="col-12">
+                  <section class="p-4 panel-papel shadow">
+                    <h2 class="text-center">Informe de Escena del Crimen</h2>
+                    <p class="text-center text-muted">Documento oficial de registro pericial</p>
+
+                    <form id="formulario" class="row g-3" novalidate>
+                      <fieldset class="col-12">
+                        <legend>1. Identificación del caso</legend>
+                        <input type="text" id="nombre" class="form-control mb-2" placeholder="Nombre del investigador *" />
+                        <input type="text" id="expediente" class="form-control mb-2" placeholder="Número de expediente (Ej: EXP-123) *" />
+                        <input type="text" id="ubicacion" class="form-control" placeholder="Ubicación de la escena *" />
+                      </fieldset>
+
+                      <fieldset class="col-12">
+                        <legend>2. Registro temporal</legend>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label class="form-label">Fecha *</label>
+                            <input type="date" id="fecha" class="form-control" />
+                          </div>
+                          <div class="col-md-6">
+                            <label class="form-label">Hora *</label>
+                            <input type="time" id="hora" class="form-control" />
+                          </div>
+                        </div>
+                      </fieldset>
+
+                      <fieldset class="col-12">
+                        <legend>3. Condición de la escena</legend>
+                        <div class="mb-2">
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="estado" id="est1" value="Preservada">
+                            <label class="form-check-label" for="est1">Preservada</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="estado" id="est2" value="Alterada">
+                            <label class="form-check-label" for="est2">Alterada</label>
+                          </div>
+                        </div>
+                        <textarea id="comentario" class="form-control" placeholder="Descripción detallada de hallazgos *"></textarea>
+                      </fieldset>
+
+                      <fieldset class="col-12">
+                        <legend>4. Control de Evidencias</legend>
+                        <div class="progress mb-2" style="height: 25px;">
+                          <div id="barraPistas" class="progress-bar bg-dark progress-bar-striped progress-bar-animated" style="width: 0%"></div>
+                        </div>
+                        <p id="contadorPistas" class="small fw-bold">0 / 5 evidencias procesadas</p>
+                        <button type="button" class="btn btn-outline-dark btn-sm" onclick="sumarPista()">
+                          + Registrar Evidencia Encontrada
+                        </button>
+                      </fieldset>
+
+                      <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-dark btn-lg px-5">Finalizar e Imprimir Informe</button>
+                      </div>
+                    </form>
+                  </section>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <footer class="barra-inferior-juego visible-ui">
+          <div class="panel-mensaje-juego">
+            <p id="mensajeJuego">Documente cada detalle. Ninguna evidencia es irrelevante.</p>
+          </div>
+        </footer>
+      </section>
+    </main>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div id="toastExito" class="toast text-bg-dark border-0">
+        <div class="d-flex">
+          <div class="toast-body">Informe archivado en el sistema central.</div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      let pistas = 0;
+      const totalPistasRequeridas = 5;
+
+      function sumarPista() {
+        if (pistas < totalPistasRequeridas) {
+          pistas++;
+          let porcentaje = (pistas / totalPistasRequeridas) * 100;
+          document.getElementById("barraPistas").style.width = porcentaje + "%";
+          document.getElementById("contadorPistas").textContent = `${pistas} / ${totalPistasRequeridas} evidencias procesadas`;
+        }
+      }
+
+      document.getElementById("formulario").addEventListener("submit", function (e) {
+        e.preventDefault();
+        
+        // Limpiar errores previos
+        document.querySelectorAll(".error").forEach(el => el.classList.remove("error"));
+
+        const validar = (id, condicion, mensaje) => {
+          const el = document.getElementById(id);
+          if (condicion) {
+            el.classList.add("error");
+            alert("ALERTA FORENSE: " + mensaje);
+            el.focus();
+            return false;
+          }
+          return true;
+        };
+
+        // VALIDACIONES
+        if (!validar("nombre", document.getElementById("nombre").value.trim().length < 3, "Nombre del investigador inválido.")) return;
+        if (!validar("expediente", !/^EXP-\d+/.test(document.getElementById("expediente").value), "El expediente debe seguir el formato EXP-seguido de números.")) return;
+        if (!validar("ubicacion", document.getElementById("ubicacion").value.trim() === "", "Debe indicar la ubicación de la escena.")) return;
+        if (!validar("fecha", document.getElementById("fecha").value === "", "La fecha del peritaje es obligatoria.")) return;
+        if (!validar("hora", document.getElementById("hora").value === "", "La hora del peritaje es obligatoria.")) return;
+        
+        // Validar Radio
+        if (!document.querySelector('input[name="estado"]:checked')) {
+          alert("ALERTA: Debe marcar el estado de preservación de la escena.");
+          return;
+        }
+
+        if (!validar("comentario", document.getElementById("comentario").value.trim().length < 15, "La descripción es demasiado breve para un informe oficial.")) return;
+
+        // Validar Progreso (Mecánica de juego)
+        if (pistas < totalPistasRequeridas) {
+          alert(`ERROR: No puede cerrar el caso. Faltan ${totalPistasRequeridas - pistas} evidencias por procesar.`);
+          return;
+        }
+
+        // ÉXITO
+        let toast = new bootstrap.Toast(document.getElementById("toastExito"));
+        toast.show();
+        console.log("Informe validado y enviado.");
+      });
+    </script>
+  </body>
+</html>

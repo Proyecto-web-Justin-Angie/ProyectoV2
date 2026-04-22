@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Archivo Point-and-Click</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="estilos.css" />
+    <style>
+      /* Ajuste para que la infobox sea horizontal (acostada) */
+      .infobox-wiki-horizontal {
+        width: 100% !important;
+        float: none !important;
+        margin: 20px 0 !important;
+        display: block;
+      }
+
+      .contenedor-infobox-grid {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+      }
+
+      /* Tamaño controlado para el carrusel en modo horizontal */
+      .carrusel-horizontal {
+        flex: 1;
+        max-width: 60%;
+      }
+
+      .datos-horizontales {
+        flex: 1;
+      }
+
+      article {
+        scroll-margin-top: 100px;
+      }
+
+      /* Asegurar que los botones del carrusel sean visibles sobre el fondo */
+      .carousel-control-prev-icon,
+      .carousel-control-next-icon {
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+        padding: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="fondo-global-juego"></div>
+
+    <main class="escena-principal">
+      <div class="contenedor-juego">
+        <header class="barra-superior visible-ui">
+          <button
+            class="btn-esquina"
+            onclick="window.location.href = 'Oficina.html'"
+          >
+            Volver atrás
+          </button>
+          <div class="grupo-botones-derecha">
+            <button onclick="location.href = 'Galeria.html'">Galería</button>
+            <button onclick="location.href = 'Informe.html'">Informe</button>
+            <button onclick="location.href = 'Contacto.html'">
+              Contáctenos
+            </button>
+          </div>
+        </header>
+
+        <section class="visor-central">
+          <div class="pagina-wiki container-fluid">
+            <header class="wiki-encabezado-principal">
+              <h1 class="wiki-titulo-principal">
+                Historia de los Point-and-Click
+              </h1>
+              <p class="wiki-actualizacion">
+                Archivo interactivo del sistema de investigación
+              </p>
+            </header>
+
+            <aside class="infobox-wiki infobox-wiki-horizontal">
+              <div class="contenedor-infobox-grid">
+                <div
+                  id="carouselWiki"
+                  class="carousel slide carrusel-horizontal"
+                  data-bs-ride="carousel"
+                >
+                  <div class="carousel-inner">
+                    <div class="carousel-item active">
+                      <img
+                        src="Multimedia/Evidencia_1.png"
+                        class="d-block w-100"
+                        style="
+                          border-radius: 10px;
+                          height: 300px;
+                          object-fit: cover;
+                        "
+                      />
+                    </div>
+                    <div class="carousel-item">
+                      <img
+                        src="Multimedia/Evidencia_2.png"
+                        class="d-block w-100"
+                        style="
+                          border-radius: 10px;
+                          height: 300px;
+                          object-fit: cover;
+                        "
+                      />
+                    </div>
+                    <div class="carousel-item">
+                      <img
+                        src="Multimedia/Evidencia_3.png"
+                        class="d-block w-100"
+                        style="
+                          border-radius: 10px;
+                          height: 300px;
+                          object-fit: cover;
+                        "
+                      />
+                    </div>
+                  </div>
+                  <button
+                    class="carousel-control-prev"
+                    type="button"
+                    data-bs-target="#carouselWiki"
+                    data-bs-slide="prev"
+                  >
+                    <span
+                      class="carousel-control-prev-icon"
+                      aria-hidden="true"
+                    ></span>
+                  </button>
+                  <button
+                    class="carousel-control-next"
+                    type="button"
+                    data-bs-target="#carouselWiki"
+                    data-bs-slide="next"
+                  >
+                    <span
+                      class="carousel-control-next-icon"
+                      aria-hidden="true"
+                    ></span>
+                  </button>
+                </div>
+
+                <div class="datos-horizontales">
+                  <h5
+                    style="
+                      color: var(--texto-acento);
+                      border-bottom: 1px solid var(--panel-borde-general);
+                    "
+                  >
+                    Ficha de Archivo
+                  </h5>
+                  <table>
+                    <tr>
+                      <th>Género</th>
+                      <td>Aventura gráfica</td>
+                    </tr>
+                    <tr>
+                      <th>Interfaz</th>
+                      <td>Cursor / Mouse</td>
+                    </tr>
+                    <tr>
+                      <th>Era</th>
+                      <td>1980 - Actualidad</td>
+                    </tr>
+                    <tr>
+                      <th>Estado</th>
+                      <td>Documentado</td>
+                    </tr>
+                  </table>
+                  <div class="botones-wiki-laterales">
+                    <button class="btn-wiki-accion">Analizar Evidencia</button>
+                  </div>
+                </div>
+              </div>
+            </aside>
+
+            <nav class="indice-wiki">
+              <strong>Contenidos</strong>
+              <ul>
+                <li><a href="#introduccion">1. Introducción</a></li>
+                <li><a href="#definicion">2. Definición técnica</a></li>
+                <li><a href="#origenes">3. Orígenes del sistema</a></li>
+                <li><a href="#evolucion">4. Evolución tecnológica</a></li>
+                <li><a href="#edad-dorada">5. Edad dorada del género</a></li>
+                <li><a href="#declive">6. Declive comercial</a></li>
+                <li><a href="#renacimiento">7. Renacimiento moderno</a></li>
+                <li><a href="#mecanicas">8. Mecánicas fundamentales</a></li>
+                <li><a href="#motores">9. Motores históricos</a></li>
+                <li><a href="#juegos">10. Juegos representativos</a></li>
+                <li><a href="#cultura">11. Influencia cultural</a></li>
+                <li><a href="#actualidad">12. Estado actual</a></li>
+              </ul>
+            </nav>
+
+            <article id="introduccion">
+              <h2>1. Introducción</h2>
+              <p>
+                Los videojuegos de tipo point-and-click constituyen un subgénero
+                de las aventuras gráficas caracterizado por la interacción
+                indirecta mediante un cursor. Este modelo permitió una
+                transición clave desde las interfaces basadas en texto hacia
+                entornos visuales más accesibles.
+              </p>
+            </article>
+
+            <article id="definicion">
+              <h2>2. Definición técnica</h2>
+              <p>
+                El término hace referencia a un sistema de control donde el
+                jugador interactúa con el entorno mediante la selección directa
+                de elementos en pantalla. Al estar la galería arriba, todo este
+                texto fluye naturalmente por todo el ancho del papel de la wiki.
+              </p>
+            </article>
+
+            <article id="origenes">
+              <h2>3. Orígenes del sistema</h2>
+              <p>
+                El género tiene sus raíces en las décadas de 1970 y 1980. Con la
+                llegada de interfaces gráficas, estudios como Sierra On-Line
+                comenzaron a incorporar elementos visuales.
+              </p>
+              <ul class="lista-wiki">
+                <li>Motor SCUMM: Pionero en la interfaz de verbos.</li>
+                <li>Sistemas Point: Evolución del puntero moderno.</li>
+              </ul>
+            </article>
+
+            <article id="edad-dorada">
+              <h2>4. La Edad Dorada (1985–1995)</h2>
+              <p>
+                Durante finales de los años 80 y principios de los 90, el género
+                point-and-click alcanzó su mayor popularidad. Empresas como
+                <a
+                  href="https://es.wikipedia.org/wiki/LucasArts"
+                  target="_blank"
+                  >LucasArts</a
+                >
+                y
+                <a
+                  href="https://es.wikipedia.org/wiki/Sierra_Entertainment"
+                  target="_blank"
+                  >Sierra On-Line</a
+                >
+                produjeron títulos que definieron la estructura moderna de las
+                aventuras gráficas.
+              </p>
+
+              <p>
+                Uno de los mayores avances fue la introducción del motor
+                <a href="https://es.wikipedia.org/wiki/SCUMM" target="_blank"
+                  >SCUMM</a
+                >
+                (Script Creation Utility for Maniac Mansion), que permitió a los
+                jugadores interactuar con objetos mediante una lista visible de
+                verbos.
+              </p>
+
+              <ul class="lista-wiki">
+                <li>
+                  <a
+                    href="https://es.wikipedia.org/wiki/Maniac_Mansion"
+                    target="_blank"
+                  >
+                    Maniac Mansion (1987)
+                  </a>
+                  — Uno de los primeros juegos en usar SCUMM.
+                </li>
+                <li>
+                  <a
+                    href="https://es.wikipedia.org/wiki/The_Secret_of_Monkey_Island"
+                    target="_blank"
+                  >
+                    The Secret of Monkey Island (1990)
+                  </a>
+                  — Considerado un clásico del género.
+                </li>
+                <li>
+                  <a
+                    href="https://es.wikipedia.org/wiki/King%27s_Quest"
+                    target="_blank"
+                  >
+                    King's Quest
+                  </a>
+                  — Serie influyente en narrativa interactiva.
+                </li>
+              </ul>
+            </article>
+
+            <article id="declive">
+              <h2>5. Declive del Género (1996–2005)</h2>
+              <p>
+                A mediados de los años 90, el auge de los gráficos en 3D y el
+                crecimiento de géneros como los shooters y los juegos de acción
+                redujeron la popularidad de las aventuras point-and-click.
+              </p>
+
+              <p>
+                El aumento de costos de producción y la demanda del mercado por
+                experiencias más dinámicas llevaron a muchas compañías a
+                abandonar el género. Incluso estudios históricos cerraron o
+                redujeron su producción.
+              </p>
+
+              <ul class="lista-wiki">
+                <li>
+                  <a
+                    href="https://es.wikipedia.org/wiki/Grim_Fandango"
+                    target="_blank"
+                  >
+                    Grim Fandango (1998)
+                  </a>
+                  — Último gran título clásico de LucasArts.
+                </li>
+                <li>
+                  <a
+                    href="https://es.wikipedia.org/wiki/The_Longest_Journey"
+                    target="_blank"
+                  >
+                    The Longest Journey (1999)
+                  </a>
+                  — Destacado por su narrativa compleja.
+                </li>
+              </ul>
+            </article>
+
+            <article id="renacimiento">
+              <h2>6. Renacimiento Independiente (2005–Actualidad)</h2>
+              <p>
+                El género experimentó un renacimiento gracias a desarrolladores
+                independientes y plataformas de distribución digital.
+              </p>
+
+              <p>
+                Herramientas accesibles y el interés por experiencias narrativas
+                permitieron que nuevos estudios produjeran títulos inspirados en
+                los clásicos.
+              </p>
+
+              <ul class="lista-wiki">
+                <li>
+                  <a
+                    href="https://es.wikipedia.org/wiki/Machinarium"
+                    target="_blank"
+                  >
+                    Machinarium (2009)
+                  </a>
+                  — Juego independiente con estilo artístico distintivo.
+                </li>
+                <li>
+                  <a
+                    href="https://es.wikipedia.org/wiki/The_Walking_Dead_(videojuego)"
+                    target="_blank"
+                  >
+                    The Walking Dead (2012)
+                  </a>
+                  — Introdujo mecánicas narrativas modernas.
+                </li>
+                <li>
+                  <a
+                    href="https://es.wikipedia.org/wiki/Thimbleweed_Park"
+                    target="_blank"
+                  >
+                    Thimbleweed Park (2017)
+                  </a>
+                  — Homenaje moderno al estilo clásico.
+                </li>
+              </ul>
+            </article>
+
+            <article id="mecanicas">
+              <h2>7. Mecánicas Fundamentales</h2>
+              <p>
+                Las mecánicas de los juegos point-and-click se basan en la
+                interacción indirecta mediante un cursor. Estas mecánicas suelen
+                incluir:
+              </p>
+
+              <ul class="lista-wiki">
+                <li>Exploración de escenarios estáticos.</li>
+                <li>Recolección de objetos.</li>
+                <li>Resolución de acertijos (puzzles).</li>
+                <li>Interacción con personajes mediante diálogos.</li>
+                <li>Combinación de objetos en inventario.</li>
+              </ul>
+
+              <p>
+                Muchos puzzles requieren lógica secuencial, memoria visual y
+                observación detallada del entorno.
+              </p>
+            </article>
+
+            <article id="motores">
+              <h2>8. Motores y Tecnologías</h2>
+              <p>
+                El desarrollo del género estuvo estrechamente ligado a la
+                creación de motores gráficos especializados.
+              </p>
+
+              <ul class="lista-wiki">
+                <li>
+                  <a href="https://es.wikipedia.org/wiki/SCUMM" target="_blank">
+                    SCUMM
+                  </a>
+                  — Motor clásico de LucasArts.
+                </li>
+                <li>
+                  <a
+                    href="https://es.wikipedia.org/wiki/Adventure_Game_Studio"
+                    target="_blank"
+                  >
+                    Adventure Game Studio (AGS)
+                  </a>
+                  — Popular entre desarrolladores independientes.
+                </li>
+                <li>
+                  <a href="https://www.scummvm.org/" target="_blank">
+                    ScummVM
+                  </a>
+                  — Plataforma para ejecutar juegos clásicos.
+                </li>
+              </ul>
+
+              <p>
+                Estos motores facilitaron la creación de interfaces gráficas
+                complejas y permitieron la expansión del género hacia nuevas
+                plataformas.
+              </p>
+            </article>
+
+            <article id="titulos">
+              <h2>9. Títulos Representativos</h2>
+              <p>
+                Algunos juegos se consideran esenciales para comprender la
+                evolución del género point-and-click.
+              </p>
+
+              <ul class="lista-wiki">
+                <li>
+                  <a
+                    href="https://es.wikipedia.org/wiki/Day_of_the_Tentacle"
+                    target="_blank"
+                  >
+                    Day of the Tentacle
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://es.wikipedia.org/wiki/Broken_Sword"
+                    target="_blank"
+                  >
+                    Broken Sword
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://es.wikipedia.org/wiki/Sam_%26_Max_Hit_the_Road"
+                    target="_blank"
+                  >
+                    Sam & Max Hit the Road
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://es.wikipedia.org/wiki/Syberia_(videojuego)"
+                    target="_blank"
+                  >
+                    Syberia
+                  </a>
+                </li>
+              </ul>
+            </article>
+
+            <article id="impacto">
+              <h2>10. Impacto Cultural y Legado</h2>
+              <p>
+                Los juegos point-and-click influyeron en múltiples géneros
+                posteriores, incluyendo novelas visuales, juegos narrativos
+                modernos y experiencias interactivas educativas.
+              </p>
+
+              <p>
+                El enfoque en narrativa y personajes permitió el desarrollo de
+                historias complejas que rivalizan con otros medios narrativos.
+              </p>
+
+              <p>
+                Muchos desarrolladores actuales citan títulos clásicos como
+                inspiración para juegos centrados en la exploración y la toma de
+                decisiones.
+              </p>
+            </article>
+
+            <article id="referencias">
+              <h2>11. Referencias y Lectura Externa</h2>
+
+              <p>
+                Para ampliar la información sobre la historia y evolución del
+                género, se recomienda consultar los siguientes recursos:
+              </p>
+
+              <ul class="lista-wiki">
+                <li>
+                  <a
+                    href="https://es.wikipedia.org/wiki/Aventura_gr%C3%A1fica"
+                    target="_blank"
+                  >
+                    Aventura gráfica — Wikipedia
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://es.wikipedia.org/wiki/Videojuego_de_aventura"
+                    target="_blank"
+                  >
+                    Videojuegos de aventura — Wikipedia
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://en.wikipedia.org/wiki/Point-and-click"
+                    target="_blank"
+                  >
+                    Point-and-click — Wikipedia (inglés)
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.scummvm.org/" target="_blank">
+                    ScummVM — Proyecto oficial
+                  </a>
+                </li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <footer class="barra-inferior-juego visible-ui">
+          <div class="panel-mensaje-juego">
+            <p>
+              Galería actualizada. Los datos se muestran en formato panorámico.
+            </p>
+          </div>
+        </footer>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

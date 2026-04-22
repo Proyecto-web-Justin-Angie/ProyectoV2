@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Galería de investigación</title>
+    <link rel="stylesheet" href="estilos.css" />
+
+    <style>
+  /* Mantenemos solo la lógica de scroll y colores específicos para el texto largo */
+  .lado-texto {
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh; 
+    flex: 1;
+    overflow: hidden;
+  }
+
+  #textoDetective {
+    white-space: normal;
+    line-height: 1.7;
+    color: #f0ead6;
+    overflow-y: auto;
+    padding-right: 15px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--pergamino) transparent;
+  }
+
+  /* Scrollbar para navegadores Chrome/Edge */
+  #textoDetective::-webkit-scrollbar { width: 6px; }
+  #textoDetective::-webkit-scrollbar-thumb {
+    background-color: var(--pergamino, #e8d9b8);
+    border-radius: 10px;
+  }
+
+  .lado-texto h2 {
+    color: var(--pergamino, #e8d9b8);
+    margin-bottom: 15px;
+  }
+
+  /* Contenedor para posicionar los botones */
+  .botones-overlay {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+    align-items: center;
+  }
+
+  .contenido-evidencia {
+    display: flex;
+    gap: 20px;
+    max-height: 85vh;
+  }
+
+  /* 🔥 BOTONES COPIADOS DEL CSS ORIGINAL */
+  .btn-esquina {
+    position: relative;
+    padding: 12px 25px;
+    min-width: 140px;
+    background: linear-gradient(to bottom, var(--boton-claro), var(--boton-medio));
+    border: 3px solid var(--boton-borde);
+    border-radius: 10px;
+    color: var(--texto-acento);
+    font-weight: bold;
+    font-family: Georgia, "Times New Roman", serif;
+    box-shadow: 3px 3px 0 var(--boton-sombra);
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .btn-esquina::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0%;
+    height: 2px;
+    background: var(--brillo);
+    transition: width 0.3s;
+  }
+
+  .btn-esquina:hover::after {
+    width: 100%;
+  }
+
+  .btn-esquina:hover {
+    border: 3px solid var(--boton-borde-hover);
+    background: linear-gradient(to bottom, var(--boton-hover-claro), var(--boton-hover-medio));
+    box-shadow: 0 0 8px var(--brillo-calido-fuerte),
+                0 0 18px var(--brillo-calido-suave),
+                3px 3px 0 var(--boton-sombra);
+  }
+
+  .btn-esquina:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--boton-sombra);
+  }
+</style>
+  </head>
+
+  <body>
+    <div class="fondo-global-juego"></div>
+
+    <main class="escena-principal">
+      <section class="contenedor-juego">
+        <header class="barra-superior visible-ui">
+          <button type="button" class="btn-esquina" onclick="sessionStorage.setItem('desdeEscena', 'true'); window.location.href = 'Oficina.html';">
+            Volver atrás
+          </button>
+
+          <div class="grupo-botones-derecha">
+            <button class="btn-esquina" onclick="window.location.href = 'SobreP&C.html'">Sobre los point & click</button>
+            <button class="btn-esquina" onclick="window.location.href = 'Informe.html'">Informe</button>
+            <button class="btn-esquina" onclick="window.location.href = 'Contacto.html'">Contáctenos</button>
+          </div>
+        </header>
+
+        <section class="visor-central">
+          <section class="galeria-escena">
+            <h2 class="titulo-seccion-caso" style="color: var(--pergamino)">Escenas del crimen</h2>
+            <div class="caso-lado-imagenes">
+              <div class="bloque-evidencia">
+                <img src="Multimedia/EscenaCrimen_1.png" class="caso-imagen" onclick="abrirImagen(this.getAttribute('src'))" />
+                <p class="descripcion-evidencia">Lugar inicial del hallazgo.</p>
+              </div>
+              <div class="bloque-evidencia">
+                <img src="Multimedia/EscenaCrimen_2.png" class="caso-imagen" onclick="abrirImagen(this.getAttribute('src'))" />
+                <p class="descripcion-evidencia">Zona secundaria.</p>
+              </div>
+              <div class="bloque-evidencia">
+                <img src="Multimedia/EscenaCrimen_3.png" class="caso-imagen" onclick="abrirImagen(this.getAttribute('src'))" />
+                <p class="descripcion-evidencia">Área periférica.</p>
+              </div>
+            </div>
+
+            <h2 class="titulo-seccion-caso" style="color: var(--pergamino)">Evidencias recolectadas</h2>
+            <div class="caso-lado-imagenes">
+              <div class="bloque-evidencia">
+                <img src="Multimedia/Evidencia_1.png" class="caso-imagen" onclick="abrirImagen(this.getAttribute('src'))" />
+                <p class="descripcion-evidencia">Objeto de la gaveta.</p>
+              </div>
+              <div class="bloque-evidencia">
+                <img src="Multimedia/Evidencia_2.png" class="caso-imagen" onclick="abrirImagen(this.getAttribute('src'))" />
+                <p class="descripcion-evidencia">Elemento sospechoso.</p>
+              </div>
+              <div class="bloque-evidencia">
+                <img src="Multimedia/Evidencia_3.png" class="caso-imagen" onclick="abrirImagen(this.getAttribute('src'))" />
+                <p class="descripcion-evidencia">Registro alterado.</p>
+              </div>
+              <div class="bloque-evidencia">
+                <img src="Multimedia/Evidencia_4.png" class="caso-imagen" onclick="abrirImagen(this.getAttribute('src'))" />
+                <p class="descripcion-evidencia">Material oculto.</p>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <footer class="barra-inferior-juego visible-ui">
+          <div class="panel-mensaje-juego">
+            <p id="mensajeJuego">Revisa las imágenes disponibles.</p>
+          </div>
+        </footer>
+      </section>
+    </main>
+
+    <div id="ayuda" class="overlay-ayuda">
+      <div class="contenedor-tutorial">
+        <section class="pagina pagina-evidencia">
+          <section class="panel-central sin-papiro">
+            <div class="contenido-evidencia">
+              <div class="lado-imagen">
+                <img id="imagenOverlay" class="img-fluid" />
+                <div class="perfil-cita">
+                  <blockquote id="textoAsistente" style="color: var(--pergamino)">...</blockquote>
+                </div>
+
+                <div class="botones-overlay">
+                  <button id="btnVolverGaleria" class="btn-esquina">
+                    Volver a la galería
+                  </button>
+                  <button class="btn-esquina" onclick="sessionStorage.setItem('desdeEscena', 'true'); window.location.href = 'Oficina.html';">
+                    Volver a la oficina
+                  </button>
+                </div>
+              </div>
+
+              <div class="lado-texto">
+                <h2>Notas del detective</h2>
+                <p id="textoDetective">Observación pendiente.</p>
+              </div>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+
+    <script>
+      function abrirImagen(src) {
+        const overlay = document.getElementById("ayuda");
+        const imagen = document.getElementById("imagenOverlay");
+        const texto = document.getElementById("textoDetective");
+        const asistente = document.getElementById("textoAsistente");
+
+        imagen.src = src;
+
+        const narraciones = {
+          "Multimedia/EscenaCrimen_1.png": 
+            "Registro de inspección — Habitación del investigador/n/La disposición general de la escena sugiere desorden, pero no caos. La diferencia es sutil, aunque esencial: el caos destruye patrones; aquí, los patrones han sido alterados, no eliminados. Hay desplazamiento, sí; hay ruptura. Pero no hay pérdida total de estructura. Esto no es abandono, sino interrupción./n/Los objetos han sido movidos y los documentos arrancados de su lugar; sin embargo, no encuentro arbitrariedad en ello. Incluso en el desorden persiste una intención previa, como si la lógica que organizaba este espacio aún resistiera, fragmentada pero reconocible. La iluminación es deficiente: la lámpara del techo emite un parpadeo irregular, acompañado de un leve sonido mecánico. Podría tratarse de desgaste —sería, de hecho, la explicación más razonable— y, sin embargo, su irregularidad parece… inconvenientemente precisa./n/La cama presenta una mancha de sangre de extensión moderada. No hay indicios de lucha prolongada; la distribución sugiere un evento breve, contenido. Demasiado breve. No hay en ella el desorden que cabría esperar de una muerte violenta, ni la serenidad que implicaría una voluntaria./n/Sobre la superficie se encuentra una nota: redacción correcta, estructura coherente, lenguaje compatible con una despedida. Pero carece de intención; no expresa, cumple. El arma se encuentra próxima y falta una bala. La conclusión evidente se presenta sin esfuerzo y, aun así, no satisface, no por falta de evidencia, sino por exceso de contradicciones./n/La pared —si se le puede conceder tal simplicidad— contiene el elemento más revelador de la escena. Documentos adheridos en gran número, organizados mediante líneas, símbolos y referencias cruzadas. No hay improvisación. Hay método: un método sostenido, revisado y perfeccionado a lo largo del tiempo. Las anotaciones no presentan signos de delirio desorganizado; carecen de dramatismo y se comportan como registros, como observaciones./n/Las entidades descritas no corresponden a ninguna clasificación conocida y, sin embargo, son tratadas como fenómenos observables. Un cérvido con múltiples astas, no como anomalía, sino como norma dentro de su propia categoría: conducta agresiva, ausencia de huida. Otra entidad, de forma humanoide pero estructura inestable, denominada “fangosa”, con altura anormal y extremidades extendidas, asociada a desapariciones localizadas. Las referencias geográficas son consistentes, persistentes, corregidas; no se sostienen como invención descuidada, se comportan como datos./n/Existe una tercera categoría, recurrente: una entidad vinculada a un bosque, no como habitante, sino como origen. Se le atribuye la formación del entorno, su expansión y, posiblemente, una forma de intención. Esto excede la imaginación ordinaria y, sin embargo, no se presenta como imaginación./n/Las anotaciones contienen fechas, revisiones y correcciones; hipótesis descartadas y nuevas formulaciones. El pensamiento es progresivo, no errático. El sujeto no estaba fantaseando: estaba trabajando, y trabajando con rigor. Aquí reside la verdadera dificultad del caso. Un individuo capaz de este nivel de claridad no encaja con el perfil de un delirio sin estructura. La inteligencia es evidente; la disciplina, incuestionable. Entonces, la cuestión no es si perdió la razón, sino cuándo su razón comenzó a aceptar aquello que normalmente rechazaría./n/La última anotación está incompleta, no abandonada, sino interrumpida. La nota de suicidio, en contraste, parece añadida posteriormente, no como conclusión natural del proceso, sino como cierre administrativo./n/No encuentro evidencia directa de intervención externa, pero tampoco una explicación que no requiera ignorar elementos esenciales de la escena. Existe una cualidad en esta habitación que escapa a la descripción técnica: no es miedo, sino una forma de reconocimiento, como si la lógica aplicada en estas paredes, aunque dirigida hacia conclusiones improbables, mantuviera una coherencia interna difícil de descartar./n/Si estas investigaciones son erróneas, han sido desarrolladas con una disciplina extraordinaria. Si no lo son… entonces este hombre no se perdió en su obsesión. Se adentró en ella con plena conciencia y, posiblemente, llegó más lejos de lo que debía.",
+          "Multimedia/EscenaCrimen_2.png": 
+            "Registro de inspección — Estudio oculto/n/La habitación no figura en los planos del edificio ni en registros previos de inspección. La puerta de acceso es una adición posterior: cerradura reforzada, sin manija visible, disimulada tras un panel. No es un añadido improvisado; es un espacio concebido para no ser encontrado. Una habitación dentro de otra, diseñada para eludir una inspección superficial./n/La estructura, sin embargo, no parece respetar del todo las limitaciones físicas del inmueble, observación que, aunque registrable, prefiero no considerar concluyente en esta etapa./n/La cantidad de sangre excede ampliamente la esperada en un suicidio. Se encuentra distribuida en múltiples superficies —paredes, suelo e incluso techo— con patrones de salpicadura incompatibles con un único punto de origen. Indica desplazamiento durante el evento, presumiblemente una lucha./n/No obstante, el sujeto principal carece de contusiones, heridas defensivas o fracturas. Esto invalida, en términos convencionales, su participación directa en dicho enfrentamiento. La conclusión más probable es que, si hubo lucha, no fue con él… o no fue él quien sangró. Ambas opciones resultan problemáticas, aunque no necesariamente excluyentes./n/Los documentos presentan dos estados claramente diferenciados: una parte adherida a las paredes, organizada con notable precisión, y otra en deterioro avanzado —arrugada, rasgada, manchada— sin indicios de preservación. A primera vista, podría interpretarse como desorden; sin embargo, la ausencia de ciertos documentos es demasiado específica./n/El volumen restante no corresponde al espacio disponible. Esto no es destrucción indiscriminada, sino eliminación selectiva de evidencia. Cabe considerar que quien realizó esta selección entendía el contenido, lo cual introduce una variable adicional que, por ahora, carece de identificación./n/La habitación cuenta con una ventana. Desde el exterior, dicha ventana no existe, como tampoco debería existir la propia habitación. La estructura del edificio no dispone del espacio necesario para albergarla. Y, sin embargo, es accesible, tangible y funcional./n/La vista no corresponde al entorno urbano esperado: en lugar de calles o edificaciones, se observa un paisaje natural, con formaciones rocosas y vegetación densa. Un bosque se extiende sin interrupciones ni referencias arquitectónicas. No encaja con la realidad observable del exterior./n/Aun así, no presenta indicios inmediatos de artificio. Considerarlo una ilusión sería conveniente; demostrarlo, por el momento, no es posible./n/Las anotaciones del estudio principal mencionan formaciones boscosas de características anómalas. La coincidencia sería descartable si fuera aislada. No lo es. Atribuirle valor probatorio sería precipitado; ignorarla, metodológicamente incorrecto. Procedo, por tanto, a registrarla sin otorgarle aún una conclusión definitiva./n/La función de este espacio difiere del estudio anterior. Aquel servía para organizar ideas, teorías y registros prescindibles. Este, en cambio, parece destinado a resguardar el núcleo de la investigación, o a ocultarlo./n/La violencia presente sugiere una interrupción abrupta, no del trabajo, sino de quien lo realizaba. La posterior eliminación de documentos indica intervención consciente: no de un aficionado, sino de alguien con criterio suficiente para alterar el registro sin eliminarlo por completo./n/No es posible determinar si dicha intervención buscaba desviar la investigación o impedir su avance; ambas hipótesis se sostienen, y ninguna resulta tranquilizadora./n/Anotación personal:/n/El caso continúa resistiéndose a una explicación sencilla. No es inusual, aunque sí poco frecuente que las inconsistencias se acumulen en esta proporción. Insistir en una interpretación estrictamente convencional sería prematuro; abandonarla por completo, irresponsable./n/Por el momento, ambas posturas coexisten, lo cual —aunque metodológicamente incómodo— empieza a resultar, contra todo pronóstico, instructivo.",
+          "Multimedia/EscenaCrimen_3.png": 
+          "Registro de inspección — Escritorio del investigador/n/El escritorio presenta un estado de deterioro avanzado. No se trata de desgaste progresivo, sino de una alteración abrupta. La superficie está cubierta de documentos, la mayoría en mal estado: arrugados, parcialmente rasgados, varios de ellos impregnados de sangre. La distribución no responde a un patrón funcional de trabajo activo, sino a una interrupción violenta de una actividad en curso./n/Entre los documentos se encuentran múltiples botellas de alcohol vacías. No están dispuestas con orden ni acumuladas en un solo punto; aparecen dispersas, algunas volcadas, otras aún alineadas como si hubiesen sido utilizadas de forma recurrente durante periodos prolongados. No es un consumo ocasional. Es sostenido. Posiblemente necesario./n/Esto introduce una variable adicional en el perfil del sujeto. No contradice su claridad mental previa, pero sí sugiere un intento de compensación o contención. No es decadencia. Es… resistencia./n/A pesar del estado general, algunos fragmentos de texto permanecen legibles. No corresponden al mismo tipo de anotaciones observadas en las paredes. No son registros técnicos ni observaciones directas. Se asemejan más a transcripciones o estudios históricos, aunque su procedencia no es identificable de inmediato./n/Se menciona un imperio./n/No como referencia aislada, sino como objeto de análisis reiterado./n/Un sistema gobernado por una sucesión prolongada de tiranos. Generaciones completas sosteniendo una estructura de poder basada en la opresión sistemática de su población. No hay matices en la descripción. No hay intentos de justificarlo. Se presenta como un hecho constante./n/La familia imperial es descrita en términos que exceden la crítica política. Se hace énfasis en la ausencia de decoro incluso dentro de su propia sangre. La sucesión no se rige por linaje pacífico, sino por eliminación interna. Los aspirantes al trono eran obligados —o incentivados— a enfrentarse entre sí, ya fuera mediante duelos directos o a través de mecanismos menos visibles, pero igualmente letales./n/Los perdedores no eran honrados. No se registran rituales funerarios ni entierros adecuados. Eran descartados. Considerados indignos, no solo del trono, sino de cualquier forma de reconocimiento posterior./n/El imperio, en su conjunto, es descrito como una entidad expansiva y agresiva. No se limita a existir: invade. Consume territorios adyacentes, incorporándolos de forma constante. La guerra no es circunstancial. Es estructural./n/Existe, además, una insistencia particular en el origen de esta dinastía. La familia imperial se autodenominaba descendiente del sol. No en sentido simbólico, sino como afirmación de legitimidad absoluta. No se cuestiona en los textos; se presenta como parte integral de su identidad política y cultural./n/El registro histórico señala un punto de inflexión./n/El emperador número veinticinco./n/Su ascenso al poder ocurre tras el asesinato de su predecesor. No hay indicios de excepcionalidad en este acto dentro del contexto descrito; sin embargo, a partir de su mandato, el imperio entra en una fase de estabilidad relativa. No de pacificación, pero sí de consolidación. La violencia deja de ser caótica y se vuelve… administrada./n/Lo relevante no es el contenido en sí, sino su presencia aquí./n/No encuentro relación inmediata entre estas notas y el resto de la investigación. No hay referencias cruzadas visibles con las entidades descritas en otras secciones del estudio. No hay coordenadas, ni fechas comparables, ni anotaciones que vinculen ambos conjuntos de información de forma explícita./n/Y, sin embargo, el tono es el mismo./n/La estructura es la misma./n/La intención analítica persiste./n/No parece una distracción. No parece un desvío./n/Parece… una extensión./n/Anotación personal:/n/El sujeto no recopilaba información por curiosidad dispersa. Cada elemento observado en esta habitación responde a un patrón de interés sostenido. Si este registro histórico forma parte de ese patrón, entonces su inclusión no es arbitraria./n/No comprendo aún la relación./n/Pero asumir que no existe sería, dadas las circunstancias, una omisión poco profesional.",
+          "Multimedia/Evidencia_1.png": 
+          "Registro de inspección — Evidencia: carta y arma/n/La evidencia se compone de dos elementos principales: una carta atribuida al sujeto y el arma presuntamente utilizada. Ambos se encuentran próximos entre sí, disposición que, en circunstancias convencionales, reforzaría la hipótesis de suicidio. En este caso, sin embargo, dicha proximidad resulta… insuficiente./n/El arma presenta signos evidentes de deterioro. Superficie parcialmente oxidada, mecanismo con indicios de inactividad prolongada. No corresponde al estado esperado de un objeto de uso reciente ni frecuente. Esto introduce una discrepancia inmediata con el perfil del sujeto, quien, según registros previos, mantenía un cuidado meticuloso de sus pertenencias. La negligencia observada aquí no es consistente con dicho patrón./n/No es desgaste funcional./n/Es abandono previo./n/La elección de este objeto, por tanto, no parece responder a preferencia ni a familiaridad. Si el sujeto pretendía un acto deliberado, resulta lógico asumir que habría utilizado un instrumento en condiciones óptimas. No es el caso./n/La carta, por su parte, presenta una caligrafía notablemente prolija. Trazos firmes, uniformes, sin interrupciones significativas ni variaciones que sugieran inestabilidad emocional inmediata. La estructura es coherente, el lenguaje correcto, incluso medido./n/Demasiado medido./n/No corresponde al estado mental que cabría esperar en un individuo al borde de un colapso. No hay vacilación. No hay urgencia. No hay rastro de conflicto interno en la forma./n/En el contenido, la ausencia es igualmente reveladora./n/No se mencionan familiares./n/Esto, en sí mismo, no constituye una anomalía. Los registros indican que el sujeto fue apartado de su núcleo familiar tras ser considerado inestable. No existían lazos afectivos activos que justificaran su inclusión en una despedida. En este punto, la carta se mantiene coherente con su contexto./n/Sin embargo, el énfasis recae en otro aspecto./n/El sujeto expresa pesar./n/No por su vida./n/No por su situación./n/Sino por la imposibilidad de continuar su investigación./n/Este detalle, aunque sutil, resulta significativo. La prioridad emocional no está dirigida hacia lo personal, sino hacia lo intelectual. No hay cierre afectivo. No hay resolución. Solo interrupción./n/Lo cual establece una contradicción difícil de ignorar./n/Un individuo cuya principal preocupación es la continuidad de su trabajo no suele optar por terminarlo de forma definitiva./n/A menos que dicha decisión no le pertenezca por completo./n/Anotación personal:/n/La carta cumple con los requisitos formales de una nota de suicidio. El arma cumple con la función necesaria para sostener esa narrativa. Pero ambos elementos, en conjunto, carecen de coherencia con el sujeto que pretenden representar./n/No es la ausencia de pruebas lo que inquieta en esta evidencia./n/Es la precisión con la que estas parecen haber sido dispuestas.",
+          "Multimedia/Evidencia_2.png": 
+          "Registro de inspección — Evidencia: casquillo/n/Se localiza un casquillo de bala sobre el tapete de la habitación principal. Su posición no es periférica ni accidental; se encuentra en una zona visible, ligeramente desplazada del punto donde cabría esperar su caída natural tras la detonación. No es una diferencia considerable, pero sí suficiente para descartar una trayectoria completamente limpia./n/El estado del casquillo indica una expulsión funcional, sin deformaciones anómalas. No presenta daños que sugieran manipulación posterior inmediata. Sin embargo, su sola presencia introduce una variable que no termina de encajar con la disposición general del arma y el supuesto evento que la acompaña./n/La ubicación sobre el tapete resulta particularmente relevante. El material textil habría amortiguado parcialmente el impacto, reduciendo el desplazamiento tras la caída. Aun así, la posición final no coincide con la dirección más probable de expulsión considerando la orientación del arma encontrada./n/No es imposible./n/Pero tampoco es consistente./n/Cerca del casquillo se identifica una huella parcial. No es completa, pero conserva suficiente definición para permitir una estimación preliminar. El tamaño no coincide con el calzado del sujeto. La diferencia no es marginal. Es clara./n/Esto descarta, en términos prácticos, que la marca haya sido producida por la víctima en condiciones normales./n/Podría argumentarse contaminación de la escena./n/Es una posibilidad que no puede descartarse de inmediato./n/Y, sin embargo, el resto del entorno no presenta signos equivalentes de tránsito externo desordenado. No hay múltiples huellas. No hay rastros superpuestos. No hay indicios de intervención posterior masiva./n/La huella está ahí./n/Aislada./n/Específica./n/Lo cual resulta, en cierto modo, más problemático que un conjunto caótico de marcas./n/La relación entre el casquillo y la huella no puede establecerse con certeza en esta etapa. No obstante, su proximidad sugiere una coincidencia poco conveniente para la hipótesis de un evento completamente autoinfligido./n/Anotación personal:/n/Un casquillo puede ser un residuo técnico. Una huella, un accidente. Ambos, en conjunto, empiezan a formar un patrón./n/Y este patrón, por el momento, no pertenece a un solo individuo.",
+          "Multimedia/Evidencia_3.png": 
+          "Registro de inspección — Evidencia: vasos y botella/n/La evidencia consiste en dos vasos parcialmente utilizados y una botella de whiskey casi vacía, dispuestos sobre una superficie próxima al área principal de la habitación. A primera vista, podría interpretarse como consumo habitual del sujeto. Sin embargo, la presencia de dos recipientes introduce una variable que no puede ser ignorada./n/Los vasos no presentan una disposición simétrica ni ceremonial. No están alineados ni preparados con intención estética. Han sido utilizados. Uno contiene un residuo mayor, el otro apenas conserva trazas. Esto sugiere diferencias en el ritmo de consumo, o en la permanencia de cada individuo durante el evento./n/La botella, por su parte, muestra un nivel de consumo significativo. No es reciente en su totalidad, pero sí ha sido utilizada en un periodo cercano a los hechos. No hay indicios de almacenamiento prolongado en ese estado./n/Esto no es preparación./n/Es interacción./n/El patrón sugiere la presencia de al menos dos individuos en el lugar, compartiendo bebida en un contexto que, en otras circunstancias, podría calificarse de social o, al menos, deliberado./n/Esto entra en conflicto directo con la hipótesis de aislamiento absoluto del sujeto en el momento del supuesto suicidio./n/La escena, en este punto, deja de ser individual./n/Pasa a ser compartida./n/Y, sin embargo, aquí se presenta la anomalía./n/A pesar de la evidencia indirecta de una segunda presencia —reforzada por la huella previamente documentada, cuyo tamaño sugiere un individuo masculino— no se han encontrado rastros adicionales que permitan caracterizar a dicha persona./n/No hay huellas secundarias./n/No hay marcas de desplazamiento adicionales./n/No hay residuos, objetos olvidados ni alteraciones que indiquen permanencia prolongada./n/Nada./n/La ausencia no es gradual./n/Es total./n/Esto resulta inconsistente con la interacción que los objetos sugieren. Dos vasos implican proximidad, tiempo compartido, contacto con superficies. La falta absoluta de rastros asociados a ese segundo individuo no se corresponde con un comportamiento físico convencional./n/Podría argumentarse limpieza posterior de la escena./n/Es una posibilidad lógica./n/Pero no se observan patrones de limpieza selectiva en el entorno inmediato. El resto de la habitación conserva desorden, residuos y evidencia sin alteración sistemática./n/Si hubo intervención, fue precisa./n/Demasiado precisa./n/Anotación personal:/n/La evidencia material sugiere compañía. La ausencia de rastros niega su existencia./n/Ambas afirmaciones no pueden ser correctas bajo un mismo marco lógico./n/Y, sin embargo, ambas se sostienen con igual firmeza dentro de esta habitación.",
+          "Multimedia/Evidencia_4.png": 
+          "Registro de inspección — Evidencia: huellas de sangre/n/Se identifican dos huellas de calzado marcadas en sangre sobre el suelo de la habitación. La impresión es parcial, pero lo suficientemente definida para inferir características generales: suela gruesa, probablemente correspondiente a botas. No se trata de un calzado ligero ni doméstico. Es funcional. Resistente./n/La dirección de las huellas sugiere desplazamiento dentro de la habitación tras el evento principal. No parecen corresponder al momento exacto de la detonación, sino a una fase posterior, cuando la sangre ya se encontraba expuesta en superficie./n/Esto implica presencia activa en la escena después del hecho./n/No observación./n/Intervención./n/La separación entre ambas huellas indica un paso controlado. No hay signos de prisa, tropiezo o pérdida de equilibrio. El individuo caminaba con estabilidad. Con conocimiento del entorno./n/No es una entrada caótica./n/Es tránsito deliberado./n/El tamaño estimado no coincide con el calzado del sujeto. Esta observación es consistente con la huella parcial encontrada junto al casquillo. La correspondencia entre ambas refuerza la hipótesis de un segundo individuo presente en la escena./n/Y, sin embargo, la evidencia vuelve a fragmentarse en el mismo punto./n/No hay continuidad./n/Las huellas no forman un rastro completo. No hay secuencia clara de entrada o salida. Aparecen… y se detienen./n/Como si el desplazamiento no hubiese requerido un trayecto convencional./n/O como si parte del trayecto hubiese sido, por algún motivo, eliminado./n/No es posible establecer origen ni destino./n/Solo presencia./n/Estas huellas corresponden, con alta probabilidad, al mismo individuo previamente inferido. El tamaño, la morfología y el contexto coinciden. Sin embargo, no existe información adicional que permita su identificación./n/No hay registro./n/No hay referencia./n/No hay continuidad./n/Solo indicios./n/Anotación personal:/n/La evidencia confirma una presencia externa./n/Pero se niega, de forma sistemática, a describirla./n/No es ausencia de datos./n/Es una ausencia… demasiado consistente para ser casual."
+        };
+
+        const comentarios = {
+          "Multimedia/EscenaCrimen_1.png": "Esto no es un suicidio limpio, jefe… he visto líos en peores sitios, pero esto huele raro.",
+          "Multimedia/EscenaCrimen_2.png": "¿Un cuarto escondido? Sí, claro… totalmente normal, como en cualquier edificio decente.",
+          "Multimedia/EscenaCrimen_3.png": "¿Leí bien? Esa familia real suena como basura… si eso es nobleza, prefiero la calle.",
+          "Multimedia/Evidencia_1.png": "Esa pistola está hecha polvo… el tipo cuidaba sus cosas, esto no cuadra nada.",
+          "Multimedia/Evidencia_2.png": "El casquillo y esa huella… alguien más estuvo aquí, y no vino de visita.",
+          "Multimedia/Evidencia_3.png": "Dos vasos… vaya, el difunto tenía compañía. Seguro que fue una charla muy tranquila.",
+          "Multimedia/Evidencia_4.png": "Mire esas huellas… botas, seguro. Y bien plantadas. Ese tipo sabía lo que hacía."
+        };
+
+        // Convertimos los marcadores /n/ en etiquetas HTML <br>
+        texto.innerHTML = (narraciones[src] || "Sin notas.").replace(/\/n\//g, "<br><br>");
+        asistente.textContent = comentarios[src] || "Sin observaciones.";
+
+        texto.scrollTop = 0;
+        overlay.classList.add("activo");
+        document.body.classList.add("sin-scroll");
+      }
+
+      document.getElementById("btnVolverGaleria").addEventListener("click", () => {
+        document.getElementById("ayuda").classList.remove("activo");
+        document.body.classList.remove("sin-scroll");
+      });
+    </script>
+  </body>
+</html>

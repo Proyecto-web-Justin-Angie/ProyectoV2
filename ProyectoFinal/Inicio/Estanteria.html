@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Estantería de investigación</title>
+    <link rel="stylesheet" href="estilos.css" />
+
+    <style>
+      /* --- ESTILOS DE LAS ZONAS Y HOVER --- */
+      .zona {
+        position: absolute;
+        display: block;
+        cursor: pointer;
+        transition: background-color 0.3s, box-shadow 0.3s;
+        z-index: 10;
+        /* border: 1px solid red; */
+      }
+
+      /* Efecto visual al pasar el ratón */
+      .zona:hover {
+        background-color: rgba(232, 217, 184, 0.2); /* Brillo pergamino sutil */
+        box-shadow: 0 0 15px rgba(232, 217, 184, 0.4);
+        outline: 1px solid var(--pergamino, #e8d9b8);
+      }
+
+      /* Coordenadas específicas de tus libros */
+      .libro1 { left: 709px; top: 258px; width: 22px; height: 120px; }
+      .libro2 { left: 636px; top: 482px; width: 174px; height: 22px; }
+      .libro3 { left: 929px; top: 413px; width: 34px; height: 127px; }
+      .libro4 { top: 40%; left: 72%; width: 2.5%; height: 16%; }
+      .libro5 { top: 40%; left: 76%; width: 2.5%; height: 16%; }
+      .libro6 { top: 8%; left: 60%; width: 2%; height: 17%; }
+      .libro7 { top: 56%; left: 58%; width: 2%; height: 17%; }
+      .libro8 { top: 60%; left: 62%; width: 2%; height: 12%; }
+      .libro9 { top: 72%; left: 32%; width: 2%; height: 14%; }
+
+      /* --- DISEÑO DEL LIBRO ABIERTO --- */
+      .libro-abierto {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 90%;
+        max-width: 900px;
+        margin: auto;
+      }
+
+      .contenido-libro-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        padding: 50px;
+        min-height: 500px;
+        background-color: #f4e4bc;
+        background-image: linear-gradient(to right, rgba(0,0,0,0.05) 0%, transparent 5%, transparent 95%, rgba(0,0,0,0.05) 100%);
+        border-radius: 5px;
+        box-shadow: inset 0 0 50px rgba(0,0,0,0.1), 10px 10px 30px rgba(0,0,0,0.5);
+        color: #2c241e;
+        position: relative;
+        border: 1px solid #d2b48c;
+      }
+
+      .contenido-libro-layout::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.2), transparent);
+        box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      }
+
+      .pagina-izquierda, .pagina-derecha {
+        overflow-y: auto;
+        max-height: 450px;
+        padding: 10px;
+        scrollbar-width: thin;
+        scrollbar-color: #8b4513 transparent;
+      }
+
+      .pagina-izquierda::-webkit-scrollbar, 
+      .pagina-derecha::-webkit-scrollbar { width: 4px; }
+      .pagina-izquierda::-webkit-scrollbar-thumb, 
+      .pagina-derecha::-webkit-scrollbar-thumb { background: #8b4513; }
+
+      .contenido-libro-layout h1 {
+        font-family: 'Georgia', serif;
+        font-size: 1.6rem;
+        margin-bottom: 20px;
+        color: #5d4037;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        text-align: center;
+      }
+
+      .contenido-libro-layout p {
+        font-family: 'Georgia', serif;
+        line-height: 1.7;
+        font-size: 1.05rem;
+        text-align: justify;
+        margin-bottom: 15px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="fondo-global-juego"></div>
+
+    <main class="escena-principal">
+      <section class="contenedor-juego">
+        <header class="barra-superior visible-ui">
+          <button type="button" class="btn-esquina"
+            onclick="sessionStorage.setItem('desdeEscena', 'true'); window.location.href = 'Oficina.html';">
+            Volver atrás
+          </button>
+          <div class="grupo-botones-derecha">
+            <button class="btn-esquina" onclick="window.location.href = 'SobreP&Click.html'">Sobre los point & click</button>
+            <button class="btn-esquina" onclick="window.location.href = 'galeria.html'">Galería</button>
+            <button class="btn-esquina" onclick="window.location.href = 'informe.html'">Informe</button>
+          </div>
+        </header>
+
+        <section class="visor-central">
+          <section class="estanteria-escena">
+            <div class="estanteria-imagen"></div>
+
+            <a class="zona libro1" data-id="0" data-overlay="libro"></a>
+            <a class="zona libro2" data-id="1" data-overlay="libro"></a>
+            <a class="zona libro3" data-id="2" data-overlay="libro"></a>
+            <a class="zona libro4" data-id="3" data-overlay="libro"></a>
+            <a class="zona libro5" data-id="4" data-overlay="libro"></a>
+            <a class="zona libro6" data-id="5" data-overlay="libro"></a>
+            <a class="zona libro7" data-id="6" data-overlay="libro"></a>
+            <a class="zona libro8" data-id="7" data-overlay="libro"></a>
+            <a class="zona libro9" data-id="8" data-overlay="libro"></a>
+          </section>
+        </section>
+
+        <footer class="barra-inferior-juego visible-ui">
+          <div class="panel-mensaje-juego">
+            <p id="mensajeJuego">Observa la estantería. Algunos lomos parecen tener marcas extrañas.</p>
+          </div>
+        </footer>
+      </section>
+    </main>
+
+    <div id="ayuda" class="overlay-ayuda">
+      <div class="contenedor-tutorial">
+        <div class="libro-abierto">
+          <div class="contenido-libro-layout" id="contenidoLibro"></div>
+        </div>
+        <div class="barra-inferior">
+          <div class="botones-panel">
+            <button type="button" id="btnCerrarAyuda" class="btn-esquina">Cerrar Libro</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const ayuda = document.getElementById("ayuda");
+      const contenido = document.getElementById("contenidoLibro");
+      const mensaje = document.getElementById("mensajeJuego");
+      const btnCerrar = document.getElementById("btnCerrarAyuda");
+
+      const librosLore = [
+        { titulo: "Crónicas de Allashar", izq: "Año 412 de la Segunda Era. El asentamiento reporta luces en el cielo.", der: "Los ancianos dicen que el tejido de la realidad se desgasta." },
+        { titulo: "Tratado de Alquimia", izq: "Para transmutar el miedo se requiere un catalizador vivo.", der: "El contacto prolongado causa pigmentación metálica." },
+        { titulo: "Manual del Detective", izq: "Regla 1: El desorden nunca es casual.", der: "Busca los hilos que unen a las personas con sus pecados." },
+        { titulo: "Registros de Stormgarde", izq: "El consejo está filtrando rutas.", der: "Si Hemin cae, todos caemos con él." },
+        { titulo: "El Cérvido", izq: "Avistamientos en aumento en el sector este.", der: "No es un animal, es una fuerza de la naturaleza." },
+        { titulo: "Notas de Zelenograd", izq: "El frío no es climático.", der: "Es la ausencia total de intención vital." },
+        { titulo: "Símbolos Prohibidos", izq: "No pronunciar los nombres marcados.", der: "El eco atrae a los que habitan entre las grietas." },
+        { titulo: "Anomalías del Tiempo", izq: "El reloj se detuvo a las 00:00.", der: "Pero el sol nunca volvió a salir en el registro." },
+        { titulo: "Último Aviso", izq: "Sal de aquí mientras aún puedas.", der: "Ellos ya saben que los estás mirando." }
+      ];
+
+      document.querySelectorAll(".zona[data-overlay='libro']").forEach(zona => {
+        // Efecto mensaje en hover
+        zona.addEventListener("mouseenter", () => {
+          const id = zona.getAttribute("data-id");
+          mensaje.textContent = "Inspeccionar: " + librosLore[id].titulo;
+        });
+        
+        zona.addEventListener("mouseleave", () => {
+          mensaje.textContent = "Observa la estantería. Algunos lomos parecen tener marcas extrañas.";
+        });
+
+        zona.addEventListener("click", (e) => {
+          e.preventDefault();
+          const id = zona.getAttribute("data-id");
+          const info = librosLore[id];
+          contenido.innerHTML = `
+            <div class="pagina-izquierda">
+              <h1>${info.titulo}</h1>
+              <p>${info.izq}</p>
+            </div>
+            <div class="pagina-derecha">
+              <p>${info.der}</p>
+            </div>
+          `;
+          ayuda.classList.add("activo");
+          document.body.classList.add("sin-scroll");
+        });
+      });
+
+      btnCerrar.addEventListener("click", () => {
+        ayuda.classList.remove("activo");
+        document.body.classList.remove("sin-scroll");
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") btnCerrar.click();
+      });
+    </script>
+  </body>
+</html>

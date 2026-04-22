@@ -1,0 +1,920 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Oficina del detective</title>
+    <link rel="stylesheet" href="estilos.css" />
+
+    <style>
+      .overlay-tocador {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+
+      .overlay-tocador.activo {
+        display: flex;
+      }
+
+      .contenedor-tocador {
+        background: #1a1a1a;
+        padding: 30px;
+        border-radius: 15px;
+        width: 500px;
+        max-height: 80vh;
+        overflow-y: auto;
+        text-align: center;
+      }
+
+      .titulo-tocador {
+        margin-bottom: 20px;
+        color: #f5e6c8;
+      }
+
+      .lista-audios {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .audio-item {
+        padding: 10px;
+        background: #2a2a2a;
+        border-radius: 8px;
+        cursor: pointer;
+        color: #ddd;
+        transition: 0.2s;
+      }
+
+      .audio-item:hover {
+        background: #444;
+      }
+
+      .reproductor {
+        margin-bottom: 20px;
+      }
+
+      audio {
+        width: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="fondo-global-juego"></div>
+    <div id="overlay" aria-hidden="false">
+      <div id="pergamino" class="modal">
+        <div id="contenido-pergamino">
+          <p id="texto"></p>
+          <div id="botones" class="botones">
+            <button type="button" id="btnEntrar">Entrar a la Oficina</button>
+            <button type="button" id="btnTutorial">Notas del Asistente</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main class="escena-principal">
+      <section class="contenedor-juego">
+        <header class="barra-superior visible-ui">
+          <button
+            type="button"
+            class="btn-esquina"
+            onclick="
+              sessionStorage.setItem('desdeEscena', 'true');
+              window.location.href = 'Oficina.html';
+            "
+          >
+            Volver atrás
+          </button>
+
+          <div class="grupo-botones-derecha">
+            <button
+              type="button"
+              onclick="
+                sessionStorage.setItem('desdeEscena', 'true');
+                window.location.href = 'SobreP&C.html';
+              "
+            >
+              Sobre los point & click
+            </button>
+
+            <button
+              type="button"
+              onclick="
+                sessionStorage.setItem('desdeEscena', 'true');
+                window.location.href = 'Galeria.html';
+              "
+            >
+              Galería
+            </button>
+
+            <button
+              type="button"
+              onclick="
+                sessionStorage.setItem('desdeEscena', 'true');
+                window.location.href = 'Informe.html';
+              "
+            >
+              Informe
+            </button>
+
+            <button
+              type="button"
+              onclick="
+                sessionStorage.setItem('desdeEscena', 'true');
+                window.location.href = 'Contacto.html';
+              "
+            >
+              Contáctenos
+            </button>
+          </div>
+        </header>
+
+        <section class="visor-central">
+          <section
+            id="oficinaInteractiva"
+            class="oficina bloqueada"
+            aria-label="Oficina interactiva del detective"
+          >
+            <div class="oficina-imagen"></div>
+            <!-- Librero -->
+            <a
+              class="zona librero"
+              href="Estanteria.html"
+              aria-label="Ir al librero"
+            ></a>
+
+            <!-- Tocador -->
+            <a
+              class="zona tocador"
+              data-overlay="tocador"
+              aria-label="Abrir tocador"
+            ></a>
+
+            <!-- Mapa -->
+            <a class="zona mapa" href="mapa.html" aria-label="Ir al mapa"></a>
+
+            <!-- Pizarra -->
+            <a
+              class="zona pizarra"
+              href="Tablero.html"
+              aria-label="Ir a la pizarra"
+            ></a>
+          </section>
+        </section>
+
+        <footer
+          id="barraInferior"
+          class="barra-inferior-juego oculta-ui"
+          aria-hidden="true"
+        >
+          <div class="panel-mensaje-juego">
+            <p id="mensajeJuego">Explora la oficina para encontrar pistas.</p>
+          </div>
+        </footer>
+      </section>
+    </main>
+
+    <div
+      id="ayuda"
+      class="overlay-ayuda"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="titulo-tutorial"
+    >
+      <div class="contenedor-tutorial">
+        <div id="paginas" class="paginas">
+          <section class="pagina">
+            <section class="panel-central">
+              <div class="lateral izquierdo"></div>
+
+              <div class="contenido">
+                <h1 id="titulo-tutorial">¿Qué es un Point & Click?</h1>
+                <div class="contenedor-video">
+                  <!-- VIDEO -->
+                  <div class="video-box">
+                    <iframe
+                      src="https://www.youtube.com/embed/GwQn8p8dSKA"
+                      title="Video explicativo sobre juegos Point & Click"
+                      allow="
+                        accelerometer;
+                        autoplay;
+                        clipboard-write;
+                        encrypted-media;
+                        gyroscope;
+                        picture-in-picture;
+                      "
+                      allowfullscreen
+                    >
+                    </iframe>
+                  </div>
+
+                  <div class="texto-box">
+                    <h2>Explicación</h2>
+                    <p>
+                      Un Point & Click es un tipo de juego de aventura donde el
+                      jugador explora escenarios interactuando con objetos
+                      mediante clics. La progresión depende de observar,
+                      investigar y resolver interacciones dentro del entorno.
+                    </p>
+                  </div>
+                </div>
+                <div class="tabla-info">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Aspecto</th>
+                        <th>Descripción</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr>
+                        <td>Exploración</td>
+                        <td>
+                          El jugador recorre escenarios estáticos o
+                          semi-interactivos.
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>Interacción</td>
+                        <td>
+                          Se interactúa con objetos haciendo clic en puntos
+                          específicos del entorno.
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>Puzzles</td>
+                        <td>
+                          La progresión se basa en resolver acertijos lógicos o
+                          narrativos.
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>Observación</td>
+                        <td>
+                          Es clave prestar atención a detalles visuales y pistas
+                          ocultas.
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>Progresión</td>
+                        <td>
+                          Avanzas desbloqueando áreas o información mediante
+                          objetos clave.
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="lateral derecho"></div>
+            </section>
+          </section>
+
+          <section class="pagina">
+            <section class="panel-central">
+              <div class="lateral izquierdo"></div>
+
+              <div class="contenido">
+                <section class="caso-bloque">
+                  <div class="caso-lado-info">
+                    <h2 class="caso-numero">Caso Nº 047 — Archivo Navarro</h2>
+
+                    <div class="panel-grid">
+                      <div class="panel-columna">
+                        <h3 class="panel-titulo">Datos del caso</h3>
+                        <table class="panel-tabla">
+                          <tr>
+                            <td class="panel-label">Fecha</td>
+                            <td>12 de octubre, 1936</td>
+                          </tr>
+                          <tr>
+                            <td class="panel-label">Ubicación</td>
+                            <td>Residencia privada</td>
+                          </tr>
+                          <tr>
+                            <td class="panel-label">Estado</td>
+                            <td>Abierto</td>
+                          </tr>
+                          <tr>
+                            <td class="panel-label">Clasificación</td>
+                            <td>Anomalía histórica</td>
+                          </tr>
+                        </table>
+                      </div>
+
+                      <div class="panel-columna">
+                        <h3 class="panel-titulo">Evidencia</h3>
+                        <table class="panel-tabla">
+                          <tr>
+                            <td class="panel-label">Objeto</td>
+                            <td>Mapas alterados</td>
+                          </tr>
+                          <tr>
+                            <td class="panel-label">Documento</td>
+                            <td>Cuaderno cifrado</td>
+                          </tr>
+                          <tr>
+                            <td class="panel-label">Material</td>
+                            <td>Pergamino antiguo</td>
+                          </tr>
+                          <tr>
+                            <td class="panel-label">Anomalía</td>
+                            <td>Símbolos desconocidos</td>
+                          </tr>
+                        </table>
+                      </div>
+
+                      <div class="panel-columna">
+                        <h3 class="panel-titulo">Observaciones</h3>
+                        <table class="panel-tabla">
+                          <tr>
+                            <td class="panel-label">Conclusión</td>
+                            <td>Posible ocultamiento</td>
+                          </tr>
+                          <tr>
+                            <td class="panel-label">Riesgo</td>
+                            <td>Interferencia externa</td>
+                          </tr>
+                          <tr>
+                            <td class="panel-label">Recomendación</td>
+                            <td>Revisar archivos censurados</td>
+                          </tr>
+                          <tr>
+                            <td class="panel-label">Prioridad</td>
+                            <td>Alta</td>
+                          </tr>
+                        </table>
+                      </div>
+
+                      <div class="panel-columna panel-columna-completa">
+                        <h3 class="panel-titulo">
+                          Notas personales del detective
+                        </h3>
+                        <table class="panel-tabla">
+                          <tr>
+                            <td class="panel-label">Impresión general</td>
+                            <td>
+                              El caso presenta patrones repetitivos que sugieren
+                              manipulación deliberada de registros históricos.
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="panel-label">Sensación</td>
+                            <td>
+                              El investigador parecía trabajar bajo presión
+                              externa o amenaza indirecta.
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="panel-label">Advertencia</td>
+                            <td>Revisar documentos con cautela.</td>
+                          </tr>
+                          <tr>
+                            <td class="panel-label">Comentario</td>
+                            <td>
+                              La repetición de símbolos sugiere un sistema aún
+                              no identificado.
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+
+              <div class="lateral derecho"></div>
+            </section>
+          </section>
+
+          <section class="pagina">
+            <section class="panel-central">
+              <div class="lateral izquierdo"></div>
+
+              <div class="contenido">
+                <section class="perfil-horizontal">
+                  <div class="frame">
+                    <div class="frame-bg">
+                      <img
+                        src="Multimedia/retrato.png"
+                        class="perfil-imagen"
+                        alt="Retrato del Dr. Elías Navarro"
+                        loading="lazy"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="perfil-texto">
+                    <h2 class="perfil-nombre">Dr. Elías Navarro</h2>
+                    <p class="perfil-subtitulo">
+                      Historiador especializado en civilizaciones perdidas
+                    </p>
+
+                    <div class="perfil-cita">
+                      <blockquote>
+                        "Si encuentras este archivo, significa que alguien
+                        intentó ocultar la verdad."
+                      </blockquote>
+                    </div>
+                  </div>
+                </section>
+
+                <div class="panel-grid">
+                  <div class="panel-columna">
+                    <h3 class="panel-titulo">Datos de la investigación</h3>
+                    <table class="panel-tabla">
+                      <tr>
+                        <td class="panel-label">Profesión</td>
+                        <td>
+                          Historiador especializado en civilizaciones antiguas.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="panel-label">Intereses</td>
+                        <td>
+                          Mapas antiguos, textos marítimos y registros clásicos.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="panel-label">Hallazgos</td>
+                        <td>
+                          Coincidencias entre mapas que muestran un continente
+                          no registrado.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="panel-label">Objetivo</td>
+                        <td>
+                          Demostrar la existencia de una civilización eliminada
+                          de registros oficiales.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="panel-label">Estado del caso</td>
+                        <td>
+                          Investigación inconclusa al momento de su muerte.
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+
+                  <div class="panel-columna">
+                    <h3 class="panel-titulo">Perfil del investigador</h3>
+                    <table class="panel-tabla">
+                      <tr>
+                        <td class="panel-label">Nombre</td>
+                        <td>Dr. Elías Navarro</td>
+                      </tr>
+                      <tr>
+                        <td class="panel-label">Edad</td>
+                        <td>54 años</td>
+                      </tr>
+                      <tr>
+                        <td class="panel-label">Especialidad</td>
+                        <td>
+                          Historia antigua y civilizaciones desaparecidas.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="panel-label">Reputación</td>
+                        <td>
+                          Respetado inicialmente, posteriormente desacreditado.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="panel-label">Comportamiento reciente</td>
+                        <td>Reservado, trabajaba en horarios nocturnos.</td>
+                      </tr>
+                    </table>
+                  </div>
+
+                  <div class="panel-columna">
+                    <h3 class="panel-titulo">Notas del detective</h3>
+                    <table class="panel-tabla">
+                      <tr>
+                        <td class="panel-label">Observación</td>
+                        <td>El sujeto parecía temer vigilancia constante.</td>
+                      </tr>
+                      <tr>
+                        <td class="panel-label">Hipótesis</td>
+                        <td>
+                          Posible acceso a información clasificada o prohibida.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="panel-label">Advertencia</td>
+                        <td>
+                          No confiar completamente en registros oficiales.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="panel-label">Detalle relevante</td>
+                        <td>Referencias repetidas a información "borrada".</td>
+                      </tr>
+                      <tr>
+                        <td class="panel-label">Prioridad</td>
+                        <td>Revisar mapas y documentos alterados.</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lateral derecho"></div>
+            </section>
+          </section>
+
+          <section class="pagina">
+            <section class="panel-central">
+              <div class="lateral izquierdo"></div>
+
+              <div class="contenido">
+                <h1>Juegos similares</h1>
+
+                <div class="grid-recomendaciones">
+                  <div class="reco">
+                    <img
+                      src="img/juego1.png"
+                      alt="Monkey Island"
+                      loading="lazy"
+                    />
+                    <p>Monkey Island</p>
+                  </div>
+
+                  <div class="reco">
+                    <img
+                      src="img/juego2.png"
+                      alt="Grim Fandango"
+                      loading="lazy"
+                    />
+                    <p>Grim Fandango</p>
+                  </div>
+
+                  <div class="reco">
+                    <img
+                      src="img/juego3.png"
+                      alt="Machinarium"
+                      loading="lazy"
+                    />
+                    <p>Machinarium</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lateral derecho"></div>
+            </section>
+          </section>
+        </div>
+
+        <!-- ===================================================================================== -->
+        <!-- CONTROLES DEL TUTORIAL -->
+        <!-- ===================================================================================== -->
+        <div class="barra-inferior">
+          <div class="controles-tutorial">
+            <button type="button" id="btnAnterior">◀</button>
+            <span id="indicador">1 / 4</span>
+            <button type="button" id="btnSiguiente">▶</button>
+          </div>
+
+          <div class="botones-panel">
+            <button type="button" id="btnCerrarAyuda">Volver al Inicio</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlayTocador" class="overlay-tocador">
+      <div class="contenedor-tocador">
+        <h2 class="titulo-tocador">Tocador</h2>
+
+        <!-- LISTA DE AUDIOS -->
+        <div id="listaAudios" class="lista-audios"></div>
+
+        <!-- REPRODUCTOR -->
+        <div class="reproductor">
+          <p id="tituloAudio">Selecciona una pista</p>
+          <audio id="audioPlayer" controls></audio>
+        </div>
+
+        <button id="cerrarTocador" class="btn-esquina">Cerrar</button>
+      </div>
+    </div>
+
+    <script>
+      let textoCompleto = `Usted ha sido asignado a investigar la muerte de un historiador acusado de delirios.<br><br>
+Sus escritos describen un continente <span class="pista" id="pistaPalabra">inexistente</span>.<br><br>
+La escena ha sido sellada.<br>
+Todo lo que queda... está en esta oficina.`;
+
+      let velocidad = 30;
+      let escribiendo = true;
+      let timeoutInactividad;
+      let paginaActual = 0;
+
+      let texto = document.getElementById("texto");
+      let botones = document.getElementById("botones");
+      let overlay = document.getElementById("overlay");
+      let ayuda = document.getElementById("ayuda");
+      let paginas = document.getElementById("paginas");
+      let indicador = document.getElementById("indicador");
+
+      let btnEntrar = document.getElementById("btnEntrar");
+      let btnTutorial = document.getElementById("btnTutorial");
+      let btnAnterior = document.getElementById("btnAnterior");
+      let btnSiguiente = document.getElementById("btnSiguiente");
+      let btnCerrarAyuda = document.getElementById("btnCerrarAyuda");
+
+      let barraSuperior = document.getElementById("barraSuperior");
+      let barraInferior = document.getElementById("barraInferior");
+      let oficinaInteractiva = document.getElementById("oficinaInteractiva");
+      let mensajeJuego = document.getElementById("mensajeJuego");
+
+      let totalPaginas = document.querySelectorAll(".pagina").length;
+
+      function mostrarBotones() {
+        if (botones) botones.style.display = "flex";
+      }
+
+      function activarPistas() {
+        let palabra = document.getElementById("pistaPalabra");
+
+        if (palabra && !palabra.dataset.activo) {
+          palabra.dataset.activo = "true";
+
+          palabra.addEventListener("click", function (e) {
+            e.stopPropagation();
+            palabra.innerText = "¿inexistente… o borrado?";
+            localStorage.setItem("pista_inexistente", "true");
+          });
+        }
+      }
+
+      function iniciarInactividad() {
+        clearTimeout(timeoutInactividad);
+
+        timeoutInactividad = setTimeout(function () {
+          let modal = document.querySelector(".modal");
+          if (!modal) return;
+
+          if (document.getElementById("mensajeInactividad")) return;
+
+          let mensaje = document.createElement("p");
+          mensaje.id = "mensajeInactividad";
+          mensaje.innerText = "No confíes en los mapas.";
+
+          mensaje.style.position = "absolute";
+          mensaje.style.bottom = "40px";
+          mensaje.style.left = "50%";
+          mensaje.style.transform = "translateX(-50%)";
+          mensaje.style.fontWeight = "bold";
+          mensaje.style.opacity = "0";
+          mensaje.style.transition = "opacity 1s";
+          mensaje.style.color = "var(--tinta)";
+
+          modal.appendChild(mensaje);
+
+          setTimeout(() => (mensaje.style.opacity = "1"), 100);
+
+          localStorage.setItem("pista_mapa", "true");
+        }, 6000);
+      }
+
+      function escribirTexto() {
+        if (!texto) return;
+
+        let temp = document.createElement("div");
+        temp.innerHTML = textoCompleto;
+        let textoPlano = temp.innerText;
+
+        let i = 0;
+        texto.innerText = "";
+
+        function escribir() {
+          if (!escribiendo) return;
+
+          if (i < textoPlano.length) {
+            texto.innerText += textoPlano.charAt(i);
+            i++;
+            setTimeout(escribir, velocidad);
+          } else {
+            texto.innerHTML = textoCompleto;
+            escribiendo = false;
+
+            mostrarBotones();
+            activarPistas();
+            iniciarInactividad();
+          }
+        }
+
+        escribir();
+      }
+
+      function saltarAnimacion() {
+        if (!escribiendo || !texto) return;
+
+        texto.innerHTML = textoCompleto;
+        escribiendo = false;
+
+        mostrarBotones();
+        activarPistas();
+        iniciarInactividad();
+      }
+
+      function mostrarUIJuego() {
+        if (barraSuperior) {
+          barraSuperior.classList.remove("oculta-ui");
+          barraSuperior.classList.add("visible-ui");
+          barraSuperior.setAttribute("aria-hidden", "false");
+        }
+
+        if (barraInferior) {
+          barraInferior.classList.remove("oculta-ui");
+          barraInferior.classList.add("visible-ui");
+          barraInferior.setAttribute("aria-hidden", "false");
+        }
+      }
+
+      function activarOficina() {
+        if (oficinaInteractiva) {
+          oficinaInteractiva.classList.remove("bloqueada");
+          oficinaInteractiva.classList.add("activa");
+        }
+      }
+
+      function entrar() {
+        if (!overlay) return;
+        overlay.style.opacity = "0";
+
+        setTimeout(function () {
+          overlay.style.display = "none";
+          overlay.setAttribute("aria-hidden", "true");
+
+          activarOficina();
+          mostrarUIJuego();
+
+          if (mensajeJuego) {
+            mensajeJuego.innerText =
+              "La oficina está lista. Examina cada rincón.";
+          }
+        }, 300);
+      }
+
+      function abrirTutorial() {
+        if (!overlay || !ayuda) return;
+
+        overlay.style.display = "none";
+        ayuda.classList.add("activo");
+        document.body.classList.add("sin-scroll");
+
+        actualizarIndicador();
+      }
+
+      function cerrarAyuda() {
+        if (!overlay || !ayuda) return;
+
+        ayuda.classList.remove("activo");
+        document.body.classList.remove("sin-scroll");
+
+        overlay.style.display = "flex";
+        overlay.style.opacity = "1";
+      }
+
+      function cambiarPagina(direccion) {
+        paginaActual += direccion;
+
+        if (paginaActual < 0) paginaActual = 0;
+        if (paginaActual >= totalPaginas) paginaActual = totalPaginas - 1;
+
+        if (paginas) {
+          paginas.style.transform = "translateX(-" + paginaActual * 100 + "%)";
+        }
+
+        actualizarIndicador();
+      }
+
+      function actualizarIndicador() {
+        if (indicador) {
+          indicador.innerText = paginaActual + 1 + " / " + totalPaginas;
+        }
+      }
+
+      /* EVENTOS */
+      btnEntrar?.addEventListener("click", entrar);
+      btnTutorial?.addEventListener("click", abrirTutorial);
+      btnAnterior?.addEventListener("click", () => cambiarPagina(-1));
+      btnSiguiente?.addEventListener("click", () => cambiarPagina(1));
+      btnCerrarAyuda?.addEventListener("click", cerrarAyuda);
+
+      overlay?.addEventListener("click", function (e) {
+        if (e.target === overlay && escribiendo) {
+          saltarAnimacion();
+        }
+      });
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && ayuda?.classList.contains("activo")) {
+          cerrarAyuda();
+        }
+      });
+
+      const audios = [
+        {
+          titulo: "Zelenograd — Susurros del bosque",
+          archivo: "Audio/zelenograd.mp3",
+        },
+        {
+          titulo: "Templo del Tiempo — Ecos dorados",
+          archivo: "Audio/templo.mp3",
+        },
+        {
+          titulo: "Fuego del Dragón — Cumbres vivas",
+          archivo: "Audio/fuego.mp3",
+        },
+        {
+          titulo: "Torre de Babel — Ascenso",
+          archivo: "Audio/babel.mp3",
+        },
+      ];
+
+      // Elementos
+      const overlayTocador = document.getElementById("overlayTocador");
+      const listaAudios = document.getElementById("listaAudios");
+      const audioPlayer = document.getElementById("audioPlayer");
+      const tituloAudio = document.getElementById("tituloAudio");
+
+      // Abrir overlay
+      document.querySelector(".zona.tocador").addEventListener("click", () => {
+        overlayTocador.classList.add("activo");
+        document.body.classList.add("sin-scroll");
+      });
+
+      // Cerrar overlay
+      document.getElementById("cerrarTocador").addEventListener("click", () => {
+        overlayTocador.classList.remove("activo");
+        document.body.classList.remove("sin-scroll");
+        audioPlayer.pause();
+      });
+
+      // Crear lista de audios
+      function cargarAudios() {
+        listaAudios.innerHTML = "";
+
+        audios.forEach((audio, index) => {
+          const item = document.createElement("div");
+          item.classList.add("audio-item");
+          item.textContent = audio.titulo;
+
+          item.addEventListener("click", () => {
+            audioPlayer.src = audio.archivo;
+            tituloAudio.textContent = audio.titulo;
+            audioPlayer.play();
+          });
+
+          listaAudios.appendChild(item);
+        });
+      }
+
+      // Inicializar
+      cargarAudios();
+
+      /* CONTROL PRINCIPAL (CLAVE) */
+      window.addEventListener("load", function () {
+        let desdeEscena = sessionStorage.getItem("desdeEscena");
+
+        if (desdeEscena) {
+          sessionStorage.removeItem("desdeEscena");
+
+          overlay.style.display = "none";
+          overlay.setAttribute("aria-hidden", "true");
+
+          activarOficina();
+          mostrarUIJuego();
+
+          if (mensajeJuego) {
+            mensajeJuego.innerText =
+              "Regresaste a la oficina. Continúa la investigación.";
+          }
+        } else {
+          escribirTexto();
+        }
+      });
+    </script>
+  </body>
+</html>

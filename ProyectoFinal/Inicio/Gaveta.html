@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gaveta de investigación</title>
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+
+  <body>
+    <div class="fondo-global-juego"></div>
+    <main class="escena-principal">
+      <section class="contenedor-juego">
+         <header class="barra-superior visible-ui">
+          <button
+            type="button"
+            class="btn-esquina"
+            onclick="
+              sessionStorage.setItem('desdeEscena', 'true');
+              window.location.href = 'Oficina.html';
+            "
+          >
+            Volver atrás
+          </button>
+
+          <div class="grupo-botones-derecha">
+            <button
+              type="button"
+              onclick="
+                sessionStorage.setItem('desdeEscena', 'true');
+                window.location.href = 'SobreP&C.html';
+              "
+            >
+              Sobre los point & click
+            </button>
+
+            <button
+              type="button"
+              onclick="
+                sessionStorage.setItem('desdeEscena', 'true');
+                window.location.href = 'Galeria.html';
+              "
+            >
+              Galería
+            </button>
+
+            <button
+              type="button"
+              onclick="
+                sessionStorage.setItem('desdeEscena', 'true');
+                window.location.href = 'Informe.html';
+              "
+            >
+              Informe
+            </button>
+
+            <button
+              type="button"
+              onclick="
+                sessionStorage.setItem('desdeEscena', 'true');
+                window.location.href = 'Contacto.html';
+              "
+            >
+              Contáctenos
+            </button>
+          </div>
+        </header>
+
+        <section class="visor-central">
+          <section class="gaveta-escena" aria-label="Gaveta de investigación">
+            <div class="mapa-imagen"></div>
+          </section>
+        </section>
+
+        <footer class="barra-inferior-juego visible-ui">
+          <div class="panel-mensaje-juego">
+            <p id="mensajeJuego">
+              Observa la gaveta. Algunos objetos podrían no estar en su lugar.
+            </p>
+          </div>
+        </footer>
+      </section>
+    </main>
+
+    <script>
+      let mensajeJuego = document.getElementById("mensajeJuego");
+      let mensajeBase =
+        "Observa la gaveta. Algunos objetos podrían no estar en su lugar.";
+
+
+      document
+        .querySelector(".gaveta-escena")
+        .addEventListener("mouseenter", function () {
+          mensajeJuego.textContent = "Zona inspeccionable: gaveta principal.";
+        });
+
+      document
+        .querySelector(".gaveta-escena")
+        .addEventListener("mouseleave", function () {
+          mensajeJuego.textContent = mensajeBase;
+        });
+
+      function volverAOficina() {
+        localStorage.removeItem("overlayActivo");
+        localStorage.removeItem("objetoSeleccionado");
+        sessionStorage.setItem("desdeEscena", "gaveta");
+        window.location.href = "Oficina.html";
+
+        function volverAOficina() {
+          localStorage.removeItem("overlayActivo");
+          localStorage.removeItem("objetoSeleccionado");
+          sessionStorage.setItem("desdeEscena", "gaveta");
+          window.location.href = "Oficina.html";
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contáctenos</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="estilos.css" />
+
+    <style>
+      /* Estilo para resaltar campos con error */
+      .error {
+        border: 2px solid #ff4d4d !important;
+        background-color: rgba(255, 77, 77, 0.1) !important;
+      }
+
+      .oculto {
+        display: none;
+      }
+
+      .separador {
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        margin: 20px 0;
+      }
+
+      /* Indicador de campo obligatorio */
+      .obligatorio::after {
+        content: " *";
+        color: #ff4d4d;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="fondo-global-juego"></div>
+
+    <main class="escena-principal">
+      <section class="contenedor-juego">
+        <header class="barra-superior visible-ui">
+          <button class="btn btn-outline-light btn-sm" onclick="window.location.href = 'Oficina.html'">Volver</button>
+          <div class="grupo-botones-derecha">
+            <button class="btn btn-outline-light btn-sm" onclick="window.location.href = 'SobreP&C.html'">Sobre P&C</button>
+            <button class="btn btn-outline-light btn-sm" onclick="window.location.href = 'galeria.html'">Galería</button>
+            <button class="btn btn-outline-light btn-sm" onclick="window.location.href = 'informe.html'">Informe</button>
+          </div>
+        </header>
+
+        <section class="visor-central">
+          <section class="pagina-wiki">
+            <header class="wiki-encabezado-principal">
+              <p class="wiki-actualizacion">Comunicación oficial</p>
+              <h1 class="wiki-titulo-principal">Contáctenos</h1>
+            </header>
+
+            <div class="wiki-layout">
+              <div class="wiki-columna-principal">
+                <section class="bloque-wiki">
+                  <p>Este es un <strong>proyecto académico</strong>. Los campos marcados con <span style="color:red">*</span> son obligatorios.</p>
+                </section>
+
+                <section class="bloque-wiki">
+                  <form id="formulario" action="mailto:tu_correo@ejemplo.com" method="post" enctype="text/plain" novalidate>
+                    
+                    <h5>Datos personales</h5>
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <label class="form-label obligatorio">Nombre</label>
+                        <input type="text" id="nombre" class="form-control" placeholder="Su nombre completo" />
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label obligatorio">Email</label>
+                        <input type="email" id="email" class="form-control" placeholder="correo@ejemplo.com" />
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label obligatorio">Teléfono</label>
+                        <input type="text" id="telefono" class="form-control" placeholder="8 dígitos numéricos" />
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label obligatorio">Edad</label>
+                        <input type="number" id="edad" class="form-control" placeholder="Ej: 25" />
+                      </div>
+                    </div>
+
+                    <div class="separador"></div>
+
+                    <h5>Ubicación</h5>
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <label class="form-label obligatorio">País</label>
+                        <select id="pais" class="form-select">
+                          <option value="">Seleccione</option>
+                          <option>Costa Rica</option>
+                          <option>México</option>
+                          <option>Colombia</option>
+                          <option value="otro">Otro</option>
+                        </select>
+                      </div>
+
+                      <div class="col-md-6 oculto" id="otroPaisDiv">
+                        <label class="form-label obligatorio">Especifique país</label>
+                        <input type="text" id="otroPais" class="form-control" />
+                      </div>
+                    </div>
+
+                    <div class="separador"></div>
+
+                    <h5>Detalles del mensaje</h5>
+                    <div class="row g-3">
+                      <div class="col-12">
+                        <label class="form-label obligatorio">Motivo</label>
+                        <select id="motivo" class="form-select">
+                          <option value="">Seleccione</option>
+                          <option>Error</option>
+                          <option>Sugerencia</option>
+                          <option>Consulta</option>
+                          <option value="otro">Otro</option>
+                        </select>
+                      </div>
+
+                      <div class="col-12 oculto" id="otroMotivoDiv">
+                        <label class="form-label obligatorio">Especifique motivo</label>
+                        <input type="text" id="otroMotivo" class="form-control" />
+                      </div>
+
+                      <div class="col-12">
+                        <label class="form-label obligatorio">Mensaje</label>
+                        <textarea id="mensaje" class="form-control" rows="3" placeholder="Escriba aquí su consulta..."></textarea>
+                      </div>
+                    </div>
+
+                    <div class="separador"></div>
+
+                    <h5>Opciones</h5>
+                    <div class="row g-3">
+                      <div class="col-12">
+                        <label class="form-label obligatorio">¿Desea respuesta?</label><br />
+                        <div class="form-check form-check-inline">
+                          <input type="radio" name="resp" value="si" class="form-check-input" id="respSi" /> Sí
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input type="radio" name="resp" value="no" class="form-check-input" id="respNo" /> No
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label obligatorio">Fecha de reporte</label>
+                        <input type="date" id="fecha" class="form-control" />
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label">Urgencia: <span id="valorUrgencia" class="badge bg-dark">5</span></label>
+                        <input type="range" id="urgencia" min="1" max="10" value="5" class="form-range" />
+                      </div>
+
+                      <div class="col-12">
+                        <div class="form-check">
+                          <input type="checkbox" id="terminos" class="form-check-input" />
+                          <label class="form-check-label obligatorio">Acepto los términos y condiciones</label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="separador"></div>
+
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-dark px-5">Enviar comunicación</button>
+                    </div>
+                  </form>
+                </section>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <footer class="barra-inferior-juego visible-ui">
+          <div class="panel-mensaje-juego">
+            <p>Asegúrese de que todos los campos sean válidos antes de enviar.</p>
+          </div>
+        </footer>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      const form = document.getElementById("formulario");
+
+      // Control de campos dinámicos
+      document.getElementById("pais").addEventListener("change", function () {
+        document.getElementById("otroPaisDiv").classList.toggle("oculto", this.value !== "otro");
+      });
+
+      document.getElementById("motivo").addEventListener("change", function () {
+        document.getElementById("otroMotivoDiv").classList.toggle("oculto", this.value !== "otro");
+      });
+
+      document.getElementById("urgencia").addEventListener("input", function () {
+        document.getElementById("valorUrgencia").textContent = this.value;
+      });
+
+      // Función principal de validación
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        // Limpiar errores previos
+        document.querySelectorAll(".error").forEach((el) => el.classList.remove("error"));
+
+        const lanzarError = (idCampo, mensaje) => {
+          const campo = document.getElementById(idCampo);
+          campo.classList.add("error");
+          campo.focus();
+          alert("ERROR EN CAMPO: " + mensaje);
+          return false;
+        };
+
+        // 1. Validar Nombre
+        let nombre = document.getElementById("nombre");
+        if (nombre.value.trim().length < 3) return lanzarError("nombre", "El nombre debe tener al menos 3 caracteres.");
+
+        // 2. Validar Email (Expresión regular robusta)
+        let email = document.getElementById("email");
+        let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email.value)) return lanzarError("email", "Por favor, ingrese un correo electrónico válido.");
+
+        // 3. Validar Teléfono (8 dígitos)
+        let tel = document.getElementById("telefono");
+        if (!/^[0-9]{8}$/.test(tel.value.replace(/\s/g, ""))) return lanzarError("telefono", "El teléfono debe contener exactamente 8 números.");
+
+        // 4. Validar Edad (Número positivo)
+        let edad = document.getElementById("edad");
+        if (edad.value === "" || edad.value < 1 || edad.value > 120) return lanzarError("edad", "Ingrese una edad válida entre 1 y 120 años.");
+
+        // 5. Validar País
+        let pais = document.getElementById("pais");
+        if (pais.value === "") return lanzarError("pais", "Debe seleccionar un país.");
+        if (pais.value === "otro" && document.getElementById("otroPais").value.trim() === "") return lanzarError("otroPais", "Por favor especifique su país.");
+
+        // 6. Validar Motivo
+        let motivo = document.getElementById("motivo");
+        if (motivo.value === "") return lanzarError("motivo", "Seleccione un motivo de contacto.");
+        if (motivo.value === "otro" && document.getElementById("otroMotivo").value.trim() === "") return lanzarError("otroMotivo", "Especifique el motivo.");
+
+        // 7. Validar Mensaje
+        let msg = document.getElementById("mensaje");
+        if (msg.value.trim().length < 10) return lanzarError("mensaje", "El mensaje es muy corto (mínimo 10 caracteres).");
+
+        // 8. Validar Radio (Respuesta)
+        if (!document.querySelector('input[name="resp"]:checked')) {
+            alert("Por favor, seleccione si desea recibir una respuesta.");
+            return false;
+        }
+
+        // 9. Validar Fecha
+        let fecha = document.getElementById("fecha");
+        if (fecha.value === "") return lanzarError("fecha", "Seleccione la fecha del reporte.");
+
+        // 10. Validar Términos
+        if (!document.getElementById("terminos").checked) {
+            alert("Debe aceptar los términos para continuar.");
+            return false;
+        }
+
+        // Si todo está bien
+        alert("¡Validación exitosa! El formulario se enviará ahora.");
+        form.submit();
+      });
+    </script>
+  </body>
+</html>
