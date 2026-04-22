@@ -125,16 +125,17 @@
         </header>
 
         <section class="visor-central">
-          <section class="tablero-escena">
+          <section class="tablero-escena" aria-label="Tablero de investigación">
+            <!-- Wrapper relativo a la imagen real para que las zonas siempre se anclen correctamente -->
+            <div class="tablero-wrapper">
+              <img src="Multimedia/EscenarioTablero.png" class="tablero-img" alt="Tablero de investigación" draggable="false" />
 
-            <div class="mapa-imagen"></div>
-
-            <div class="zona-mapa" style="top:15%;left:11%;width:10%;height:17%" data-id="dragon"></div>
-            <div class="zona-mapa" style="top:25%;left:24%;width:9%;height:16%" data-id="gusano_arena"></div>
-            <div class="zona-mapa" style="top:47%;left:30%;width:10%;height:17%" data-id="cervudo"></div>
-            <div class="zona-mapa" style="top:32%;left:58%;width:10%;height:18%" data-id="humanoide_hongos"></div>
-            <div class="zona-mapa" style="top:52%;left:83%;width:11%;height:26%" data-id="ciervo_runico"></div>
-
+              <div class="zona-mapa" style="top: 12%; left: 7%;  width: 11%; height: 20%;" data-id="sospechoso_a"></div>
+              <div class="zona-mapa" style="top: 22%; left: 22%; width: 10%; height: 20%;" data-id="victima"></div>
+              <div class="zona-mapa" style="top: 42%; left: 29%; width: 11%; height: 22%;" data-id="testigo"></div>
+              <div class="zona-mapa" style="top: 18%; left: 54%; width: 11%; height: 22%;" data-id="comisario"></div>
+              <div class="zona-mapa" style="top: 55%; left: 37%; width: 10%; height: 22%;" data-id="prensa"></div>
+            </div>
           </section>
         </section>
 
